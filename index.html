@@ -3,262 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdminVehiculos - Sistema Completo</title>
+    <title>Diagnóstico Firebase - AdminVehiculos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
         body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 1400px; margin: 0 auto; }
-        
-        .header {
-            background: rgba(255,255,255,0.95);
-            border-radius: 20px;
-            padding: 20px 25px;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .header h1 { color: #333; font-size: 1.5rem; }
-        .stats { background: linear-gradient(135deg, #667eea, #764ba2); padding: 8px 18px; border-radius: 20px; color: white; }
-        
-        .auth-status {
-            background: #e8f5e9;
-            padding: 8px 15px;
-            border-radius: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-        }
-        
-        .auth-status.error { background: #ffebee; color: #c62828; }
-        .auth-status.success { background: #e8f5e9; color: #2e7d32; }
-        
-        .two-columns { display: flex; gap: 25px; flex-wrap: wrap; }
-        .form-panel, .list-panel {
+        .container { max-width: 900px; margin: 0 auto; }
+        .card {
             background: white;
             border-radius: 20px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-        }
-        .form-panel { flex: 1.2; min-width: 300px; max-height: 85vh; overflow-y: auto; }
-        .list-panel { flex: 2.2; min-width: 400px; }
-        
-        .form-title {
-            font-size: 1.3rem;
-            font-weight: bold;
+            padding: 30px;
             margin-bottom: 20px;
-            color: #667eea;
-            border-left: 4px solid #667eea;
-            padding-left: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
-        
-        .form-group { margin-bottom: 15px; }
-        label { font-weight: 600; display: block; margin-bottom: 5px; color: #555; }
-        input, select {
-            width: 100%;
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 0.95rem;
+        h1 { color: #333; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .status-box {
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+            font-family: monospace;
         }
-        input:focus, select:focus { outline: none; border-color: #667eea; }
-        
+        .error { background: #ffebee; border-left: 4px solid #c62828; color: #c62828; }
+        .success { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #2e7d32; }
+        .warning { background: #fff3e0; border-left: 4px solid #ff9800; color: #e65100; }
+        .info { background: #e3f2fd; border-left: 4px solid #1976d2; color: #0d47a1; }
+        .step {
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
         button {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 10px 18px;
+            padding: 12px 24px;
             border-radius: 10px;
             cursor: pointer;
-            font-weight: bold;
-            margin-right: 8px;
-            margin-top: 5px;
+            font-size: 1rem;
+            margin-top: 15px;
         }
-        button i { margin-right: 5px; }
-        
-        .search-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .search-bar input { flex: 2; margin: 0; }
-        
-        .owner-card {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 18px;
-            margin-bottom: 20px;
-            border-left: 5px solid #667eea;
+        code {
+            background: #e0e0e0;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
         }
-        
-        .owner-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-bottom: 12px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .owner-name { font-size: 1.2rem; font-weight: bold; color: #333; }
-        .owner-details { display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85rem; color: #666; margin-bottom: 12px; }
-        
-        .students-section {
-            background: #fff8e1;
-            border-radius: 12px;
-            padding: 12px;
+        pre {
+            background: #263238;
+            color: #aed581;
+            padding: 15px;
+            border-radius: 10px;
+            overflow-x: auto;
             margin: 10px 0;
         }
-        
-        .student-item {
-            background: white;
-            padding: 8px 12px;
-            margin: 5px 0;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .firebase-link {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: bold;
         }
-        
-        .vehicle-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-            font-size: 0.85rem;
-        }
-        
-        .vehicle-table th, .vehicle-table td {
-            padding: 8px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }
-        
-        .vehicle-table th { background: #f0f0f0; }
-        
-        .actions-cell i {
-            margin: 0 5px;
-            cursor: pointer;
-        }
-        .edit-placa { color: #667eea; }
-        .delete-placa, .delete-student { color: #e74c3c; cursor: pointer; }
-        
-        .add-btn {
-            background: #f0f0f0;
-            border: 2px dashed #667eea;
-            border-radius: 10px;
-            padding: 6px 12px;
-            font-size: 0.8rem;
-            margin-top: 10px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            color: #667eea;
-        }
-        
-        .empty-message { text-align: center; padding: 40px; color: #999; }
-        .highlight { background: #fff3cd; padding: 2px 5px; border-radius: 4px; }
-        
-        #loadingToast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #333;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            display: none;
-            z-index: 1000;
-        }
-        
-        footer { text-align: center; margin-top: 30px; color: white; opacity: 0.9; }
-        
-        @media (max-width: 768px) {
-            .form-panel, .list-panel { min-width: 100%; }
-        }
+        .firebase-link:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <h1><i class="fas fa-car"></i> AdminVehiculos</h1>
-        <div class="stats" id="globalStats">Cargando...</div>
+    <div class="card">
+        <h1><i class="fas fa-stethoscope"></i> Diagnóstico Firebase</h1>
+        
+        <div id="diagnosticBox" class="status-box info">
+            <i class="fas fa-spinner fa-pulse"></i> Ejecutando diagnóstico...
+        </div>
+        
+        <div id="solutionBox" style="display: none;"></div>
+        
+        <button onclick="location.reload()"><i class="fas fa-sync-alt"></i> Reintentar diagnóstico</button>
+        <button onclick="window.location.href='https://console.firebase.google.com/project/admin-vehiculos-88011/authentication/providers'" style="margin-left: 10px;">
+            <i class="fas fa-external-link-alt"></i> Abrir Firebase Console
+        </button>
     </div>
     
-    <div id="authStatus" class="auth-status">
-        <i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...
-    </div>
-
-    <div class="two-columns">
-        <div class="form-panel">
-            <div class="form-title"><i class="fas fa-user-plus"></i> Dueño</div>
-            <input type="hidden" id="ownerIdEdit">
-            <div class="form-group">
-                <label>Nombre completo *</label>
-                <input type="text" id="ownerName" placeholder="Ej: María González">
-            </div>
-            <div class="form-group">
-                <label>Teléfono *</label>
-                <input type="text" id="ownerPhone" placeholder="Ej: +56 9 1234 5678">
-            </div>
-            <div class="form-group">
-                <label>Identificación *</label>
-                <input type="text" id="ownerIdNumber" placeholder="Cédula/DNI">
-            </div>
-            <div class="form-group">
-                <label>Correo</label>
-                <input type="email" id="ownerEmail" placeholder="correo@ejemplo.com">
-            </div>
-            
-            <div class="form-title" style="font-size:1rem; margin-top:15px;"><i class="fas fa-child"></i> Estudiante (opcional)</div>
-            <div class="form-group">
-                <input type="text" id="studentName" placeholder="Nombre del estudiante">
-            </div>
-            <div class="form-group">
-                <input type="text" id="studentGrade" placeholder="Grado que cursa">
-            </div>
-            
-            <button id="saveOwnerBtn"><i class="fas fa-save"></i> Guardar</button>
-            <button id="cancelEditBtn"><i class="fas fa-times"></i> Cancelar</button>
-            
-            <hr style="margin: 20px 0;">
-            <div class="form-title" style="font-size:1rem;"><i class="fas fa-car"></i> Agregar vehículo</div>
-            <div class="form-group">
-                <select id="quickOwnerSelect"></select>
-            </div>
-            <div class="form-group">
-                <input type="text" id="quickPlate" placeholder="Placa (ej: ABC-123)">
-            </div>
-            <div class="form-group">
-                <input type="text" id="quickModel" placeholder="Marca/Modelo">
-            </div>
-            <button id="addPlateBtn"><i class="fas fa-plus"></i> Asignar placa</button>
+    <div class="card">
+        <h2><i class="fas fa-clipboard-list"></i> Pasos para corregir el error</h2>
+        
+        <div class="step">
+            <h3><i class="fas fa-1-circle"></i> Habilitar autenticación anónima</h3>
+            <ol style="margin-left: 20px; line-height: 1.8;">
+                <li>Ve a <a href="https://console.firebase.google.com/project/admin-vehiculos-88011/authentication/providers" target="_blank" class="firebase-link">Firebase Console → Authentication → Sign-in methods</a></li>
+                <li>Busca <strong>"Anónimo" (Anonymous)</strong> en la lista</li>
+                <li>Haz clic en <strong>Editar</strong> (lápiz)</li>
+                <li><strong>Activa el interruptor</strong> (debe quedar en azul)</li>
+                <li>Haz clic en <strong>Guardar</strong></li>
+            </ol>
         </div>
-
-        <div class="list-panel">
-            <div class="form-title"><i class="fas fa-search"></i> Buscar</div>
-            <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Buscar por nombre, placa o estudiante...">
-                <button id="clearSearchBtn"><i class="fas fa-eraser"></i> Limpiar</button>
-            </div>
-            <div id="ownersListContainer" style="max-height: 65vh; overflow-y: auto;">
-                <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Conectando...</div>
-            </div>
+        
+        <div class="step">
+            <h3><i class="fas fa-2-circle"></i> Configurar Firestore</h3>
+            <ol style="margin-left: 20px; line-height: 1.8;">
+                <li>Ve a <strong>Firestore Database</strong></li>
+                <li>Si no existe, haz clic en <strong>Crear base de datos</strong></li>
+                <li>Selecciona <strong>Iniciar en modo de prueba</strong></li>
+                <li>En la pestaña <strong>Reglas</strong>, pega este código:</li>
+            </ol>
+            <pre>rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}</pre>
+        </div>
+        
+        <div class="step">
+            <h3><i class="fas fa-3-circle"></i> Probar la conexión</h3>
+            <p>Después de guardar los cambios, espera 30 segundos y <strong>recarga esta página</strong> (Ctrl+Shift+R).</p>
         </div>
     </div>
-    <footer>
-        <i class="fas fa-shield-alt"></i> Datos seguros con autenticación anónima
-    </footer>
 </div>
-<div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
 <script type="importmap">
     {
         "imports": {
             "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
             "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
         }
     }
@@ -266,8 +132,7 @@
 
 <script type="module">
     import { initializeApp } from "firebase/app";
-    import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+    import { getAuth, signInAnonymously } from "firebase/auth";
     
     const firebaseConfig = {
         apiKey: "AIzaSyBPZFMfCwuVrTZVvEGNnEfe1rJohQgVOzI",
@@ -278,450 +143,82 @@
         appId: "1:548122701117:web:69bc9781a18bd0dedc6954"
     };
     
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+    const diagnosticBox = document.getElementById("diagnosticBox");
+    const solutionBox = document.getElementById("solutionBox");
     
-    let localOwners = [];
-    let currentFilter = "";
-    let isAuthenticated = false;
-    
-    // DOM elements
-    const ownersContainer = document.getElementById("ownersListContainer");
-    const searchInput = document.getElementById("searchInput");
-    const clearSearchBtn = document.getElementById("clearSearchBtn");
-    const globalStatsSpan = document.getElementById("globalStats");
-    const quickOwnerSelect = document.getElementById("quickOwnerSelect");
-    const ownerIdEdit = document.getElementById("ownerIdEdit");
-    const ownerName = document.getElementById("ownerName");
-    const ownerPhone = document.getElementById("ownerPhone");
-    const ownerIdNumber = document.getElementById("ownerIdNumber");
-    const ownerEmail = document.getElementById("ownerEmail");
-    const studentName = document.getElementById("studentName");
-    const studentGrade = document.getElementById("studentGrade");
-    const saveOwnerBtn = document.getElementById("saveOwnerBtn");
-    const cancelEditBtn = document.getElementById("cancelEditBtn");
-    const addPlateBtn = document.getElementById("addPlateBtn");
-    const quickPlate = document.getElementById("quickPlate");
-    const quickModel = document.getElementById("quickModel");
-    const loadingToast = document.getElementById("loadingToast");
-    const authStatusDiv = document.getElementById("authStatus");
-    
-    function showLoading(show) {
-        loadingToast.style.display = show ? "flex" : "none";
-    }
-    
-    function updateAuthStatus(user, error = null) {
-        if (error) {
-            authStatusDiv.className = "auth-status error";
-            authStatusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error}`;
-            isAuthenticated = false;
-        } else if (user) {
-            authStatusDiv.className = "auth-status success";
-            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Autenticación activa · ID: ${user.uid.substring(0, 8)}...`;
-            isAuthenticated = true;
-            loadOwnersRealtime();
-        } else {
-            authStatusDiv.className = "auth-status";
-            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...`;
-            isAuthenticated = false;
-        }
-    }
-    
-    function loadOwnersRealtime() {
-        if (!isAuthenticated) return;
+    async function runDiagnostic() {
+        diagnosticBox.className = "status-box info";
+        diagnosticBox.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...';
         
-        showLoading(true);
-        const q = query(collection(db, "owners"), orderBy("name"));
-        onSnapshot(q, (snapshot) => {
-            localOwners = [];
-            snapshot.forEach(doc => {
-                localOwners.push({ id: doc.id, ...doc.data() });
-            });
-            updateGlobalStats();
-            refreshOwnerSelect();
-            renderOwnersList(currentFilter);
-            showLoading(false);
-        }, (error) => {
-            console.error("Error:", error);
-            showLoading(false);
-            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> Error: ${error.message}</div>`;
-        });
-    }
-    
-    async function saveOwner() {
-        if (!isAuthenticated) {
-            alert("Esperando autenticación...");
-            return;
-        }
-        
-        const id = ownerIdEdit.value;
-        const name = ownerName.value.trim();
-        const phone = ownerPhone.value.trim();
-        const idNumber = ownerIdNumber.value.trim();
-        const email = ownerEmail.value.trim();
-        const newStudentName = studentName.value.trim();
-        const newStudentGrade = studentGrade.value.trim();
-        
-        if (!name || !phone || !idNumber) {
-            alert("Complete nombre, teléfono e identificación");
-            return;
-        }
-        
-        showLoading(true);
         try {
-            let students = [];
-            if (id) {
-                const existing = localOwners.find(o => o.id === id);
-                if (existing?.students) students = [...existing.students];
-            }
+            const app = initializeApp(firebaseConfig);
+            const auth = getAuth(app);
             
-            if (newStudentName) {
-                students.push({
-                    id: Date.now().toString(),
-                    name: newStudentName,
-                    grade: newStudentGrade
-                });
-            }
+            diagnosticBox.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Intentando autenticación anónima...';
             
-            const ownerData = {
-                name, phone, idNumber, email,
-                vehicles: id ? (localOwners.find(o => o.id === id)?.vehicles || []) : [],
-                students: students,
-                updatedAt: new Date().toISOString()
-            };
+            const userCredential = await signInAnonymously(auth);
+            const user = userCredential.user;
             
-            if (id) {
-                await updateDoc(doc(db, "owners", id), ownerData);
-            } else {
-                await addDoc(collection(db, "owners"), ownerData);
-            }
+            diagnosticBox.className = "status-box success";
+            diagnosticBox.innerHTML = `
+                <i class="fas fa-check-circle"></i> ✅ ¡Conexión exitosa!<br>
+                <strong>UID:</strong> ${user.uid}<br>
+                <strong>Estado:</strong> Autenticado correctamente<br><br>
+                <i class="fas fa-rocket"></i> La autenticación funciona. ¡Puedes usar la aplicación completa!
+            `;
             
-            ownerIdEdit.value = "";
-            ownerName.value = "";
-            ownerPhone.value = "";
-            ownerIdNumber.value = "";
-            ownerEmail.value = "";
-            studentName.value = "";
-            studentGrade.value = "";
+            // Mostrar botón para ir a la app
+            solutionBox.style.display = "block";
+            solutionBox.innerHTML = `
+                <div class="status-box success">
+                    <i class="fas fa-thumbs-up"></i> Todo está configurado correctamente.<br><br>
+                    <button onclick="window.location.href='aplicacion-completa.html'" style="background:#2e7d32;">
+                        <i class="fas fa-arrow-right"></i> Ir a la aplicación completa
+                    </button>
+                </div>
+            `;
             
         } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
-    }
-    
-    async function deleteOwner(ownerId) {
-        if (!isAuthenticated) return;
-        if (!confirm("¿Eliminar este dueño y todos sus datos?")) return;
-        showLoading(true);
-        try {
-            await deleteDoc(doc(db, "owners", ownerId));
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
-    }
-    
-    async function addVehicle(ownerId, plate, model) {
-        if (!isAuthenticated) return;
-        if (!plate?.trim()) {
-            alert("Ingrese una placa");
-            return;
-        }
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        
-        const vehicles = [...(owner.vehicles || [])];
-        if (vehicles.some(v => v.plate === plate.trim())) {
-            alert("Ya existe esa placa");
-            return;
-        }
-        
-        vehicles.push({ plate: plate.trim(), model: model?.trim() || "" });
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { vehicles });
-            quickPlate.value = "";
-            quickModel.value = "";
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
-    }
-    
-    async function deleteVehicle(ownerId, plateToDelete) {
-        if (!isAuthenticated) return;
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        const newVehicles = owner.vehicles.filter(v => v.plate !== plateToDelete);
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { vehicles: newVehicles });
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
-    }
-    
-    async function addStudent(ownerId, studentNameValue, studentGradeValue) {
-        if (!isAuthenticated) return;
-        if (!studentNameValue?.trim()) {
-            alert("Ingrese el nombre del estudiante");
-            return;
-        }
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        
-        const students = [...(owner.students || [])];
-        students.push({
-            id: Date.now().toString(),
-            name: studentNameValue.trim(),
-            grade: studentGradeValue?.trim() || ""
-        });
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { students });
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
-    }
-    
-    async function deleteStudent(ownerId, studentId) {
-        if (!isAuthenticated) return;
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        const newStudents = owner.students.filter(s => s.id !== studentId);
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { students: newStudents });
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
-    }
-    
-    function renderOwnersList(filterText = "") {
-        currentFilter = filterText;
-        let filtered = [...localOwners];
-        
-        if (filterText.trim()) {
-            const lowerFilter = filterText.toLowerCase();
-            filtered = localOwners.filter(owner => {
-                if (owner.name?.toLowerCase().includes(lowerFilter)) return true;
-                if (owner.phone?.toLowerCase().includes(lowerFilter)) return true;
-                if (owner.idNumber?.toLowerCase().includes(lowerFilter)) return true;
-                if (owner.vehicles?.some(v => v.plate?.toLowerCase().includes(lowerFilter))) return true;
-                if (owner.students?.some(s => s.name?.toLowerCase().includes(lowerFilter))) return true;
-                return false;
-            });
-        }
-        
-        if (filtered.length === 0) {
-            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros. ¡Agrega un dueño!</div>`;
-            return;
-        }
-        
-        let html = "";
-        filtered.forEach(owner => {
-            html += `
-            <div class="owner-card">
-                <div class="owner-header">
-                    <div class="owner-name">${escapeHtml(owner.name)}</div>
-                    <div>
-                        <button class="edit-owner-btn" data-id="${owner.id}" style="padding:5px 12px; font-size:0.8rem;"><i class="fas fa-edit"></i> Editar</button>
-                        <button class="delete-owner-btn" data-id="${owner.id}" style="padding:5px 12px; font-size:0.8rem; background:#c62828;"><i class="fas fa-trash"></i> Eliminar</button>
+            console.error("Error detallado:", error);
+            
+            let errorMessage = "";
+            let solution = "";
+            
+            if (error.code === 'auth/configuration-not-found') {
+                errorMessage = "❌ La autenticación anónima NO está habilitada en tu proyecto Firebase.";
+                solution = `
+                    <div class="status-box warning">
+                        <strong><i class="fas fa-exclamation-triangle"></i> Solución:</strong><br><br>
+                        <ol style="margin-left: 20px;">
+                            <li>Ve a <strong>Firebase Console</strong></li>
+                            <li>Selecciona <strong>Authentication</strong></li>
+                            <li>Haz clic en <strong>Sign-in methods</strong></li>
+                            <li>Busca <strong>Anónimo (Anonymous)</strong></li>
+                            <li><strong>ACTÍVALO</strong> y guarda los cambios</li>
+                            <li>Espera 30 segundos y recarga esta página</li>
+                        </ol>
                     </div>
-                </div>
-                <div class="owner-details">
-                    <span><i class="fas fa-id-card"></i> ${escapeHtml(owner.idNumber)}</span>
-                    <span><i class="fas fa-phone"></i> ${escapeHtml(owner.phone)}</span>
-                    ${owner.email ? `<span><i class="fas fa-envelope"></i> ${escapeHtml(owner.email)}</span>` : ''}
-                </div>
-                
-                <div class="students-section">
-                    <strong><i class="fas fa-child"></i> Estudiantes</strong>`;
-            
-            if (!owner.students?.length) {
-                html += `<div style="padding:8px; color:#999; text-align:center;">No hay estudiantes</div>`;
+                `;
+            } else if (error.code === 'auth/network-request-failed') {
+                errorMessage = "❌ Error de red. Verifica tu conexión a internet.";
+                solution = `<div class="status-box warning">Verifica que tengas conexión a internet y que no haya bloqueos de firewall.</div>`;
             } else {
-                owner.students.forEach(student => {
-                    html += `
-                    <div class="student-item">
-                        <div>
-                            <strong>${escapeHtml(student.name)}</strong>
-                            ${student.grade ? ` <span style="color:#ff9800;">📚 ${escapeHtml(student.grade)}</span>` : ''}
-                        </div>
-                        <i class="fas fa-trash delete-student" data-owner="${owner.id}" data-student-id="${student.id}"></i>
-                    </div>`;
-                });
+                errorMessage = `❌ Error: ${error.message}`;
+                solution = `<div class="status-box warning">Error inesperado. Verifica la configuración de tu proyecto Firebase.</div>`;
             }
             
-            html += `<div class="add-btn add-student-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar estudiante</div>
-                </div>
-                
-                <div style="margin-top:12px;"><strong><i class="fas fa-car"></i> Vehículos</strong></div>
-                <table class="vehicle-table">
-                    <thead><tr><th>Placa</th><th>Modelo</th><th>Acciones</th></tr></thead>
-                    <tbody>`;
+            diagnosticBox.className = "status-box error";
+            diagnosticBox.innerHTML = `
+                <i class="fas fa-times-circle"></i> ${errorMessage}<br>
+                <strong>Código:</strong> ${error.code}
+            `;
             
-            if (!owner.vehicles?.length) {
-                html += `<tr><td colspan="3" style="text-align:center; color:#999;">Sin vehículos</td></tr>`;
-            } else {
-                owner.vehicles.forEach(vehicle => {
-                    html += `
-                    <tr>
-                        <td>${escapeHtml(vehicle.plate)}</td>
-                        <td>${escapeHtml(vehicle.model || '—')}</td>
-                        <td class="actions-cell">
-                            <i class="fas fa-pen edit-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}"></i>
-                            <i class="fas fa-trash delete-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}"></i>
-                        </td>
-                    </tr>`;
-                });
-            }
-            
-            html += `</tbody>
-                </table>
-                <div class="add-btn add-placa-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar vehículo</div>
-            </div>`;
-        });
-        
-        ownersContainer.innerHTML = html;
-        
-        // Eventos
-        document.querySelectorAll('.edit-owner-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const owner = localOwners.find(o => o.id === btn.dataset.id);
-                if (owner) {
-                    ownerIdEdit.value = owner.id;
-                    ownerName.value = owner.name;
-                    ownerPhone.value = owner.phone;
-                    ownerIdNumber.value = owner.idNumber;
-                    ownerEmail.value = owner.email || "";
-                    studentName.value = "";
-                    studentGrade.value = "";
-                }
-            });
-        });
-        
-        document.querySelectorAll('.delete-owner-btn').forEach(btn => {
-            btn.addEventListener('click', () => deleteOwner(btn.dataset.id));
-        });
-        
-        document.querySelectorAll('.delete-placa').forEach(icon => {
-            icon.addEventListener('click', () => {
-                if (confirm("¿Eliminar este vehículo?")) {
-                    deleteVehicle(icon.dataset.owner, icon.dataset.plate);
-                }
-            });
-        });
-        
-        document.querySelectorAll('.add-placa-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const plate = prompt("Ingrese la placa:");
-                if (plate?.trim()) {
-                    const model = prompt("Ingrese el modelo (opcional):");
-                    addVehicle(btn.dataset.ownerId, plate.trim(), model || "");
-                }
-            });
-        });
-        
-        document.querySelectorAll('.add-student-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const name = prompt("Nombre del estudiante:");
-                if (name?.trim()) {
-                    const grade = prompt("Grado que cursa (opcional):");
-                    addStudent(btn.dataset.ownerId, name.trim(), grade || "");
-                }
-            });
-        });
-        
-        document.querySelectorAll('.delete-student').forEach(icon => {
-            icon.addEventListener('click', () => {
-                if (confirm("¿Eliminar este estudiante?")) {
-                    deleteStudent(icon.dataset.owner, icon.dataset.studentId);
-                }
-            });
-        });
+            solutionBox.style.display = "block";
+            solutionBox.innerHTML = solution;
+        }
     }
     
-    function refreshOwnerSelect() {
-        quickOwnerSelect.innerHTML = '<option value="">-- Seleccionar dueño --</option>';
-        localOwners.forEach(owner => {
-            quickOwnerSelect.appendChild(new Option(`${owner.name} (${owner.idNumber})`, owner.id));
-        });
-    }
-    
-    function updateGlobalStats() {
-        const totalOwners = localOwners.length;
-        const totalVehicles = localOwners.reduce((acc, o) => acc + (o.vehicles?.length || 0), 0);
-        const totalStudents = localOwners.reduce((acc, o) => acc + (o.students?.length || 0), 0);
-        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> Dueños: ${totalOwners} | 🚗 ${totalVehicles} | 👨‍👦 ${totalStudents}`;
-    }
-    
-    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
-    function escapeAttr(str) { return str ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : ''; }
-    
-    // Inicializar autenticación
-    function initAuth() {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                updateAuthStatus(user);
-            } else {
-                updateAuthStatus(null);
-                signInAnonymously(auth)
-                    .then((userCredential) => {
-                        updateAuthStatus(userCredential.user);
-                    })
-                    .catch((error) => {
-                        console.error("Error de autenticación:", error);
-                        let errorMsg = "Error de autenticación. ";
-                        if (error.code === 'auth/operation-not-allowed') {
-                            errorMsg += "Habilita el inicio de sesión anónimo en Firebase Console → Authentication → Sign-in methods.";
-                        } else {
-                            errorMsg += error.message;
-                        }
-                        updateAuthStatus(null, errorMsg);
-                        ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-lock"></i> ${errorMsg}</div>`;
-                    });
-            }
-        });
-    }
-    
-    // Event listeners
-    saveOwnerBtn.addEventListener("click", saveOwner);
-    cancelEditBtn.addEventListener("click", () => {
-        ownerIdEdit.value = "";
-        ownerName.value = "";
-        ownerPhone.value = "";
-        ownerIdNumber.value = "";
-        ownerEmail.value = "";
-        studentName.value = "";
-        studentGrade.value = "";
-    });
-    addPlateBtn.addEventListener("click", () => {
-        const ownerId = quickOwnerSelect.value;
-        if (!ownerId) { alert("Seleccione un dueño"); return; }
-        const plate = quickPlate.value.trim();
-        if (!plate) { alert("Ingrese una placa"); return; }
-        const model = quickModel.value.trim();
-        addVehicle(ownerId, plate, model);
-    });
-    searchInput.addEventListener("input", (e) => renderOwnersList(e.target.value));
-    clearSearchBtn.addEventListener("click", () => {
-        searchInput.value = "";
-        renderOwnersList("");
-    });
-    
-    initAuth();
+    runDiagnostic();
 </script>
 </body>
 </html>
