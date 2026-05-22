@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#1a1a2e">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>AutoRegistro PRO - Gestión Vehicular</title>
+    <title>AutoRegistro PRO - Múltiples Vehículos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -27,13 +26,11 @@
             margin: 0 auto;
         }
 
-        /* Header profesional */
         .header {
             background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
             border-radius: 24px;
             padding: 20px 22px;
             margin-bottom: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -55,7 +52,6 @@
             padding: 12px;
             border-radius: 16px;
             color: white;
-            font-size: 1.2rem;
         }
 
         .stats {
@@ -63,35 +59,26 @@
             padding: 10px 18px;
             border-radius: 30px;
             color: #00b4db;
-            font-size: 0.9rem;
             font-weight: bold;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0,180,219,0.3);
+            font-size: 0.85rem;
         }
 
-        /* Estado de autenticación */
         .auth-status {
             background: rgba(0,180,219,0.15);
             backdrop-filter: blur(10px);
             padding: 12px 16px;
             border-radius: 20px;
             margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
+            text-align: center;
             font-size: 0.85rem;
             color: #00b4db;
-            border: 1px solid rgba(0,180,219,0.2);
         }
 
         .auth-status.success {
             background: rgba(76,175,80,0.15);
             color: #4caf50;
-            border-color: rgba(76,175,80,0.3);
         }
 
-        /* Pestañas */
         .tabs {
             display: flex;
             gap: 12px;
@@ -108,7 +95,6 @@
             font-weight: 700;
             font-size: 1rem;
             cursor: pointer;
-            transition: all 0.3s;
             color: rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
@@ -116,15 +102,10 @@
             gap: 10px;
         }
 
-        .tab-btn i {
-            font-size: 1.2rem;
-        }
-
         .tab-btn.active {
             background: linear-gradient(135deg, #00b4db, #0083b0);
             color: white;
             border-color: transparent;
-            box-shadow: 0 4px 15px rgba(0,180,219,0.3);
         }
 
         .tab-panel {
@@ -141,7 +122,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Tarjetas */
         .card {
             background: rgba(255,255,255,0.98);
             border-radius: 28px;
@@ -162,7 +142,6 @@
             gap: 10px;
         }
 
-        /* Formulario - campos más grandes */
         .field-group {
             margin-bottom: 18px;
         }
@@ -182,14 +161,12 @@
             border-radius: 18px;
             font-size: 1rem;
             background: #fafafa;
-            transition: all 0.2s;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #00b4db;
             background: white;
-            box-shadow: 0 0 0 4px rgba(0,180,219,0.1);
         }
 
         .plate-input {
@@ -200,7 +177,72 @@
             font-size: 1.2rem;
         }
 
-        /* Mensaje de error de placa duplicada */
+        /* Lista de vehículos del dueño */
+        .vehiculos-lista {
+            background: #f8f9fa;
+            border-radius: 18px;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        .vehiculo-item {
+            background: white;
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid #00b4db;
+        }
+
+        .vehiculo-info {
+            flex: 1;
+        }
+
+        .vehiculo-placa {
+            font-weight: bold;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        .vehiculo-color {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .vehiculo-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .vehiculo-actions i {
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .edit-vehiculo { color: #1976d2; }
+        .delete-vehiculo { color: #c62828; }
+
+        .btn-agregar-vehiculo {
+            background: transparent;
+            border: 2px dashed #00b4db;
+            border-radius: 14px;
+            padding: 12px;
+            width: 100%;
+            text-align: center;
+            color: #00b4db;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
         .error-message {
             background: #ffebee;
             color: #c62828;
@@ -211,7 +253,6 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            border-left: 4px solid #c62828;
         }
 
         .success-message {
@@ -224,10 +265,8 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            border-left: 4px solid #2e7d32;
         }
 
-        /* Botones grandes */
         .btn {
             padding: 16px 22px;
             border-radius: 20px;
@@ -235,7 +274,6 @@
             font-size: 1rem;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -246,20 +284,18 @@
         .btn-primary {
             background: linear-gradient(135deg, #00b4db, #0083b0);
             color: white;
-            box-shadow: 0 4px 12px rgba(0,180,219,0.3);
         }
 
-        .btn-primary:active { transform: scale(0.98); }
-        .btn-primary:disabled {
-            opacity: 0.6;
-            transform: none;
-            cursor: not-allowed;
-        }
-        
         .btn-outline {
             background: transparent;
             border: 2px solid #00b4db;
             color: #0083b0;
+        }
+
+        .btn-sm {
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            width: auto;
         }
 
         .button-group {
@@ -268,127 +304,50 @@
             margin-top: 20px;
         }
 
-        /* Tarjetas de registro en la lista */
-        .registro-card {
+        /* Tarjeta de dueño en la lista */
+        .owner-card {
             background: white;
             border-radius: 24px;
             padding: 20px;
             margin-bottom: 16px;
             border-left: 6px solid #00b4db;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: all 0.2s;
         }
 
-        .registro-card:active {
-            transform: scale(0.99);
-        }
-
-        .registro-header {
+        .owner-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 16px;
         }
 
-        .placa-badge {
-            background: linear-gradient(135deg, #00b4db, #0083b0);
-            color: white;
-            padding: 12px 20px;
-            border-radius: 20px;
-            font-family: monospace;
-            font-weight: bold;
+        .owner-name {
             font-size: 1.2rem;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .color-badge {
-            background: #f0f0f0;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #555;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
+            font-weight: 700;
+            color: #1a1a2e;
         }
 
-        .acciones-btns {
-            display: flex;
-            gap: 12px;
-        }
-
-        .acciones-btns button {
-            background: transparent;
-            border: none;
-            font-size: 1.2rem;
-            cursor: pointer;
-            padding: 10px 14px;
-            border-radius: 14px;
-            transition: all 0.2s;
-        }
-
-        .acciones-btns button:first-child {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-
-        .acciones-btns button:last-child {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .info-persona {
+        .owner-details {
             background: #f8f9fa;
             border-radius: 18px;
-            padding: 16px;
-            margin: 12px 0;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 0.85rem;
         }
 
-        .info-label {
-            font-size: 0.75rem;
+        .vehiculos-section {
+            margin-top: 12px;
+        }
+
+        .vehiculos-title {
+            font-size: 0.8rem;
             font-weight: 600;
             color: #00b4db;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
         }
 
-        .info-value {
-            font-size: 1rem;
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 10px;
-            word-break: break-word;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-value:last-child {
-            margin-bottom: 0;
-        }
-
-        .estudiante-tag {
-            background: linear-gradient(135deg, #fff8e1, #fff3e0);
-            border-radius: 18px;
-            padding: 14px;
-            margin-top: 12px;
-            border-left: 4px solid #ff9800;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 50px 30px;
-            color: #999;
-            font-size: 0.95rem;
-        }
-
-        /* Buscador más grande */
         .search-bar {
             display: flex;
             gap: 12px;
@@ -398,20 +357,11 @@
         .search-bar input {
             flex: 1;
             margin: 0;
-            padding: 16px 18px;
-            font-size: 1rem;
         }
 
-        .search-bar button {
-            width: auto;
-            padding: 16px 20px;
-        }
-
-        /* Scroll */
         #listaContainer {
             max-height: 55vh;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         #loadingToast {
@@ -421,13 +371,11 @@
             transform: translateX(-50%);
             background: rgba(0,0,0,0.9);
             color: white;
-            padding: 14px 28px;
+            padding: 12px 24px;
             border-radius: 40px;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             display: none;
             z-index: 1000;
-            white-space: nowrap;
-            backdrop-filter: blur(10px);
         }
 
         footer {
@@ -437,95 +385,90 @@
             padding: 20px;
         }
 
-        /* Scrollbar personalizado */
-        #listaContainer::-webkit-scrollbar {
-            width: 5px;
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #999;
         }
 
-        #listaContainer::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 10px;
-        }
-
-        #listaContainer::-webkit-scrollbar-thumb {
-            background: #00b4db;
-            border-radius: 10px;
+        .badge {
+            display: inline-block;
+            background: #e3f2fd;
+            color: #1976d2;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            margin-left: 8px;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1><i class="fas fa-clipboard-list"></i> AutoRegistro PRO</h1>
+        <h1><i class="fas fa-users"></i> AutoRegistro PRO</h1>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
     <div id="authStatus" class="auth-status">
-        <i class="fas fa-spinner fa-pulse"></i> Conectando a la nube...
+        <i class="fas fa-spinner fa-pulse"></i> Conectando...
     </div>
 
-    <!-- Pestañas -->
     <div class="tabs">
         <button class="tab-btn active" data-tab="registrar">
-            <i class="fas fa-pen-alt"></i> Registrar
+            <i class="fas fa-user-plus"></i> Dueños
         </button>
         <button class="tab-btn" data-tab="buscar">
             <i class="fas fa-search"></i> Buscar
         </button>
     </div>
 
-    <!-- Panel Registrar -->
+    <!-- Panel Registrar Dueños -->
     <div id="tab-registrar" class="tab-panel active">
         <div class="card">
-            <div class="card-title"><i class="fas fa-plus-circle"></i> Nuevo Registro</div>
+            <div class="card-title"><i class="fas fa-user-plus"></i> Registrar Dueño</div>
             <input type="hidden" id="editId">
             
             <div class="field-group">
-                <label><i class="fas fa-car"></i> PLACA * (obligatorio)</label>
-                <input type="text" id="placa" class="plate-input" placeholder="Ej: ABC123" maxlength="10" autocomplete="off">
-                <div style="font-size: 0.7rem; color: #00b4db; margin-top: 6px;">Se formatea automáticamente: ABC-123</div>
-                <div id="placaError" style="display: none;" class="error-message">
-                    <i class="fas fa-exclamation-triangle"></i> <span id="placaErrorText"></span>
-                </div>
-            </div>
-
-            <div class="field-group">
-                <label><i class="fas fa-palette"></i> Color del vehículo (opcional)</label>
-                <input type="text" id="colorVehiculo" placeholder="Ej: Rojo, Azul, Plata, Negro, Blanco..." autocomplete="off">
-            </div>
-
-            <div class="field-group">
-                <label><i class="fas fa-user"></i> Nombre del dueño (opcional)</label>
+                <label><i class="fas fa-user"></i> Nombre del dueño *</label>
                 <input type="text" id="nombre" placeholder="Ej: María González">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-phone"></i> Teléfono (opcional)</label>
+                <label><i class="fas fa-phone"></i> Teléfono</label>
                 <input type="tel" id="telefono" placeholder="Ej: 555-1234">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-id-card"></i> Identificación (opcional)</label>
+                <label><i class="fas fa-id-card"></i> Identificación</label>
                 <input type="text" id="identificacion" placeholder="Cédula / DNI">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-envelope"></i> Correo electrónico (opcional)</label>
+                <label><i class="fas fa-envelope"></i> Correo electrónico</label>
                 <input type="email" id="correo" placeholder="correo@ejemplo.com">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-child"></i> Estudiante que recoge (opcional)</label>
+                <label><i class="fas fa-child"></i> Estudiante que recoge</label>
                 <input type="text" id="estudianteNombre" placeholder="Nombre del estudiante">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-graduation-cap"></i> Grado / Curso (opcional)</label>
+                <label><i class="fas fa-graduation-cap"></i> Grado / Curso</label>
                 <input type="text" id="estudianteGrado" placeholder="Ej: 5to Primaria">
             </div>
 
+            <!-- Sección de vehículos del dueño -->
+            <div class="vehiculos-lista" id="vehiculosContainer">
+                <div style="font-weight: 600; margin-bottom: 10px;"><i class="fas fa-car"></i> Vehículos del dueño</div>
+                <div id="listaVehiculos"></div>
+                <button type="button" class="btn-agregar-vehiculo" id="agregarVehiculoBtn">
+                    <i class="fas fa-plus-circle"></i> Agregar otro vehículo
+                </button>
+            </div>
+
             <div class="button-group">
-                <button class="btn btn-primary" id="guardarBtn"><i class="fas fa-save"></i> Guardar</button>
+                <button class="btn btn-primary" id="guardarBtn"><i class="fas fa-save"></i> Guardar Dueño</button>
                 <button class="btn btn-outline" id="cancelarBtn"><i class="fas fa-times"></i> Cancelar</button>
             </div>
         </div>
@@ -534,9 +477,9 @@
     <!-- Panel Buscar -->
     <div id="tab-buscar" class="tab-panel">
         <div class="card">
-            <div class="card-title"><i class="fas fa-search"></i> Buscar Registros</div>
+            <div class="card-title"><i class="fas fa-search"></i> Buscar Dueños</div>
             <div class="search-bar">
-                <input type="text" id="buscarInput" placeholder="🔍 Buscar por placa, color, nombre o estudiante...">
+                <input type="text" id="buscarInput" placeholder="🔍 Buscar por nombre, placa o estudiante...">
                 <button class="btn btn-outline" id="limpiarBusqueda" style="width: auto;"><i class="fas fa-eraser"></i></button>
             </div>
             <div id="listaContainer">
@@ -546,7 +489,7 @@
     </div>
 
     <footer>
-        <i class="fas fa-shield-alt"></i> Datos seguros en la nube · No se permiten placas duplicadas
+        <i class="fas fa-shield-alt"></i> Datos seguros · Un dueño puede tener múltiples vehículos
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -563,7 +506,7 @@
 
 <script type="module">
     import { initializeApp } from "firebase/app";
-    import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, getDocs, where } from "firebase/firestore";
+    import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, getDocs } from "firebase/firestore";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
     const firebaseConfig = {
@@ -579,9 +522,10 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    let registros = [];
+    let owners = [];
     let filtroActual = "";
     let autenticado = false;
+    let vehiculosTemp = []; // Array temporal para los vehículos en el formulario
 
     // Elementos DOM
     const listaContainer = document.getElementById("listaContainer");
@@ -590,8 +534,6 @@
     const globalStatsSpan = document.getElementById("globalStats");
     const authStatusDiv = document.getElementById("authStatus");
     const editId = document.getElementById("editId");
-    const placa = document.getElementById("placa");
-    const colorVehiculo = document.getElementById("colorVehiculo");
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const identificacion = document.getElementById("identificacion");
@@ -601,8 +543,120 @@
     const guardarBtn = document.getElementById("guardarBtn");
     const cancelarBtn = document.getElementById("cancelarBtn");
     const loadingToast = document.getElementById("loadingToast");
-    const placaError = document.getElementById("placaError");
-    const placaErrorText = document.getElementById("placaErrorText");
+    const listaVehiculos = document.getElementById("listaVehiculos");
+    const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
+
+    // Función para formatear placa
+    function formatearPlaca(texto) {
+        if (!texto) return "";
+        let limpio = texto.toUpperCase().replace(/\s/g, "");
+        limpio = limpio.replace(/-/g, "");
+        if (limpio.length > 3) {
+            return limpio.substring(0, 3) + "-" + limpio.substring(3, 8);
+        }
+        return limpio;
+    }
+
+    // Renderizar lista de vehículos en el formulario
+    function renderizarListaVehiculos() {
+        if (vehiculosTemp.length === 0) {
+            listaVehiculos.innerHTML = '<div style="text-align:center; color:#999; padding:15px;">Sin vehículos registrados</div>';
+            return;
+        }
+        
+        let html = '';
+        vehiculosTemp.forEach((veh, index) => {
+            html += `
+                <div class="vehiculo-item">
+                    <div class="vehiculo-info">
+                        <div class="vehiculo-placa"><i class="fas fa-car"></i> ${escapeHtml(veh.placa)}</div>
+                        ${veh.color ? `<div class="vehiculo-color"><i class="fas fa-palette"></i> ${escapeHtml(veh.color)}</div>` : ''}
+                    </div>
+                    <div class="vehiculo-actions">
+                        <i class="fas fa-edit edit-vehiculo" data-index="${index}" title="Editar placa"></i>
+                        <i class="fas fa-trash delete-vehiculo" data-index="${index}" title="Eliminar vehículo"></i>
+                    </div>
+                </div>
+            `;
+        });
+        listaVehiculos.innerHTML = html;
+        
+        // Eventos para editar/eliminar vehículos
+        document.querySelectorAll('.edit-vehiculo').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const idx = parseInt(icon.dataset.index);
+                const nuevaPlaca = prompt("Editar placa:", vehiculosTemp[idx].placa);
+                if (nuevaPlaca && nuevaPlaca.trim()) {
+                    const nuevaPlacaFormateada = formatearPlaca(nuevaPlaca.trim());
+                    // Verificar duplicado dentro del mismo dueño
+                    const duplicado = vehiculosTemp.some((v, i) => i !== idx && v.placa === nuevaPlacaFormateada);
+                    if (duplicado) {
+                        alert("Ya existe esa placa en este dueño");
+                        return;
+                    }
+                    vehiculosTemp[idx].placa = nuevaPlacaFormateada;
+                    const nuevoColor = prompt("Color del vehículo:", vehiculosTemp[idx].color || "");
+                    if (nuevoColor !== null) vehiculosTemp[idx].color = nuevoColor;
+                    renderizarListaVehiculos();
+                }
+            });
+        });
+        
+        document.querySelectorAll('.delete-vehiculo').forEach(icon => {
+            icon.addEventListener('click', () => {
+                if (confirm("¿Eliminar este vehículo?")) {
+                    vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
+                    renderizarListaVehiculos();
+                }
+            });
+        });
+    }
+
+    // Agregar nuevo vehículo al formulario
+    function agregarVehiculo() {
+        const placa = prompt("Ingrese la placa del vehículo:");
+        if (!placa || !placa.trim()) return;
+        
+        const placaFormateada = formatearPlaca(placa.trim());
+        
+        // Verificar duplicado
+        if (vehiculosTemp.some(v => v.placa === placaFormateada)) {
+            alert("Esta placa ya está agregada para este dueño");
+            return;
+        }
+        
+        const color = prompt("Ingrese el color del vehículo (opcional):");
+        
+        vehiculosTemp.push({
+            placa: placaFormateada,
+            color: color || ""
+        });
+        renderizarListaVehiculos();
+    }
+
+    agregarVehiculoBtn.addEventListener("click", agregarVehiculo);
+
+    // Función para migrar datos antiguos (un solo vehículo) al nuevo formato
+    function migrarDatosAntiguos(owner) {
+        if (!owner.vehiculos && owner.placa) {
+            // Datos antiguos: tenía placa y color directamente en el dueño
+            const vehiculo = {
+                placa: owner.placa,
+                color: owner.color || ""
+            };
+            owner.vehiculos = [vehiculo];
+            // Actualizar en Firebase
+            const ownerRef = doc(db, "vehiculos", owner.id);
+            updateDoc(ownerRef, {
+                vehiculos: [vehiculo],
+                placa: null, // Limpiar campo antiguo
+                color: null
+            }).catch(console.error);
+        } else if (!owner.vehiculos) {
+            owner.vehiculos = [];
+        }
+        return owner;
+    }
 
     // Pestañas
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -622,62 +676,6 @@
         loadingToast.style.display = show ? "flex" : "none";
     }
 
-    function formatearPlaca(texto) {
-        if (!texto) return "";
-        let limpio = texto.toUpperCase().replace(/\s/g, "");
-        limpio = limpio.replace(/-/g, "");
-        if (limpio.length > 3) {
-            return limpio.substring(0, 3) + "-" + limpio.substring(3, 8);
-        }
-        return limpio;
-    }
-
-    async function verificarPlacaDuplicada(placaValue, idExcluir = null) {
-        const q = query(collection(db, "vehiculos"), where("placa", "==", placaValue));
-        const querySnapshot = await getDocs(q);
-        
-        if (idExcluir) {
-            return querySnapshot.docs.some(doc => doc.id !== idExcluir);
-        }
-        return !querySnapshot.empty;
-    }
-
-    let timeoutValidacion;
-    placa.addEventListener("input", async function(e) {
-        let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-        if (raw.length > 3) {
-            this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
-        } else {
-            this.value = raw;
-        }
-        
-        placaError.style.display = "none";
-        
-        clearTimeout(timeoutValidacion);
-        const placaValue = this.value.trim();
-        const idActual = editId.value;
-        
-        if (placaValue && placaValue.length >= 5) {
-            timeoutValidacion = setTimeout(async () => {
-                try {
-                    const esDuplicada = await verificarPlacaDuplicada(placaValue, idActual);
-                    if (esDuplicada) {
-                        placaErrorText.innerHTML = `La placa ${placaValue} ya está registrada. No se permiten duplicados.`;
-                        placaError.style.display = "flex";
-                        guardarBtn.disabled = true;
-                    } else {
-                        placaError.style.display = "none";
-                        guardarBtn.disabled = false;
-                    }
-                } catch (error) {
-                    console.error("Error validando placa:", error);
-                }
-            }, 500);
-        } else {
-            guardarBtn.disabled = false;
-        }
-    });
-
     function updateAuthStatus(user, error = null) {
         if (error) {
             authStatusDiv.classList.remove('success');
@@ -689,25 +687,27 @@
             authStatusDiv.classList.add('success');
             authStatusDiv.style.background = "rgba(76,175,80,0.15)";
             authStatusDiv.style.color = "#4caf50";
-            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Conectado a la nube · Datos seguros`;
+            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Conectado · Datos seguros`;
             autenticado = true;
-            cargarRegistros();
+            cargarOwners();
         } else {
             authStatusDiv.classList.remove('success');
             authStatusDiv.style.background = "rgba(255,193,7,0.15)";
-            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando a la nube...`;
+            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando...`;
             autenticado = false;
         }
     }
 
-    function cargarRegistros() {
+    function cargarOwners() {
         if (!autenticado) return;
         showLoading(true);
-        const q = query(collection(db, "vehiculos"), orderBy("placa"));
+        const q = query(collection(db, "vehiculos"), orderBy("nombre"));
         onSnapshot(q, (snapshot) => {
-            registros = [];
+            owners = [];
             snapshot.forEach(doc => {
-                registros.push({ id: doc.id, ...doc.data() });
+                let owner = { id: doc.id, ...doc.data() };
+                owner = migrarDatosAntiguos(owner);
+                owners.push(owner);
             });
             actualizarEstadisticas();
             renderizarLista();
@@ -719,30 +719,24 @@
         });
     }
 
-    async function guardarRegistro() {
+    async function guardarOwner() {
         if (!autenticado) return;
         
-        let placaValue = placa.value.trim();
-        if (!placaValue) {
-            alert("La placa es obligatoria");
+        const id = editId.value;
+        const nombreValue = nombre.value.trim();
+        
+        if (!nombreValue) {
+            alert("El nombre del dueño es obligatorio");
             return;
         }
         
-        placaValue = formatearPlaca(placaValue);
-        
-        const id = editId.value;
-        
-        const esDuplicada = await verificarPlacaDuplicada(placaValue, id);
-        if (esDuplicada) {
-            placaErrorText.innerHTML = `La placa ${placaValue} ya está registrada. No se permiten duplicados.`;
-            placaError.style.display = "flex";
+        if (vehiculosTemp.length === 0) {
+            alert("Debe agregar al menos un vehículo para este dueño");
             return;
         }
         
         const datos = {
-            placa: placaValue,
-            color: colorVehiculo.value.trim() || "",
-            nombre: nombre.value.trim() || "",
+            nombre: nombreValue,
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
             correo: correo.value.trim() || "",
@@ -750,6 +744,7 @@
                 nombre: estudianteNombre.value.trim() || "",
                 grado: estudianteGrado.value.trim() || ""
             },
+            vehiculos: vehiculosTemp,
             actualizado: new Date().toISOString()
         };
         
@@ -763,14 +758,14 @@
                 await updateDoc(doc(db, "vehiculos", id), datos);
                 const successMsg = document.createElement('div');
                 successMsg.className = 'success-message';
-                successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Registro actualizado correctamente';
+                successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Dueño actualizado correctamente';
                 document.querySelector('#tab-registrar .card').insertBefore(successMsg, document.querySelector('#tab-registrar .button-group'));
                 setTimeout(() => successMsg.remove(), 3000);
             } else {
-                await addDoc(collection(db, "vehiculos", id), datos);
+                await addDoc(collection(db, "vehiculos"), datos);
                 const successMsg = document.createElement('div');
                 successMsg.className = 'success-message';
-                successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Registro guardado correctamente';
+                successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Dueño guardado correctamente';
                 document.querySelector('#tab-registrar .card').insertBefore(successMsg, document.querySelector('#tab-registrar .button-group'));
                 setTimeout(() => successMsg.remove(), 3000);
             }
@@ -782,9 +777,9 @@
         }
     }
 
-    async function eliminarRegistro(id, placaTexto) {
+    async function eliminarOwner(id, nombreOwner) {
         if (!autenticado) return;
-        if (!confirm(`¿Eliminar el registro de la placa ${placaTexto}?\nEsta acción no se puede deshacer.`)) return;
+        if (!confirm(`¿Eliminar al dueño "${nombreOwner}" y TODOS sus vehículos?`)) return;
         showLoading(true);
         try {
             await deleteDoc(doc(db, "vehiculos", id));
@@ -795,106 +790,117 @@
         }
     }
 
-    function editarRegistro(registro) {
-        editId.value = registro.id;
-        placa.value = registro.placa;
-        colorVehiculo.value = registro.color || "";
-        nombre.value = registro.nombre || "";
-        telefono.value = registro.telefono || "";
-        identificacion.value = registro.identificacion || "";
-        correo.value = registro.correo || "";
-        estudianteNombre.value = registro.estudiante?.nombre || "";
-        estudianteGrado.value = registro.estudiante?.grado || "";
-        placaError.style.display = "none";
-        guardarBtn.disabled = false;
+    function editarOwner(owner) {
+        editId.value = owner.id;
+        nombre.value = owner.nombre || "";
+        telefono.value = owner.telefono || "";
+        identificacion.value = owner.identificacion || "";
+        correo.value = owner.correo || "";
+        estudianteNombre.value = owner.estudiante?.nombre || "";
+        estudianteGrado.value = owner.estudiante?.grado || "";
+        vehiculosTemp = owner.vehiculos ? [...owner.vehiculos] : [];
+        renderizarListaVehiculos();
         
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
 
     function limpiarFormulario() {
         editId.value = "";
-        placa.value = "";
-        colorVehiculo.value = "";
         nombre.value = "";
         telefono.value = "";
         identificacion.value = "";
         correo.value = "";
         estudianteNombre.value = "";
         estudianteGrado.value = "";
-        placaError.style.display = "none";
-        guardarBtn.disabled = false;
+        vehiculosTemp = [];
+        renderizarListaVehiculos();
     }
 
     function renderizarLista() {
-        let filtrados = [...registros];
+        let filtrados = [...owners];
         if (filtroActual.trim()) {
             const busqueda = filtroActual.toLowerCase();
-            filtrados = registros.filter(r => 
-                r.placa?.toLowerCase().includes(busqueda) ||
-                r.color?.toLowerCase().includes(busqueda) ||
-                r.nombre?.toLowerCase().includes(busqueda) ||
-                r.estudiante?.nombre?.toLowerCase().includes(busqueda)
+            filtrados = owners.filter(owner => 
+                owner.nombre?.toLowerCase().includes(busqueda) ||
+                owner.identificacion?.toLowerCase().includes(busqueda) ||
+                owner.telefono?.toLowerCase().includes(busqueda) ||
+                owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(busqueda)) ||
+                owner.estudiante?.nombre?.toLowerCase().includes(busqueda)
             );
         }
         
         if (filtrados.length === 0) {
-            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros<br><span style="font-size:0.8rem;">Comienza agregando un vehículo</span></div>`;
+            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay dueños registrados</div>`;
             return;
         }
         
         let html = "";
-        filtrados.forEach(r => {
+        filtrados.forEach(owner => {
+            const totalVehiculos = owner.vehiculos?.length || 0;
             html += `
-            <div class="registro-card">
-                <div class="registro-header">
-                    <div class="placa-badge"><i class="fas fa-car"></i> ${escapeHtml(r.placa)}</div>
+            <div class="owner-card">
+                <div class="owner-header">
+                    <div class="owner-name">
+                        ${escapeHtml(owner.nombre)}
+                        <span class="badge"><i class="fas fa-car"></i> ${totalVehiculos} vehículo${totalVehiculos !== 1 ? 's' : ''}</span>
+                    </div>
                     <div class="acciones-btns">
-                        <button onclick="window.editarRegistroDesdeGlobal(${JSON.stringify(r.id).replace(/"/g, '&quot;')}, ${JSON.stringify(r).replace(/"/g, '&quot;')})"><i class="fas fa-edit"></i> Editar</button>
-                        <button onclick="window.eliminarRegistroDesdeGlobal('${r.id}', '${escapeHtml(r.placa)}')"><i class="fas fa-trash"></i></button>
+                        <button onclick="window.editarOwnerDesdeGlobal(${JSON.stringify(owner.id).replace(/"/g, '&quot;')}, ${JSON.stringify(owner).replace(/"/g, '&quot;')})" style="background:#e3f2fd; border:none; padding:8px 12px; border-radius:12px;"><i class="fas fa-edit"></i> Editar</button>
+                        <button onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')" style="background:#ffebee; border:none; padding:8px 12px; border-radius:12px; color:#c62828;"><i class="fas fa-trash"></i> Eliminar</button>
                     </div>
                 </div>`;
             
-            // Mostrar color si existe
-            if (r.color) {
-                html += `<div style="margin: 8px 0;"><span class="color-badge"><i class="fas fa-palette"></i> ${escapeHtml(r.color)}</span></div>`;
-            }
-            
-            if (r.nombre || r.telefono || r.identificacion || r.correo) {
-                html += `<div class="info-persona">
-                            <div class="info-label"><i class="fas fa-user"></i> DATOS DEL DUEÑO</div>`;
-                if (r.nombre) html += `<div class="info-value"><strong>Nombre:</strong> ${escapeHtml(r.nombre)}</div>`;
-                if (r.telefono) html += `<div class="info-value"><strong>Teléfono:</strong> ${escapeHtml(r.telefono)}</div>`;
-                if (r.identificacion) html += `<div class="info-value"><strong>Identificación:</strong> ${escapeHtml(r.identificacion)}</div>`;
-                if (r.correo) html += `<div class="info-value"><strong>Correo:</strong> ${escapeHtml(r.correo)}</div>`;
+            if (owner.telefono || owner.identificacion || owner.correo) {
+                html += `<div class="owner-details">`;
+                if (owner.telefono) html += `<div><i class="fas fa-phone"></i> ${escapeHtml(owner.telefono)}</div>`;
+                if (owner.identificacion) html += `<div><i class="fas fa-id-card"></i> ${escapeHtml(owner.identificacion)}</div>`;
+                if (owner.correo) html += `<div><i class="fas fa-envelope"></i> ${escapeHtml(owner.correo)}</div>`;
                 html += `</div>`;
             }
             
-            if (r.estudiante && (r.estudiante.nombre || r.estudiante.grado)) {
-                html += `<div class="estudiante-tag">
-                            <i class="fas fa-child"></i> <strong>🎓 ESTUDIANTE QUE RECOGE</strong><br><br>
-                            ${r.estudiante.nombre ? `<strong>Nombre:</strong> ${escapeHtml(r.estudiante.nombre)}<br>` : ''}
-                            ${r.estudiante.grado ? `<strong>Grado:</strong> ${escapeHtml(r.estudiante.grado)}` : ''}
+            if (owner.estudiante?.nombre) {
+                html += `<div style="background:#fff8e1; border-radius:14px; padding:10px; margin:10px 0;">
+                            <i class="fas fa-child"></i> <strong>Estudiante:</strong> ${escapeHtml(owner.estudiante.nombre)}
+                            ${owner.estudiante.grado ? ` · 📚 ${escapeHtml(owner.estudiante.grado)}` : ''}
                          </div>`;
             }
             
-            html += `</div>`;
+            html += `<div class="vehiculos-section">
+                        <div class="vehiculos-title"><i class="fas fa-car"></i> VEHÍCULOS</div>`;
+            
+            if (owner.vehiculos && owner.vehiculos.length > 0) {
+                owner.vehiculos.forEach(veh => {
+                    html += `
+                        <div style="background:#f8f9fa; border-radius:12px; padding:10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <strong style="font-family:monospace;">${escapeHtml(veh.placa)}</strong>
+                                ${veh.color ? `<span style="color:#666; margin-left:8px;"><i class="fas fa-palette"></i> ${escapeHtml(veh.color)}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+            } else {
+                html += `<div style="color:#999; padding:8px;">Sin vehículos registrados</div>`;
+            }
+            
+            html += `</div></div>`;
         });
         
         listaContainer.innerHTML = html;
     }
     
-    window.editarRegistroDesdeGlobal = function(id, registro) {
-        editarRegistro(registro);
+    window.editarOwnerDesdeGlobal = function(id, owner) {
+        editarOwner(owner);
     };
     
-    window.eliminarRegistroDesdeGlobal = function(id, placaTexto) {
-        eliminarRegistro(id, placaTexto);
+    window.eliminarOwnerDesdeGlobal = function(id, nombre) {
+        eliminarOwner(id, nombre);
     };
 
     function actualizarEstadisticas() {
-        const total = registros.length;
-        const conDatos = registros.filter(r => r.nombre).length;
-        globalStatsSpan.innerHTML = `<i class="fas fa-car"></i> ${total} vehículo${total !== 1 ? 's' : ''} · ${conDatos} con dueño`;
+        const totalOwners = owners.length;
+        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0);
+        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> Dueños: ${totalOwners} | 🚗 Vehículos: ${totalVehiculos}`;
     }
 
     function escapeHtml(str) {
@@ -902,7 +908,7 @@
         return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    guardarBtn.addEventListener("click", guardarRegistro);
+    guardarBtn.addEventListener("click", guardarOwner);
     cancelarBtn.addEventListener("click", limpiarFormulario);
     
     buscarInput.addEventListener("input", (e) => {
