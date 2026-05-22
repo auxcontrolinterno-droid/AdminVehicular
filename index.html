@@ -3,133 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AdminVehiculos - Sistema Seguro</title>
+    <title>AdminVehiculos - Sistema Completo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, sans-serif; }
-        body { background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; padding: 20px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
         .container { max-width: 1400px; margin: 0 auto; }
         
         .header {
             background: rgba(255,255,255,0.95);
-            border-radius: 28px;
-            padding: 20px 30px;
-            margin-bottom: 28px;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+            flex-wrap: wrap;
         }
         
-        .header h1 {
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #1e3c72;
-        }
-        
-        .stats {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            padding: 8px 18px;
-            border-radius: 40px;
-            color: white;
-            font-weight: bold;
-        }
+        .header h1 { color: #333; font-size: 1.5rem; }
+        .stats { background: linear-gradient(135deg, #667eea, #764ba2); padding: 8px 18px; border-radius: 20px; color: white; }
         
         .auth-status {
             background: #e8f5e9;
-            padding: 5px 12px;
+            padding: 8px 15px;
             border-radius: 20px;
-            font-size: 0.8rem;
-            color: #2e7d32;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
         }
         
-        .auth-status.error {
-            background: #ffebee;
-            color: #c62828;
-        }
+        .auth-status.error { background: #ffebee; color: #c62828; }
+        .auth-status.success { background: #e8f5e9; color: #2e7d32; }
         
-        .two-columns { display: flex; flex-wrap: wrap; gap: 28px; margin-bottom: 40px; }
+        .two-columns { display: flex; gap: 25px; flex-wrap: wrap; }
         .form-panel, .list-panel {
             background: white;
-            border-radius: 28px;
-            padding: 24px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
         .form-panel { flex: 1.2; min-width: 300px; max-height: 85vh; overflow-y: auto; }
         .list-panel { flex: 2.2; min-width: 400px; }
         
         .form-title {
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 1.3rem;
+            font-weight: bold;
             margin-bottom: 20px;
-            color: #1e3c72;
-            border-left: 6px solid #2a5298;
-            padding-left: 15px;
+            color: #667eea;
+            border-left: 4px solid #667eea;
+            padding-left: 12px;
         }
         
         .form-group { margin-bottom: 15px; }
         label { font-weight: 600; display: block; margin-bottom: 5px; color: #555; }
         input, select {
             width: 100%;
-            padding: 10px 12px;
+            padding: 10px;
+            border: 2px solid #ddd;
             border-radius: 10px;
-            border: 2px solid #e0e0e0;
             font-size: 0.95rem;
         }
-        input:focus, select:focus { outline: none; border-color: #2a5298; }
+        input:focus, select:focus { outline: none; border-color: #667eea; }
         
         button {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            border: none;
-            padding: 10px 16px;
-            border-radius: 10px;
-            font-weight: bold;
-            cursor: pointer;
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
             margin-right: 8px;
             margin-top: 5px;
         }
-        button i { margin-right: 6px; }
-        button:hover { opacity: 0.9; transform: translateY(-1px); }
+        button i { margin-right: 5px; }
         
         .search-bar { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .search-bar input { flex: 2; margin-bottom: 0; }
+        .search-bar input { flex: 2; margin: 0; }
         
         .owner-card {
             background: #f8f9fa;
-            border-radius: 18px;
-            margin-bottom: 20px;
+            border-radius: 15px;
             padding: 18px;
-            border-left: 5px solid #2a5298;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
         }
         
         .owner-header {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
+            align-items: center;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #ddd;
         }
         
-        .owner-name { font-size: 1.3rem; font-weight: 800; color: #1e3c72; }
+        .owner-name { font-size: 1.2rem; font-weight: bold; color: #333; }
         .owner-details { display: flex; gap: 15px; flex-wrap: wrap; font-size: 0.85rem; color: #666; margin-bottom: 12px; }
         
         .students-section {
-            background: #fff5e6;
-            border-radius: 14px;
-            padding: 10px;
+            background: #fff8e1;
+            border-radius: 12px;
+            padding: 12px;
             margin: 10px 0;
         }
         
         .student-item {
             background: white;
-            padding: 6px 10px;
-            margin: 6px 0;
+            padding: 8px 12px;
+            margin: 5px 0;
             border-radius: 8px;
             display: flex;
             justify-content: space-between;
@@ -139,43 +125,47 @@
         .vehicle-table {
             width: 100%;
             border-collapse: collapse;
-            background: white;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-top: 8px;
+            margin-top: 10px;
             font-size: 0.85rem;
         }
         
-        .vehicle-table th, .vehicle-table td { padding: 8px 6px; border-bottom: 1px solid #e0e0e0; text-align: left; }
-        .actions-cell i { margin: 0 3px; cursor: pointer; }
-        .edit-placa { color: #2a5298; }
+        .vehicle-table th, .vehicle-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .vehicle-table th { background: #f0f0f0; }
+        
+        .actions-cell i {
+            margin: 0 5px;
+            cursor: pointer;
+        }
+        .edit-placa { color: #667eea; }
         .delete-placa, .delete-student { color: #e74c3c; cursor: pointer; }
         
-        .add-placa-btn, .add-student-btn {
+        .add-btn {
             background: #f0f0f0;
-            border: 2px dashed #2a5298;
+            border: 2px dashed #667eea;
             border-radius: 10px;
             padding: 6px 12px;
             font-size: 0.8rem;
-            font-weight: bold;
             margin-top: 10px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 5px;
-            color: #2a5298;
-            margin-right: 8px;
+            color: #667eea;
         }
         
-        .add-student-btn { border-color: #ff9800; color: #ff9800; }
         .empty-message { text-align: center; padding: 40px; color: #999; }
-        .highlight { background-color: #fff3cd; padding: 2px 5px; border-radius: 5px; }
+        .highlight { background: #fff3cd; padding: 2px 5px; border-radius: 4px; }
         
         #loadingToast {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background: #1e3c72;
+            background: #333;
             color: white;
             padding: 10px 20px;
             border-radius: 10px;
@@ -183,55 +173,46 @@
             z-index: 1000;
         }
         
-        footer { text-align: center; margin-top: 30px; color: white; opacity: 0.8; }
+        footer { text-align: center; margin-top: 30px; color: white; opacity: 0.9; }
         
-        .security-badge {
-            background: #e8f5e9;
-            padding: 10px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            font-size: 0.8rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        @media (max-width: 768px) {
+            .form-panel, .list-panel { min-width: 100%; }
         }
-        
-        @media (max-width: 768px) { .form-panel, .list-panel { min-width: 100%; } }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1><i class="fas fa-shield-alt"></i> AdminVehiculos · Sistema Seguro</h1>
+        <h1><i class="fas fa-car"></i> AdminVehiculos</h1>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
     
-    <div class="security-badge" id="authStatus">
-        <i class="fas fa-lock"></i> <span id="authStatusText">Verificando autenticación...</span>
+    <div id="authStatus" class="auth-status">
+        <i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...
     </div>
 
     <div class="two-columns">
         <div class="form-panel">
-            <div class="form-title"><i class="fas fa-user-plus"></i> Registrar Dueño</div>
+            <div class="form-title"><i class="fas fa-user-plus"></i> Dueño</div>
             <input type="hidden" id="ownerIdEdit">
             <div class="form-group">
                 <label>Nombre completo *</label>
-                <input type="text" id="ownerName" placeholder="Nombre del padre/tutor">
+                <input type="text" id="ownerName" placeholder="Ej: María González">
             </div>
             <div class="form-group">
                 <label>Teléfono *</label>
-                <input type="text" id="ownerPhone" placeholder="Teléfono">
+                <input type="text" id="ownerPhone" placeholder="Ej: +56 9 1234 5678">
             </div>
             <div class="form-group">
                 <label>Identificación *</label>
-                <input type="text" id="ownerIdNumber" placeholder="Cédula/DNI (único)">
+                <input type="text" id="ownerIdNumber" placeholder="Cédula/DNI">
             </div>
             <div class="form-group">
                 <label>Correo</label>
                 <input type="email" id="ownerEmail" placeholder="correo@ejemplo.com">
             </div>
             
-            <div class="form-title" style="font-size:1.1rem; margin-top:15px;"><i class="fas fa-child"></i> Estudiante (opcional)</div>
+            <div class="form-title" style="font-size:1rem; margin-top:15px;"><i class="fas fa-child"></i> Estudiante (opcional)</div>
             <div class="form-group">
                 <input type="text" id="studentName" placeholder="Nombre del estudiante">
             </div>
@@ -243,7 +224,7 @@
             <button id="cancelEditBtn"><i class="fas fa-times"></i> Cancelar</button>
             
             <hr style="margin: 20px 0;">
-            <div class="form-title" style="font-size:1.1rem;"><i class="fas fa-car"></i> Agregar vehículo</div>
+            <div class="form-title" style="font-size:1rem;"><i class="fas fa-car"></i> Agregar vehículo</div>
             <div class="form-group">
                 <select id="quickOwnerSelect"></select>
             </div>
@@ -263,12 +244,12 @@
                 <button id="clearSearchBtn"><i class="fas fa-eraser"></i> Limpiar</button>
             </div>
             <div id="ownersListContainer" style="max-height: 65vh; overflow-y: auto;">
-                <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Conectando a Firestore seguro...</div>
+                <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Conectando...</div>
             </div>
         </div>
     </div>
     <footer>
-        <i class="fas fa-shield-alt"></i> Datos seguros con autenticación anónima · Firestore con reglas protegidas
+        <i class="fas fa-shield-alt"></i> Datos seguros con autenticación anónima
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -294,8 +275,7 @@
         projectId: "admin-vehiculos-88011",
         storageBucket: "admin-vehiculos-88011.firebasestorage.app",
         messagingSenderId: "548122701117",
-        appId: "1:548122701117:web:69bc9781a18bd0dedc6954",
-        measurementId: "G-7XCPG0HT93"
+        appId: "1:548122701117:web:69bc9781a18bd0dedc6954"
     };
     
     const app = initializeApp(firebaseConfig);
@@ -325,26 +305,29 @@
     const quickPlate = document.getElementById("quickPlate");
     const quickModel = document.getElementById("quickModel");
     const loadingToast = document.getElementById("loadingToast");
-    const authStatusText = document.getElementById("authStatusText");
     const authStatusDiv = document.getElementById("authStatus");
     
     function showLoading(show) {
         loadingToast.style.display = show ? "flex" : "none";
     }
     
-    function updateAuthStatus(user) {
-        if (user) {
-            authStatusText.innerHTML = `<i class="fas fa-check-circle"></i> Autenticación activa · Conectado como: ${user.uid.substring(0, 8)}...`;
-            authStatusDiv.style.background = "#e8f5e9";
+    function updateAuthStatus(user, error = null) {
+        if (error) {
+            authStatusDiv.className = "auth-status error";
+            authStatusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error}`;
+            isAuthenticated = false;
+        } else if (user) {
+            authStatusDiv.className = "auth-status success";
+            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Autenticación activa · ID: ${user.uid.substring(0, 8)}...`;
             isAuthenticated = true;
+            loadOwnersRealtime();
         } else {
-            authStatusText.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No autenticado. Conectando...`;
-            authStatusDiv.style.background = "#fff3cd";
+            authStatusDiv.className = "auth-status";
+            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...`;
             isAuthenticated = false;
         }
     }
     
-    // Cargar datos en tiempo real (solo si está autenticado)
     function loadOwnersRealtime() {
         if (!isAuthenticated) return;
         
@@ -362,18 +345,13 @@
         }, (error) => {
             console.error("Error:", error);
             showLoading(false);
-            if (error.code === 'permission-denied') {
-                ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-shield-alt"></i> Error de permisos.<br><br>
-                <strong>Configura las reglas de Firestore como se indicó arriba.</strong></div>`;
-            } else {
-                ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> ${error.message}</div>`;
-            }
+            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> Error: ${error.message}</div>`;
         });
     }
     
     async function saveOwner() {
         if (!isAuthenticated) {
-            alert("Esperando autenticación... Intenta de nuevo en unos segundos.");
+            alert("Esperando autenticación...");
             return;
         }
         
@@ -410,8 +388,7 @@
                 name, phone, idNumber, email,
                 vehicles: id ? (localOwners.find(o => o.id === id)?.vehicles || []) : [],
                 students: students,
-                updatedAt: new Date().toISOString(),
-                createdAt: id ? undefined : new Date().toISOString()
+                updatedAt: new Date().toISOString()
             };
             
             if (id) {
@@ -420,7 +397,6 @@
                 await addDoc(collection(db, "owners"), ownerData);
             }
             
-            // Limpiar formulario
             ownerIdEdit.value = "";
             ownerName.value = "";
             ownerPhone.value = "";
@@ -438,7 +414,7 @@
     
     async function deleteOwner(ownerId) {
         if (!isAuthenticated) return;
-        if (!confirm("¿Eliminar este dueño y todos sus datos? Esta acción es irreversible.")) return;
+        if (!confirm("¿Eliminar este dueño y todos sus datos?")) return;
         showLoading(true);
         try {
             await deleteDoc(doc(db, "owners", ownerId));
@@ -460,7 +436,7 @@
         
         const vehicles = [...(owner.vehicles || [])];
         if (vehicles.some(v => v.plate === plate.trim())) {
-            alert("Ya existe esa placa para este dueño");
+            alert("Ya existe esa placa");
             return;
         }
         
@@ -571,10 +547,10 @@
                 </div>
                 
                 <div class="students-section">
-                    <div class="form-title" style="font-size:0.9rem; margin-bottom:8px;"><i class="fas fa-child"></i> Estudiantes</div>`;
+                    <strong><i class="fas fa-child"></i> Estudiantes</strong>`;
             
             if (!owner.students?.length) {
-                html += `<div style="padding:8px; color:#999; text-align:center;">No hay estudiantes registrados</div>`;
+                html += `<div style="padding:8px; color:#999; text-align:center;">No hay estudiantes</div>`;
             } else {
                 owner.students.forEach(student => {
                     html += `
@@ -583,12 +559,12 @@
                             <strong>${escapeHtml(student.name)}</strong>
                             ${student.grade ? ` <span style="color:#ff9800;">📚 ${escapeHtml(student.grade)}</span>` : ''}
                         </div>
-                        <i class="fas fa-trash delete-student" data-owner="${owner.id}" data-student-id="${student.id}" style="cursor:pointer; color:#c62828;"></i>
+                        <i class="fas fa-trash delete-student" data-owner="${owner.id}" data-student-id="${student.id}"></i>
                     </div>`;
                 });
             }
             
-            html += `<div class="add-student-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar estudiante</div>
+            html += `<div class="add-btn add-student-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar estudiante</div>
                 </div>
                 
                 <div style="margin-top:12px;"><strong><i class="fas fa-car"></i> Vehículos</strong></div>
@@ -605,7 +581,7 @@
                         <td>${escapeHtml(vehicle.plate)}</td>
                         <td>${escapeHtml(vehicle.model || '—')}</td>
                         <td class="actions-cell">
-                            <i class="fas fa-pen edit-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}" data-model="${escapeAttr(vehicle.model || '')}"></i>
+                            <i class="fas fa-pen edit-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}"></i>
                             <i class="fas fa-trash delete-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}"></i>
                         </td>
                     </tr>`;
@@ -614,7 +590,7 @@
             
             html += `</tbody>
                 </table>
-                <div class="add-placa-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar vehículo</div>
+                <div class="add-btn add-placa-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar vehículo</div>
             </div>`;
         });
         
@@ -640,24 +616,6 @@
             btn.addEventListener('click', () => deleteOwner(btn.dataset.id));
         });
         
-        document.querySelectorAll('.edit-placa').forEach(icon => {
-            icon.addEventListener('click', () => {
-                const ownerId = icon.dataset.owner;
-                const oldPlate = icon.dataset.plate;
-                const oldModel = icon.dataset.model;
-                const newPlate = prompt("Editar placa:", oldPlate);
-                if (newPlate?.trim()) {
-                    const newModel = prompt("Editar modelo:", oldModel);
-                    addVehicle(ownerId, newPlate.trim(), newModel);
-                    // Nota: Para editar realmente necesitamos eliminar la anterior y crear nueva
-                    // Por simplicidad, eliminamos la anterior y creamos nueva
-                    if (newPlate !== oldPlate) {
-                        deleteVehicle(ownerId, oldPlate);
-                    }
-                }
-            });
-        });
-        
         document.querySelectorAll('.delete-placa').forEach(icon => {
             icon.addEventListener('click', () => {
                 if (confirm("¿Eliminar este vehículo?")) {
@@ -668,7 +626,7 @@
         
         document.querySelectorAll('.add-placa-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const plate = prompt("Ingrese la placa del vehículo:");
+                const plate = prompt("Ingrese la placa:");
                 if (plate?.trim()) {
                     const model = prompt("Ingrese el modelo (opcional):");
                     addVehicle(btn.dataset.ownerId, plate.trim(), model || "");
@@ -678,10 +636,10 @@
         
         document.querySelectorAll('.add-student-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const studentNameInput = prompt("Nombre del estudiante:");
-                if (studentNameInput?.trim()) {
-                    const studentGradeInput = prompt("Grado que cursa (opcional):");
-                    addStudent(btn.dataset.ownerId, studentNameInput, studentGradeInput || "");
+                const name = prompt("Nombre del estudiante:");
+                if (name?.trim()) {
+                    const grade = prompt("Grado que cursa (opcional):");
+                    addStudent(btn.dataset.ownerId, name.trim(), grade || "");
                 }
             });
         });
@@ -698,10 +656,7 @@
     function refreshOwnerSelect() {
         quickOwnerSelect.innerHTML = '<option value="">-- Seleccionar dueño --</option>';
         localOwners.forEach(owner => {
-            const option = document.createElement("option");
-            option.value = owner.id;
-            option.textContent = `${owner.name} (${owner.idNumber})`;
-            quickOwnerSelect.appendChild(option);
+            quickOwnerSelect.appendChild(new Option(`${owner.name} (${owner.idNumber})`, owner.id));
         });
     }
     
@@ -709,7 +664,7 @@
         const totalOwners = localOwners.length;
         const totalVehicles = localOwners.reduce((acc, o) => acc + (o.vehicles?.length || 0), 0);
         const totalStudents = localOwners.reduce((acc, o) => acc + (o.students?.length || 0), 0);
-        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> Dueños: ${totalOwners} | <i class="fas fa-car"></i> Vehículos: ${totalVehicles} | <i class="fas fa-child"></i> Estudiantes: ${totalStudents}`;
+        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> Dueños: ${totalOwners} | 🚗 ${totalVehicles} | 👨‍👦 ${totalStudents}`;
     }
     
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
@@ -720,16 +675,23 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 updateAuthStatus(user);
-                loadOwnersRealtime();
             } else {
                 updateAuthStatus(null);
-                signInAnonymously(auth).catch(error => {
-                    console.error("Auth error:", error);
-                    authStatusText.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error de autenticación. Habilita inicio de sesión anónimo en Firebase.`;
-                    authStatusDiv.style.background = "#ffebee";
-                    ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-lock"></i> Error de autenticación.<br><br>
-                    <strong>Solución:</strong> Ve a Firebase Console → Authentication → Sign-in methods → Habilita "Anónimo"</div>`;
-                });
+                signInAnonymously(auth)
+                    .then((userCredential) => {
+                        updateAuthStatus(userCredential.user);
+                    })
+                    .catch((error) => {
+                        console.error("Error de autenticación:", error);
+                        let errorMsg = "Error de autenticación. ";
+                        if (error.code === 'auth/operation-not-allowed') {
+                            errorMsg += "Habilita el inicio de sesión anónimo en Firebase Console → Authentication → Sign-in methods.";
+                        } else {
+                            errorMsg += error.message;
+                        }
+                        updateAuthStatus(null, errorMsg);
+                        ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-lock"></i> ${errorMsg}</div>`;
+                    });
             }
         });
     }
