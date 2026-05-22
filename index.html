@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#1a1a2e">
-    <title>AutoRegistro PRO - Múltiples Estudiantes</title>
+    <title>AutoRegistro PRO - Búsqueda Mejorada</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -100,12 +100,14 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: all 0.3s;
         }
 
         .tab-btn.active {
             background: linear-gradient(135deg, #00b4db, #0083b0);
             color: white;
             border-color: transparent;
+            box-shadow: 0 4px 15px rgba(0,180,219,0.3);
         }
 
         .tab-panel {
@@ -171,12 +173,14 @@
             border-radius: 18px;
             font-size: 1rem;
             background: #fafafa;
+            transition: all 0.2s;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #00b4db;
             background: white;
+            box-shadow: 0 0 0 3px rgba(0,180,219,0.1);
         }
 
         .plate-input {
@@ -204,6 +208,11 @@
             justify-content: space-between;
             align-items: center;
             border-left: 4px solid #00b4db;
+            transition: all 0.2s;
+        }
+
+        .list-item:hover {
+            transform: translateX(3px);
         }
 
         .item-info {
@@ -230,6 +239,11 @@
             font-size: 1.1rem;
             cursor: pointer;
             padding: 8px;
+            transition: all 0.2s;
+        }
+
+        .item-actions i:active {
+            transform: scale(0.9);
         }
 
         .edit-item { color: #1976d2; }
@@ -250,6 +264,12 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-agregar:active {
+            transform: scale(0.98);
+            background: rgba(0,180,219,0.05);
         }
 
         .error-message {
@@ -288,11 +308,17 @@
             justify-content: center;
             gap: 10px;
             width: 100%;
+            transition: all 0.2s;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
         }
 
         .btn-primary {
             background: linear-gradient(135deg, #00b4db, #0083b0);
             color: white;
+            box-shadow: 0 4px 12px rgba(0,180,219,0.3);
         }
 
         .btn-outline {
@@ -307,63 +333,256 @@
             margin-top: 20px;
         }
 
-        /* Tarjeta de dueño en la lista */
-        .owner-card {
-            background: white;
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 16px;
-            border-left: 6px solid #00b4db;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .owner-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .owner-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #1a1a2e;
-        }
-
-        .owner-details {
-            background: #f8f9fa;
-            border-radius: 18px;
-            padding: 12px;
-            margin: 10px 0;
-            font-size: 0.85rem;
-        }
-
-        .badge {
-            display: inline-block;
-            background: #e3f2fd;
-            color: #1976d2;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            margin-left: 8px;
-        }
-
-        .search-bar {
-            display: flex;
-            gap: 12px;
+        /* ========== NUEVA INTERFAZ DE BÚSQUEDA ========== */
+        .search-container {
             margin-bottom: 20px;
         }
-        
-        .search-bar input {
-            flex: 1;
-            margin: 0;
+
+        .search-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
 
-        #listaContainer {
-            max-height: 55vh;
-            overflow-y: auto;
+        .search-input-wrapper i {
+            position: absolute;
+            left: 18px;
+            color: #00b4db;
+            font-size: 1.1rem;
+        }
+
+        .search-input-wrapper input {
+            padding-left: 50px;
+            background: white;
+            border: 2px solid #e8e8e8;
+        }
+
+        .search-input-wrapper input:focus {
+            border-color: #00b4db;
+        }
+
+        .search-stats {
+            background: #e3f2fd;
+            padding: 10px 15px;
+            border-radius: 16px;
+            margin-top: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+        }
+
+        .result-count {
+            font-weight: bold;
+            color: #1976d2;
+        }
+
+        .clear-search {
+            background: none;
+            border: none;
+            color: #c62828;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Tarjetas de resultado mejoradas */
+        .result-card {
+            background: white;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+
+        .result-card:active {
+            transform: scale(0.99);
+        }
+
+        .result-header {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            color: white;
+            padding: 14px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .result-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .result-badges {
+            display: flex;
+            gap: 6px;
+        }
+
+        .result-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .result-body {
+            padding: 16px;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+            flex-wrap: wrap;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon {
+            width: 32px;
+            color: #00b4db;
+            font-size: 1rem;
+        }
+
+        .info-text {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #333;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            color: #888;
+            display: block;
+        }
+
+        .info-value {
+            font-weight: 500;
+        }
+
+        .section-collapsible {
+            margin-top: 12px;
+        }
+
+        .section-collapsible-header {
+            background: #f8f9fa;
+            padding: 10px 12px;
+            border-radius: 14px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #555;
+            transition: all 0.2s;
+        }
+
+        .section-collapsible-header:active {
+            background: #e8e8e8;
+        }
+
+        .section-collapsible-content {
+            padding: 10px;
+            display: none;
+        }
+
+        .section-collapsible-content.open {
+            display: block;
+        }
+
+        .item-chip {
+            background: #f0f0f0;
+            border-radius: 12px;
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .item-chip:last-child {
+            margin-bottom: 0;
+        }
+
+        .chip-placa {
+            font-family: monospace;
+            font-weight: bold;
+            color: #00b4db;
+        }
+
+        .result-actions {
+            padding: 12px 16px;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            gap: 12px;
+        }
+
+        .action-btn {
+            flex: 1;
+            background: #f0f0f0;
+            border: none;
+            padding: 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .action-btn:active {
+            transform: scale(0.97);
+        }
+
+        .action-btn.edit {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .action-btn.delete {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .empty-result {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+
+        .empty-result i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
         }
 
         #loadingToast {
@@ -378,6 +597,7 @@
             font-size: 0.85rem;
             display: none;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
         footer {
@@ -387,18 +607,11 @@
             padding: 20px;
         }
 
-        .empty-message {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .estudiante-card {
-            background: #fff8e1;
-            border-radius: 14px;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-left: 4px solid #ff9800;
+        /* Scroll suave */
+        #listaContainer {
+            max-height: 60vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
@@ -414,16 +627,16 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn active" data-tab="registrar">
+        <button class="tab-btn" data-tab="registrar">
             <i class="fas fa-user-plus"></i> Dueños
         </button>
-        <button class="tab-btn" data-tab="buscar">
+        <button class="tab-btn active" data-tab="buscar">
             <i class="fas fa-search"></i> Buscar
         </button>
     </div>
 
     <!-- Panel Registrar Dueños -->
-    <div id="tab-registrar" class="tab-panel active">
+    <div id="tab-registrar" class="tab-panel">
         <div class="card">
             <div class="card-title"><i class="fas fa-user-plus"></i> Registrar Dueño</div>
             <input type="hidden" id="editId">
@@ -448,7 +661,6 @@
                 <input type="email" id="correo" placeholder="correo@ejemplo.com">
             </div>
 
-            <!-- Sección de estudiantes (múltiples) -->
             <div class="section-title"><i class="fas fa-child"></i> Estudiantes a cargo</div>
             <div class="dynamic-list" id="estudiantesContainer">
                 <div id="listaEstudiantes"></div>
@@ -457,7 +669,6 @@
                 </button>
             </div>
 
-            <!-- Sección de vehículos (múltiples) -->
             <div class="section-title"><i class="fas fa-car"></i> Vehículos del dueño</div>
             <div class="dynamic-list" id="vehiculosContainer">
                 <div id="listaVehiculos"></div>
@@ -473,14 +684,22 @@
         </div>
     </div>
 
-    <!-- Panel Buscar -->
-    <div id="tab-buscar" class="tab-panel">
+    <!-- Panel Buscar con interfaz mejorada -->
+    <div id="tab-buscar" class="tab-panel active">
         <div class="card">
             <div class="card-title"><i class="fas fa-search"></i> Buscar Dueños</div>
-            <div class="search-bar">
-                <input type="text" id="buscarInput" placeholder="🔍 Buscar por nombre, placa o estudiante...">
-                <button class="btn btn-outline" id="limpiarBusqueda" style="width: auto;"><i class="fas fa-eraser"></i></button>
+            
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscarInput" placeholder="Buscar por nombre, placa, teléfono o estudiante...">
+                </div>
+                <div class="search-stats" id="searchStats" style="display: none;">
+                    <span><i class="fas fa-chart-line"></i> <span id="resultCount" class="result-count">0</span> resultado(s)</span>
+                    <button id="limpiarBusqueda" class="clear-search"><i class="fas fa-times-circle"></i> Limpiar</button>
+                </div>
             </div>
+
             <div id="listaContainer">
                 <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Cargando registros...</div>
             </div>
@@ -531,6 +750,8 @@
     const listaContainer = document.getElementById("listaContainer");
     const buscarInput = document.getElementById("buscarInput");
     const limpiarBusqueda = document.getElementById("limpiarBusqueda");
+    const searchStats = document.getElementById("searchStats");
+    const resultCountSpan = document.getElementById("resultCount");
     const globalStatsSpan = document.getElementById("globalStats");
     const authStatusDiv = document.getElementById("authStatus");
     const editId = document.getElementById("editId");
@@ -556,7 +777,6 @@
         return limpio;
     }
 
-    // Renderizar estudiantes en el formulario
     function renderizarListaEstudiantes() {
         if (estudiantesTemp.length === 0) {
             listaEstudiantes.innerHTML = '<div style="text-align:center; color:#999; padding:15px;">Sin estudiantes registrados</div>';
@@ -572,8 +792,8 @@
                         ${est.grado ? `<div class="item-subtitle"><i class="fas fa-graduation-cap"></i> ${escapeHtml(est.grado)}</div>` : ''}
                     </div>
                     <div class="item-actions">
-                        <i class="fas fa-edit edit-item" data-index="${index}" data-tipo="estudiante" title="Editar estudiante"></i>
-                        <i class="fas fa-trash delete-item" data-index="${index}" data-tipo="estudiante" title="Eliminar estudiante"></i>
+                        <i class="fas fa-edit edit-item" data-index="${index}" data-tipo="estudiante"></i>
+                        <i class="fas fa-trash delete-item" data-index="${index}" data-tipo="estudiante"></i>
                     </div>
                 </div>
             `;
@@ -603,7 +823,6 @@
         });
     }
 
-    // Renderizar vehículos en el formulario
     function renderizarListaVehiculos() {
         if (vehiculosTemp.length === 0) {
             listaVehiculos.innerHTML = '<div style="text-align:center; color:#999; padding:15px;">Sin vehículos registrados</div>';
@@ -619,8 +838,8 @@
                         ${veh.color ? `<div class="item-subtitle"><i class="fas fa-palette"></i> ${escapeHtml(veh.color)}</div>` : ''}
                     </div>
                     <div class="item-actions">
-                        <i class="fas fa-edit edit-item" data-index="${index}" data-tipo="vehiculo" title="Editar vehículo"></i>
-                        <i class="fas fa-trash delete-item" data-index="${index}" data-tipo="vehiculo" title="Eliminar vehículo"></i>
+                        <i class="fas fa-edit edit-item" data-index="${index}" data-tipo="vehiculo"></i>
+                        <i class="fas fa-trash delete-item" data-index="${index}" data-tipo="vehiculo"></i>
                     </div>
                 </div>
             `;
@@ -688,11 +907,9 @@
     agregarEstudianteBtn.addEventListener("click", agregarEstudiante);
     agregarVehiculoBtn.addEventListener("click", agregarVehiculo);
 
-    // Migrar datos antiguos (un solo estudiante) al nuevo formato
     function migrarDatosAntiguos(owner) {
         let modificado = false;
         
-        // Migrar estudiantes antiguos (cuando había solo uno)
         if (!owner.estudiantes && owner.estudiante && owner.estudiante.nombre) {
             owner.estudiantes = [owner.estudiante];
             modificado = true;
@@ -700,7 +917,6 @@
             owner.estudiantes = [];
         }
         
-        // Migrar vehículos antiguos (cuando había solo uno)
         if (!owner.vehiculos && owner.placa) {
             owner.vehiculos = [{
                 placa: owner.placa,
@@ -711,7 +927,6 @@
             owner.vehiculos = [];
         }
         
-        // Limpiar campos antiguos si se migró
         if (modificado) {
             const ownerRef = doc(db, "vehiculos", owner.id);
             updateDoc(ownerRef, {
@@ -726,7 +941,6 @@
         return owner;
     }
 
-    // Pestañas
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
 
@@ -778,13 +992,151 @@
                 owners.push(owner);
             });
             actualizarEstadisticas();
-            renderizarLista();
+            aplicarBusqueda();
             showLoading(false);
         }, (error) => {
             console.error(error);
             showLoading(false);
             listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> Error: ${error.message}</div>`;
         });
+    }
+
+    function aplicarBusqueda() {
+        const termino = buscarInput.value.trim().toLowerCase();
+        filtroActual = termino;
+        
+        let filtrados = [...owners];
+        
+        if (termino) {
+            filtrados = owners.filter(owner => {
+                // Coincidencia en datos del dueño
+                if (owner.nombre?.toLowerCase().includes(termino)) return true;
+                if (owner.telefono?.toLowerCase().includes(termino)) return true;
+                if (owner.identificacion?.toLowerCase().includes(termino)) return true;
+                if (owner.correo?.toLowerCase().includes(termino)) return true;
+                
+                // Coincidencia en vehículos
+                if (owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino))) return true;
+                
+                // Coincidencia en estudiantes
+                if (owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))) return true;
+                
+                return false;
+            });
+        }
+        
+        // Mostrar/ocultar estadísticas de búsqueda
+        if (termino) {
+            searchStats.style.display = "flex";
+            resultCountSpan.textContent = filtrados.length;
+        } else {
+            searchStats.style.display = "none";
+        }
+        
+        renderizarResultados(filtrados, termino);
+    }
+
+    function resaltarTexto(texto, busqueda) {
+        if (!busqueda || !texto) return escapeHtml(texto);
+        const regex = new RegExp(`(${busqueda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        return escapeHtml(texto).replace(regex, '<span class="highlight">$1</span>');
+    }
+
+    function renderizarResultados(filtrados, termino) {
+        if (filtrados.length === 0) {
+            listaContainer.innerHTML = `
+                <div class="empty-result">
+                    <i class="fas fa-search"></i>
+                    <div>No se encontraron resultados</div>
+                    <div style="font-size:0.8rem; margin-top:8px;">Prueba con otro término</div>
+                </div>
+            `;
+            return;
+        }
+        
+        let html = "";
+        filtrados.forEach(owner => {
+            const totalVehiculos = owner.vehiculos?.length || 0;
+            const totalEstudiantes = owner.estudiantes?.length || 0;
+            const nombreResaltado = resaltarTexto(owner.nombre, termino);
+            const telefonoResaltado = termino && owner.telefono?.toLowerCase().includes(termino) ? 
+                `<span class="highlight">${escapeHtml(owner.telefono)}</span>` : escapeHtml(owner.telefono);
+            const identificacionResaltada = termino && owner.identificacion?.toLowerCase().includes(termino) ? 
+                `<span class="highlight">${escapeHtml(owner.identificacion)}</span>` : escapeHtml(owner.identificacion);
+            
+            html += `
+            <div class="result-card">
+                <div class="result-header">
+                    <div class="result-name">
+                        <i class="fas fa-user-circle"></i> ${nombreResaltado}
+                    </div>
+                    <div class="result-badges">
+                        <span class="result-badge"><i class="fas fa-car"></i> ${totalVehiculos}</span>
+                        <span class="result-badge"><i class="fas fa-child"></i> ${totalEstudiantes}</span>
+                    </div>
+                </div>
+                <div class="result-body">
+                    ${owner.telefono || owner.identificacion || owner.correo ? `
+                    <div class="info-row">
+                        <div class="info-icon"><i class="fas fa-address-card"></i></div>
+                        <div class="info-text">
+                            ${owner.telefono ? `<div><span class="info-label">Teléfono</span><div class="info-value">${telefonoResaltado}</div></div>` : ''}
+                            ${owner.identificacion ? `<div style="margin-top:6px;"><span class="info-label">Identificación</span><div class="info-value">${identificacionResaltada}</div></div>` : ''}
+                            ${owner.correo ? `<div style="margin-top:6px;"><span class="info-label">Correo</span><div class="info-value">${escapeHtml(owner.correo)}</div></div>` : ''}
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    ${owner.estudiantes && owner.estudiantes.length > 0 ? `
+                    <div class="section-collapsible">
+                        <div class="section-collapsible-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                            <span><i class="fas fa-child"></i> Estudiantes (${owner.estudiantes.length})</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="section-collapsible-content">
+                            ${owner.estudiantes.map(est => `
+                                <div class="item-chip">
+                                    <div>
+                                        <strong>${resaltarTexto(est.nombre, termino)}</strong>
+                                        ${est.grado ? `<div style="font-size:0.7rem; color:#ff9800;">📚 ${escapeHtml(est.grado)}</div>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    ${owner.vehiculos && owner.vehiculos.length > 0 ? `
+                    <div class="section-collapsible">
+                        <div class="section-collapsible-header" onclick="this.nextElementSibling.classList.toggle('open')">
+                            <span><i class="fas fa-car"></i> Vehículos (${owner.vehiculos.length})</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="section-collapsible-content">
+                            ${owner.vehiculos.map(veh => `
+                                <div class="item-chip">
+                                    <div>
+                                        <span class="chip-placa"><i class="fas fa-car"></i> ${resaltarTexto(veh.placa, termino)}</span>
+                                        ${veh.color ? `<span style="margin-left:8px; font-size:0.75rem;"><i class="fas fa-palette"></i> ${escapeHtml(veh.color)}</span>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
+                </div>
+                <div class="result-actions">
+                    <button class="action-btn edit" onclick="window.editarOwnerDesdeGlobal('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
+                        <i class="fas fa-edit"></i> Editar
+                    </button>
+                    <button class="action-btn delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                </div>
+            </div>`;
+        });
+        
+        listaContainer.innerHTML = html;
     }
 
     async function guardarOwner() {
@@ -872,85 +1224,6 @@
         renderizarListaVehiculos();
     }
 
-    function renderizarLista() {
-        let filtrados = [...owners];
-        if (filtroActual.trim()) {
-            const busqueda = filtroActual.toLowerCase();
-            filtrados = owners.filter(owner => 
-                owner.nombre?.toLowerCase().includes(busqueda) ||
-                owner.identificacion?.toLowerCase().includes(busqueda) ||
-                owner.telefono?.toLowerCase().includes(busqueda) ||
-                owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(busqueda)) ||
-                owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(busqueda))
-            );
-        }
-        
-        if (filtrados.length === 0) {
-            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay dueños registrados</div>`;
-            return;
-        }
-        
-        let html = "";
-        filtrados.forEach(owner => {
-            const totalVehiculos = owner.vehiculos?.length || 0;
-            const totalEstudiantes = owner.estudiantes?.length || 0;
-            
-            html += `
-            <div class="owner-card">
-                <div class="owner-header">
-                    <div class="owner-name">
-                        ${escapeHtml(owner.nombre)}
-                        <span class="badge"><i class="fas fa-car"></i> ${totalVehiculos}</span>
-                        <span class="badge"><i class="fas fa-child"></i> ${totalEstudiantes}</span>
-                    </div>
-                    <div>
-                        <button onclick="window.editarOwnerDesdeGlobal(${JSON.stringify(owner.id).replace(/"/g, '&quot;')}, ${JSON.stringify(owner).replace(/"/g, '&quot;')})" style="background:#e3f2fd; border:none; padding:8px 12px; border-radius:12px; margin-right:5px;"><i class="fas fa-edit"></i> Editar</button>
-                        <button onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')" style="background:#ffebee; border:none; padding:8px 12px; border-radius:12px; color:#c62828;"><i class="fas fa-trash"></i> Eliminar</button>
-                    </div>
-                </div>`;
-            
-            if (owner.telefono || owner.identificacion || owner.correo) {
-                html += `<div class="owner-details">`;
-                if (owner.telefono) html += `<div><i class="fas fa-phone"></i> ${escapeHtml(owner.telefono)}</div>`;
-                if (owner.identificacion) html += `<div><i class="fas fa-id-card"></i> ${escapeHtml(owner.identificacion)}</div>`;
-                if (owner.correo) html += `<div><i class="fas fa-envelope"></i> ${escapeHtml(owner.correo)}</div>`;
-                html += `</div>`;
-            }
-            
-            // Mostrar estudiantes
-            if (owner.estudiantes && owner.estudiantes.length > 0) {
-                html += `<div style="margin: 10px 0;"><strong><i class="fas fa-child"></i> Estudiantes:</strong></div>`;
-                owner.estudiantes.forEach(est => {
-                    html += `
-                        <div class="estudiante-card">
-                            <div><strong>${escapeHtml(est.nombre)}</strong></div>
-                            ${est.grado ? `<div style="font-size:0.75rem; color:#ff9800;">📚 ${escapeHtml(est.grado)}</div>` : ''}
-                        </div>
-                    `;
-                });
-            }
-            
-            // Mostrar vehículos
-            if (owner.vehiculos && owner.vehiculos.length > 0) {
-                html += `<div style="margin: 10px 0;"><strong><i class="fas fa-car"></i> Vehículos:</strong></div>`;
-                owner.vehiculos.forEach(veh => {
-                    html += `
-                        <div style="background:#f8f9fa; border-radius:12px; padding:10px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center;">
-                            <div>
-                                <strong style="font-family:monospace;">${escapeHtml(veh.placa)}</strong>
-                                ${veh.color ? `<span style="color:#666; margin-left:8px;"><i class="fas fa-palette"></i> ${escapeHtml(veh.color)}</span>` : ''}
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            
-            html += `</div>`;
-        });
-        
-        listaContainer.innerHTML = html;
-    }
-    
     window.editarOwnerDesdeGlobal = function(id, owner) {
         editarOwner(owner);
     };
@@ -974,15 +1247,10 @@
     guardarBtn.addEventListener("click", guardarOwner);
     cancelarBtn.addEventListener("click", limpiarFormulario);
     
-    buscarInput.addEventListener("input", (e) => {
-        filtroActual = e.target.value;
-        renderizarLista();
-    });
-    
+    buscarInput.addEventListener("input", () => aplicarBusqueda());
     limpiarBusqueda.addEventListener("click", () => {
         buscarInput.value = "";
-        filtroActual = "";
-        renderizarLista();
+        aplicarBusqueda();
     });
 
     onAuthStateChanged(auth, (user) => {
