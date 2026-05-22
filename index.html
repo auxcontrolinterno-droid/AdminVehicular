@@ -333,7 +333,7 @@
             margin-top: 20px;
         }
 
-        /* ========== NUEVA INTERFAZ DE BÚSQUEDA ========== */
+        /* ========== NUEVA INTERFAZ DE BÚSQUEDA - SIEMPRE DESPLEGADA ========== */
         .search-container {
             margin-bottom: 20px;
         }
@@ -388,7 +388,7 @@
             gap: 5px;
         }
 
-        /* Tarjetas de resultado mejoradas */
+        /* Tarjetas de resultado mejoradas - SIEMPRE VISIBLES */
         .result-card {
             background: white;
             border-radius: 20px;
@@ -443,11 +443,10 @@
 
         .info-row {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 12px;
-            padding: 8px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #f0f0f0;
-            flex-wrap: wrap;
         }
 
         .info-row:last-child {
@@ -458,6 +457,7 @@
             width: 32px;
             color: #00b4db;
             font-size: 1rem;
+            text-align: center;
         }
 
         .info-text {
@@ -476,41 +476,32 @@
             font-weight: 500;
         }
 
-        .section-collapsible {
+        /* Secciones siempre visibles (no colapsables) */
+        .section-visible {
             margin-top: 12px;
         }
 
-        .section-collapsible-header {
+        .section-header {
             background: #f8f9fa;
             padding: 10px 12px;
             border-radius: 14px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             font-weight: 600;
             font-size: 0.85rem;
             color: #555;
-            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 10px;
         }
 
-        .section-collapsible-header:active {
-            background: #e8e8e8;
-        }
-
-        .section-collapsible-content {
-            padding: 10px;
-            display: none;
-        }
-
-        .section-collapsible-content.open {
-            display: block;
+        .items-container {
+            padding: 5px;
         }
 
         .item-chip {
             background: #f0f0f0;
             border-radius: 12px;
-            padding: 8px 12px;
+            padding: 10px 12px;
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
@@ -684,7 +675,7 @@
         </div>
     </div>
 
-    <!-- Panel Buscar con interfaz mejorada -->
+    <!-- Panel Buscar con interfaz mejorada - SIEMPRE DESPLEGADA -->
     <div id="tab-buscar" class="tab-panel active">
         <div class="card">
             <div class="card-title"><i class="fas fa-search"></i> Buscar Dueños</div>
@@ -1009,23 +1000,16 @@
         
         if (termino) {
             filtrados = owners.filter(owner => {
-                // Coincidencia en datos del dueño
                 if (owner.nombre?.toLowerCase().includes(termino)) return true;
                 if (owner.telefono?.toLowerCase().includes(termino)) return true;
                 if (owner.identificacion?.toLowerCase().includes(termino)) return true;
                 if (owner.correo?.toLowerCase().includes(termino)) return true;
-                
-                // Coincidencia en vehículos
                 if (owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino))) return true;
-                
-                // Coincidencia en estudiantes
                 if (owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))) return true;
-                
                 return false;
             });
         }
         
-        // Mostrar/ocultar estadísticas de búsqueda
         if (termino) {
             searchStats.style.display = "flex";
             resultCountSpan.textContent = filtrados.length;
@@ -1080,25 +1064,25 @@
                     <div class="info-row">
                         <div class="info-icon"><i class="fas fa-address-card"></i></div>
                         <div class="info-text">
-                            ${owner.telefono ? `<div><span class="info-label">Teléfono</span><div class="info-value">${telefonoResaltado}</div></div>` : ''}
-                            ${owner.identificacion ? `<div style="margin-top:6px;"><span class="info-label">Identificación</span><div class="info-value">${identificacionResaltada}</div></div>` : ''}
-                            ${owner.correo ? `<div style="margin-top:6px;"><span class="info-label">Correo</span><div class="info-value">${escapeHtml(owner.correo)}</div></div>` : ''}
+                            ${owner.telefono ? `<div><span class="info-label">📞 Teléfono</span><div class="info-value">${telefonoResaltado}</div></div>` : ''}
+                            ${owner.identificacion ? `<div style="margin-top:8px;"><span class="info-label">🆔 Identificación</span><div class="info-value">${identificacionResaltada}</div></div>` : ''}
+                            ${owner.correo ? `<div style="margin-top:8px;"><span class="info-label">✉️ Correo</span><div class="info-value">${escapeHtml(owner.correo)}</div></div>` : ''}
                         </div>
                     </div>
                     ` : ''}
                     
+                    <!-- Sección de estudiantes - SIEMPRE VISIBLE -->
                     ${owner.estudiantes && owner.estudiantes.length > 0 ? `
-                    <div class="section-collapsible">
-                        <div class="section-collapsible-header" onclick="this.nextElementSibling.classList.toggle('open')">
-                            <span><i class="fas fa-child"></i> Estudiantes (${owner.estudiantes.length})</span>
-                            <i class="fas fa-chevron-down"></i>
+                    <div class="section-visible">
+                        <div class="section-header">
+                            <i class="fas fa-child"></i> Estudiantes (${owner.estudiantes.length})
                         </div>
-                        <div class="section-collapsible-content">
+                        <div class="items-container">
                             ${owner.estudiantes.map(est => `
                                 <div class="item-chip">
                                     <div>
-                                        <strong>${resaltarTexto(est.nombre, termino)}</strong>
-                                        ${est.grado ? `<div style="font-size:0.7rem; color:#ff9800;">📚 ${escapeHtml(est.grado)}</div>` : ''}
+                                        <strong><i class="fas fa-user-graduate"></i> ${resaltarTexto(est.nombre, termino)}</strong>
+                                        ${est.grado ? `<div style="font-size:0.7rem; color:#ff9800; margin-top:3px;"><i class="fas fa-graduation-cap"></i> ${escapeHtml(est.grado)}</div>` : ''}
                                     </div>
                                 </div>
                             `).join('')}
@@ -1106,13 +1090,13 @@
                     </div>
                     ` : ''}
                     
+                    <!-- Sección de vehículos - SIEMPRE VISIBLE -->
                     ${owner.vehiculos && owner.vehiculos.length > 0 ? `
-                    <div class="section-collapsible">
-                        <div class="section-collapsible-header" onclick="this.nextElementSibling.classList.toggle('open')">
-                            <span><i class="fas fa-car"></i> Vehículos (${owner.vehiculos.length})</span>
-                            <i class="fas fa-chevron-down"></i>
+                    <div class="section-visible">
+                        <div class="section-header">
+                            <i class="fas fa-car"></i> Vehículos (${owner.vehiculos.length})
                         </div>
-                        <div class="section-collapsible-content">
+                        <div class="items-container">
                             ${owner.vehiculos.map(veh => `
                                 <div class="item-chip">
                                     <div>
