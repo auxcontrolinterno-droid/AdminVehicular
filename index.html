@@ -26,7 +26,6 @@
             margin: 0 auto;
         }
 
-        /* Header Profesional */
         .header {
             background: rgba(255,255,255,0.03);
             backdrop-filter: blur(20px);
@@ -39,7 +38,6 @@
             flex-wrap: wrap;
             gap: 12px;
             border: 1px solid rgba(255,255,255,0.1);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
 
         .header h1 {
@@ -55,7 +53,6 @@
             padding: 10px;
             border-radius: 16px;
             color: white;
-            font-size: 1rem;
         }
 
         .stats {
@@ -65,7 +62,6 @@
             color: #60a5fa;
             font-weight: 600;
             font-size: 0.8rem;
-            border: 1px solid rgba(59,130,246,0.3);
         }
 
         .auth-status {
@@ -77,16 +73,13 @@
             text-align: center;
             font-size: 0.8rem;
             color: #94a3b8;
-            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .auth-status.success {
             background: rgba(34,197,94,0.1);
             color: #4ade80;
-            border-color: rgba(34,197,94,0.2);
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 12px;
@@ -132,7 +125,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Cards */
         .card {
             background: rgba(255,255,255,0.98);
             border-radius: 32px;
@@ -153,7 +145,6 @@
             padding-left: 14px;
         }
 
-        /* Formulario */
         .field-group {
             margin-bottom: 16px;
         }
@@ -168,7 +159,7 @@
             letter-spacing: 0.5px;
         }
 
-        input, select {
+        input {
             width: 100%;
             padding: 14px 16px;
             border: 1.5px solid #e2e8f0;
@@ -178,7 +169,7 @@
             transition: all 0.2s;
         }
 
-        input:focus, select:focus {
+        input:focus {
             outline: none;
             border-color: #3b82f6;
             box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
@@ -218,7 +209,7 @@
             margin-top: 20px;
         }
 
-        /* ========== NUEVO DISEÑO PROFESIONAL PARA RESULTADOS ========== */
+        /* Búsqueda */
         .search-container {
             margin-bottom: 24px;
         }
@@ -234,7 +225,6 @@
             top: 50%;
             transform: translateY(-50%);
             color: #94a3b8;
-            font-size: 1rem;
         }
 
         .search-wrapper input {
@@ -242,7 +232,6 @@
             background: #f8fafc;
             border: 1.5px solid #e2e8f0;
             border-radius: 20px;
-            font-size: 0.95rem;
         }
 
         .search-wrapper input:focus {
@@ -276,23 +265,16 @@
             gap: 4px;
         }
 
-        /* Tarjetas de resultados - Diseño Profesional */
+        /* Tarjetas de resultados */
         .result-card {
             background: white;
             border-radius: 24px;
             margin-bottom: 20px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            transition: all 0.3s;
             border: 1px solid #f1f5f9;
         }
 
-        .result-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-        }
-
-        /* Header de la tarjeta */
         .card-header {
             background: linear-gradient(135deg, #f8fafc, #ffffff);
             padding: 18px 20px;
@@ -308,7 +290,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            flex-wrap: wrap;
         }
 
         .owner-avatar {
@@ -320,20 +301,19 @@
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 1.3rem;
+            font-weight: 700;
+            font-size: 1.2rem;
         }
 
         .owner-title h3 {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
             color: #0f172a;
-            margin-bottom: 4px;
         }
 
         .owner-title .owner-id {
             font-size: 0.7rem;
             color: #94a3b8;
-            font-family: monospace;
         }
 
         .stats-badges {
@@ -353,16 +333,10 @@
             gap: 5px;
         }
 
-        .stat-badge i {
-            font-size: 0.7rem;
-        }
-
-        /* Cuerpo de la tarjeta */
         .card-body {
             padding: 20px;
         }
 
-        /* Grid de información */
         .info-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -374,18 +348,12 @@
             background: #f8fafc;
             border-radius: 16px;
             padding: 12px 14px;
-            transition: all 0.2s;
-        }
-
-        .info-item:hover {
-            background: #f1f5f9;
         }
 
         .info-label {
             font-size: 0.65rem;
             font-weight: 600;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: #64748b;
             margin-bottom: 6px;
             display: flex;
@@ -394,13 +362,11 @@
         }
 
         .info-value {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             color: #0f172a;
-            word-break: break-word;
         }
 
-        /* Secciones de estudiantes y vehículos */
         .section-card {
             background: #f8fafc;
             border-radius: 18px;
@@ -409,10 +375,9 @@
         }
 
         .section-title {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             font-weight: 700;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
             color: #475569;
             margin-bottom: 12px;
             display: flex;
@@ -435,20 +400,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            transition: all 0.2s;
             border-left: 3px solid #3b82f6;
-        }
-
-        .item-row:hover {
-            transform: translateX(3px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .item-main {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
         .item-placa {
@@ -482,7 +434,6 @@
             border-radius: 12px;
         }
 
-        /* Botones de acción */
         .card-actions {
             padding: 16px 20px;
             background: #f8fafc;
@@ -502,8 +453,8 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.2s;
             border: none;
+            transition: all 0.2s;
         }
 
         .action-button.edit {
@@ -539,48 +490,6 @@
             opacity: 0.5;
         }
 
-        #loadingToast {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #1e293b;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-size: 0.8rem;
-            display: none;
-            z-index: 1000;
-        }
-
-        footer {
-            text-align: center;
-            font-size: 0.65rem;
-            color: #64748b;
-            padding: 20px;
-        }
-
-        #listaContainer {
-            max-height: 60vh;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-
-        /* Scroll personalizado */
-        #listaContainer::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        #listaContainer::-webkit-scrollbar-track {
-            background: #e2e8f0;
-            border-radius: 10px;
-        }
-
-        #listaContainer::-webkit-scrollbar-thumb {
-            background: #3b82f6;
-            border-radius: 10px;
-        }
-
         .dynamic-list {
             background: #f8fafc;
             border-radius: 18px;
@@ -614,6 +523,55 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
+        }
+
+        #loadingToast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1e293b;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            display: none;
+            z-index: 1000;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.65rem;
+            color: #64748b;
+            padding: 20px;
+        }
+
+        #listaContainer {
+            max-height: 60vh;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        /* Mensaje flotante de éxito */
+        .success-toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            z-index: 1000;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
     </style>
 </head>
@@ -686,7 +644,7 @@
         </div>
     </div>
 
-    <!-- Panel Buscar - NUEVO DISEÑO PROFESIONAL -->
+    <!-- Panel Buscar -->
     <div id="tab-buscar" class="tab-panel active">
         <div class="card">
             <div class="card-title"><i class="fas fa-search"></i> Buscar Registros</div>
@@ -697,7 +655,7 @@
                     <input type="text" id="buscarInput" placeholder="Buscar por nombre, placa, teléfono o estudiante...">
                 </div>
                 <div class="search-stats" id="searchStats" style="display: none;">
-                    <span><i class="fas fa-chart-line"></i> <span id="resultCount" class="result-count">0</span> resultado(s) encontrados</span>
+                    <span><i class="fas fa-chart-line"></i> <span id="resultCount" class="result-count">0</span> resultado(s)</span>
                     <button id="limpiarBusqueda" class="clear-search"><i class="fas fa-times"></i> Limpiar</button>
                 </div>
             </div>
@@ -781,6 +739,14 @@
         return limpio;
     }
 
+    function mostrarMensajeExito(mensaje) {
+        const toast = document.createElement('div');
+        toast.className = 'success-toast';
+        toast.innerHTML = `<i class="fas fa-check-circle"></i> ${mensaje}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+    }
+
     function renderizarListaEstudiantes() {
         if (estudiantesTemp.length === 0) {
             listaEstudiantes.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:15px;">Sin estudiantes</div>';
@@ -791,13 +757,34 @@
             html += `<div class="list-item">
                         <div><strong>${escapeHtml(est.nombre)}</strong> ${est.grado ? `<span style="color:#8b5cf6; font-size:0.7rem;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
                         <div style="display:flex; gap:8px;">
-                            <i class="fas fa-edit edit-item" data-index="${index}" data-tipo="estudiante" style="color:#3b82f6;"></i>
-                            <i class="fas fa-trash delete-item" data-index="${index}" data-tipo="estudiante" style="color:#ef4444;"></i>
+                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#3b82f6; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#ef4444; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
         listaEstudiantes.innerHTML = html;
-        attachItemEvents();
+        
+        document.querySelectorAll('.edit-estudiante').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const idx = parseInt(icon.dataset.index);
+                const nuevoNombre = prompt("Nombre del estudiante:", estudiantesTemp[idx].nombre);
+                if (nuevoNombre && nuevoNombre.trim()) {
+                    estudiantesTemp[idx].nombre = nuevoNombre.trim();
+                    const nuevoGrado = prompt("Grado:", estudiantesTemp[idx].grado || "");
+                    if (nuevoGrado !== null) estudiantesTemp[idx].grado = nuevoGrado;
+                    renderizarListaEstudiantes();
+                }
+            });
+        });
+        
+        document.querySelectorAll('.delete-estudiante').forEach(icon => {
+            icon.addEventListener('click', () => {
+                if (confirm("¿Eliminar este estudiante?")) {
+                    estudiantesTemp.splice(parseInt(icon.dataset.index), 1);
+                    renderizarListaEstudiantes();
+                }
+            });
+        });
     }
 
     function renderizarListaVehiculos() {
@@ -810,53 +797,37 @@
             html += `<div class="list-item">
                         <div><strong>${escapeHtml(veh.placa)}</strong> ${veh.color ? `<span style="color:#64748b;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
                         <div style="display:flex; gap:8px;">
-                            <i class="fas fa-edit edit-item" data-index="${index}" data-tipo="vehiculo" style="color:#3b82f6;"></i>
-                            <i class="fas fa-trash delete-item" data-index="${index}" data-tipo="vehiculo" style="color:#ef4444;"></i>
+                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#3b82f6; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#ef4444; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
         listaVehiculos.innerHTML = html;
-        attachItemEvents();
-    }
-
-    function attachItemEvents() {
-        document.querySelectorAll('.edit-item').forEach(icon => {
+        
+        document.querySelectorAll('.edit-vehiculo').forEach(icon => {
             icon.addEventListener('click', () => {
                 const idx = parseInt(icon.dataset.index);
-                const tipo = icon.dataset.tipo;
-                if (tipo === 'estudiante') {
-                    const nuevoNombre = prompt("Nombre del estudiante:", estudiantesTemp[idx].nombre);
-                    if (nuevoNombre && nuevoNombre.trim()) {
-                        estudiantesTemp[idx].nombre = nuevoNombre.trim();
-                        const nuevoGrado = prompt("Grado:", estudiantesTemp[idx].grado || "");
-                        if (nuevoGrado !== null) estudiantesTemp[idx].grado = nuevoGrado;
-                        renderizarListaEstudiantes();
+                const nuevaPlaca = prompt("Placa:", vehiculosTemp[idx].placa);
+                if (nuevaPlaca && nuevaPlaca.trim()) {
+                    const nuevaPlacaForm = formatearPlaca(nuevaPlaca.trim());
+                    const duplicado = vehiculosTemp.some((v, i) => i !== idx && v.placa === nuevaPlacaForm);
+                    if (duplicado) {
+                        alert("Esta placa ya está registrada");
+                        return;
                     }
-                } else {
-                    const nuevaPlaca = prompt("Placa:", vehiculosTemp[idx].placa);
-                    if (nuevaPlaca && nuevaPlaca.trim()) {
-                        const nuevaPlacaForm = formatearPlaca(nuevaPlaca.trim());
-                        if (vehiculosTemp.some((v, i) => i !== idx && v.placa === nuevaPlacaForm)) {
-                            alert("Placa duplicada");
-                            return;
-                        }
-                        vehiculosTemp[idx].placa = nuevaPlacaForm;
-                        const nuevoColor = prompt("Color:", vehiculosTemp[idx].color || "");
-                        if (nuevoColor !== null) vehiculosTemp[idx].color = nuevoColor;
-                        renderizarListaVehiculos();
-                    }
+                    vehiculosTemp[idx].placa = nuevaPlacaForm;
+                    const nuevoColor = prompt("Color:", vehiculosTemp[idx].color || "");
+                    if (nuevoColor !== null) vehiculosTemp[idx].color = nuevoColor;
+                    renderizarListaVehiculos();
                 }
             });
         });
-        document.querySelectorAll('.delete-item').forEach(icon => {
+        
+        document.querySelectorAll('.delete-vehiculo').forEach(icon => {
             icon.addEventListener('click', () => {
-                const idx = parseInt(icon.dataset.index);
-                const tipo = icon.dataset.tipo;
-                if (confirm("¿Eliminar?")) {
-                    if (tipo === 'estudiante') estudiantesTemp.splice(idx, 1);
-                    else vehiculosTemp.splice(idx, 1);
-                    if (tipo === 'estudiante') renderizarListaEstudiantes();
-                    else renderizarListaVehiculos();
+                if (confirm("¿Eliminar este vehículo?")) {
+                    vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
+                    renderizarListaVehiculos();
                 }
             });
         });
@@ -865,7 +836,7 @@
     function agregarEstudiante() {
         const nombreEst = prompt("Nombre del estudiante:");
         if (nombreEst && nombreEst.trim()) {
-            const grado = prompt("Grado (opcional):");
+            const grado = prompt("Grado que cursa (opcional):");
             estudiantesTemp.push({ nombre: nombreEst.trim(), grado: grado || "" });
             renderizarListaEstudiantes();
         }
@@ -876,10 +847,10 @@
         if (placa && placa.trim()) {
             const placaForm = formatearPlaca(placa.trim());
             if (vehiculosTemp.some(v => v.placa === placaForm)) {
-                alert("Placa ya agregada");
+                alert("Esta placa ya está agregada");
                 return;
             }
-            const color = prompt("Color (opcional):");
+            const color = prompt("Color del vehículo (opcional):");
             vehiculosTemp.push({ placa: placaForm, color: color || "" });
             renderizarListaVehiculos();
         }
@@ -887,6 +858,19 @@
 
     agregarEstudianteBtn.addEventListener("click", agregarEstudiante);
     agregarVehiculoBtn.addEventListener("click", agregarVehiculo);
+
+    // FUNCIÓN DE LIMPIEZA COMPLETA DEL FORMULARIO
+    function limpiarFormularioCompleto() {
+        editId.value = "";
+        nombre.value = "";
+        telefono.value = "";
+        identificacion.value = "";
+        correo.value = "";
+        estudiantesTemp = [];
+        vehiculosTemp = [];
+        renderizarListaEstudiantes();
+        renderizarListaVehiculos();
+    }
 
     function migrarDatosAntiguos(owner) {
         if (!owner.estudiantes && owner.estudiante?.nombre) {
@@ -1068,7 +1052,7 @@
         listaContainer.innerHTML = html;
     }
 
-    window.editarOwner = async function(id, owner) {
+    window.editarOwner = function(id, owner) {
         editId.value = owner.id;
         nombre.value = owner.nombre || "";
         telefono.value = owner.telefono || "";
@@ -1086,6 +1070,7 @@
         showLoading(true);
         try {
             await deleteDoc(doc(db, "vehiculos", id));
+            mostrarMensajeExito("Dueño eliminado correctamente");
         } catch (error) {
             alert("Error: " + error.message);
         } finally {
@@ -1096,8 +1081,8 @@
     async function guardarOwner() {
         if (!autenticado) return;
         const nombreValue = nombre.value.trim();
-        if (!nombreValue) { alert("Nombre obligatorio"); return; }
-        if (vehiculosTemp.length === 0) { alert("Agregue al menos un vehículo"); return; }
+        if (!nombreValue) { alert("El nombre del dueño es obligatorio"); return; }
+        if (vehiculosTemp.length === 0) { alert("Debe agregar al menos un vehículo"); return; }
         
         const datos = {
             nombre: nombreValue,
@@ -1112,11 +1097,16 @@
         showLoading(true);
         try {
             if (editId.value) {
+                // Actualizar dueño existente
                 await updateDoc(doc(db, "vehiculos", editId.value), datos);
+                mostrarMensajeExito("Dueño actualizado correctamente");
             } else {
+                // Crear nuevo dueño
                 await addDoc(collection(db, "vehiculos"), datos);
+                mostrarMensajeExito("Dueño guardado correctamente");
             }
-            limpiarFormulario();
+            // LIMPIAR EL FORMULARIO COMPLETAMENTE DESPUÉS DE GUARDAR
+            limpiarFormularioCompleto();
         } catch (error) {
             alert("Error: " + error.message);
         } finally {
@@ -1124,17 +1114,10 @@
         }
     }
 
-    function limpiarFormulario() {
-        editId.value = "";
-        nombre.value = "";
-        telefono.value = "";
-        identificacion.value = "";
-        correo.value = "";
-        estudiantesTemp = [];
-        vehiculosTemp = [];
-        renderizarListaEstudiantes();
-        renderizarListaVehiculos();
-    }
+    // Botón cancelar también limpia el formulario
+    cancelarBtn.addEventListener("click", () => {
+        limpiarFormularioCompleto();
+    });
 
     function actualizarEstadisticas() {
         const totalOwners = owners.length;
@@ -1148,7 +1131,6 @@
     }
 
     guardarBtn.addEventListener("click", guardarOwner);
-    cancelarBtn.addEventListener("click", limpiarFormulario);
     buscarInput.addEventListener("input", () => aplicarBusqueda());
     limpiarBusqueda.addEventListener("click", () => {
         buscarInput.value = "";
