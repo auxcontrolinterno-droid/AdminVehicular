@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#667eea">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>AdminVehiculos - Gestión móvil</title>
+    <title>AutoRegistro - Gestión de Vehículos</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -28,22 +27,22 @@
             margin: 0 auto;
         }
 
-        /* Header móvil */
+        /* Header */
         .header {
             background: rgba(255,255,255,0.98);
             border-radius: 20px;
-            padding: 15px 18px;
-            margin-bottom: 15px;
+            padding: 12px 18px;
+            margin-bottom: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .header h1 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: #333;
             display: flex;
             align-items: center;
@@ -55,34 +54,67 @@
             padding: 8px;
             border-radius: 12px;
             color: white;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
         .stats {
             background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 20px;
             color: white;
-            font-size: 0.75rem;
+            font-size: 0.65rem;
             font-weight: bold;
         }
 
-        /* Estado de autenticación */
         .auth-status {
             background: #e8f5e9;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 12px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.75rem;
             justify-content: center;
+            gap: 6px;
+            font-size: 0.65rem;
         }
 
-        .auth-status.success {
-            background: #e8f5e9;
-            color: #2e7d32;
+        /* Pestañas */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            padding: 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: white;
+            color: #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-bottom: 3px solid #667eea;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
         }
 
         /* Tarjetas */
@@ -95,7 +127,7 @@
         }
 
         .card-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             margin-bottom: 15px;
             color: #667eea;
@@ -106,36 +138,43 @@
             gap: 8px;
         }
 
-        /* Formularios */
-        .form-group {
+        /* Formulario */
+        .field-group {
             margin-bottom: 12px;
         }
 
         label {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             font-weight: 600;
-            color: #555;
+            color: #888;
             display: block;
-            margin-bottom: 4px;
+            margin-bottom: 3px;
         }
 
         input, select {
             width: 100%;
             padding: 12px 14px;
-            border: 1.5px solid #e0e0e0;
-            border-radius: 12px;
+            border: 1.5px solid #e8e8e8;
+            border-radius: 14px;
             font-size: 0.9rem;
-            background: white;
+            background: #fafafa;
             transition: all 0.2s;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: #667eea;
+            background: white;
             box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
         }
 
-        /* Botones */
+        .plate-input {
+            font-family: monospace;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
         .btn {
             padding: 12px 18px;
             border-radius: 14px;
@@ -148,6 +187,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
+            width: 100%;
         }
 
         .btn-primary {
@@ -155,48 +195,22 @@
             color: white;
         }
 
-        .btn-primary:active {
-            transform: scale(0.97);
-        }
-
-        .btn-danger {
-            background: #ef4444;
-            color: white;
-        }
-
+        .btn-primary:active { transform: scale(0.97); }
+        
         .btn-outline {
             background: transparent;
             border: 1.5px solid #667eea;
             color: #667eea;
         }
 
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 0.7rem;
-        }
-
-        /* Grid de botones */
         .button-group {
             display: flex;
             gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
-        /* Búsqueda */
-        .search-bar {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .search-bar input {
-            flex: 1;
-            margin: 0;
-        }
-
-        /* Lista de dueños */
-        .owner-card {
+        /* Tarjeta de registro en la lista */
+        .registro-card {
             background: #f8f9fa;
             border-radius: 16px;
             padding: 14px;
@@ -204,156 +218,86 @@
             border-left: 4px solid #667eea;
         }
 
-        .owner-header {
+        .registro-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
-        .owner-name {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #333;
-            word-break: break-word;
+        .placa-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-weight: bold;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
         }
 
-        .owner-actions {
+        .acciones-btns {
             display: flex;
-            gap: 6px;
+            gap: 8px;
         }
 
-        .owner-actions button {
+        .acciones-btns button {
             background: transparent;
             border: none;
             font-size: 0.9rem;
             cursor: pointer;
-            padding: 4px 8px;
+            padding: 5px 8px;
             border-radius: 8px;
         }
 
-        .owner-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            font-size: 0.7rem;
-            color: #666;
-            margin-bottom: 10px;
-        }
-
-        /* Sección estudiantes */
-        .students-section {
-            background: #fff8e1;
+        .info-persona {
+            background: white;
             border-radius: 12px;
             padding: 10px;
-            margin: 10px 0;
-        }
-
-        .section-header {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #ff9800;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .student-item {
-            background: white;
-            padding: 8px 10px;
-            margin: 5px 0;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .student-info {
-            flex: 1;
+            margin: 8px 0;
             font-size: 0.8rem;
         }
 
-        .student-name {
-            font-weight: 600;
+        .info-label {
+            font-size: 0.65rem;
+            color: #888;
+            margin-bottom: 3px;
         }
 
-        .student-grade {
-            font-size: 0.7rem;
-            color: #ff9800;
-        }
-
-        /* Tabla de vehículos */
-        .vehicle-list {
-            margin-top: 10px;
-        }
-
-        .vehicle-item {
-            background: white;
-            padding: 8px 10px;
-            margin: 5px 0;
-            border-radius: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .vehicle-info {
-            flex: 1;
-        }
-
-        .vehicle-plate {
-            font-weight: 600;
-            font-size: 0.85rem;
-            font-family: monospace;
-        }
-
-        .vehicle-model {
-            font-size: 0.7rem;
-            color: #666;
-        }
-
-        .vehicle-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .vehicle-actions i {
-            font-size: 1rem;
-            cursor: pointer;
-            padding: 6px;
-        }
-
-        .edit-icon { color: #667eea; }
-        .delete-icon { color: #ef4444; }
-
-        /* Botones de agregar */
-        .add-btn {
-            background: transparent;
-            border: 1.5px dashed #667eea;
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-size: 0.75rem;
+        .info-value {
             font-weight: 500;
+            color: #333;
+            word-break: break-word;
+        }
+
+        .estudiante-tag {
+            background: #fff8e1;
+            border-radius: 10px;
+            padding: 8px;
             margin-top: 8px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            color: #667eea;
-            width: auto;
+            font-size: 0.75rem;
         }
 
-        .add-student-btn {
-            border-color: #ff9800;
-            color: #ff9800;
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 0.8rem;
         }
 
-        /* Loading */
+        .search-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            margin: 0;
+        }
+
         #loadingToast {
             position: fixed;
             bottom: 16px;
@@ -363,63 +307,34 @@
             color: white;
             padding: 10px 20px;
             border-radius: 30px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             display: none;
             z-index: 1000;
-            backdrop-filter: blur(10px);
             white-space: nowrap;
-        }
-
-        /* Empty state */
-        .empty-message {
-            text-align: center;
-            padding: 30px;
-            color: #999;
-            font-size: 0.85rem;
-        }
-
-        .highlight {
-            background: #fff3cd;
-            padding: 2px 4px;
-            border-radius: 4px;
-        }
-
-        /* Scroll suave */
-        #ownersListContainer {
-            max-height: 55vh;
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-        }
-
-        hr {
-            margin: 15px 0;
-            border: none;
-            border-top: 1px solid #e0e0e0;
         }
 
         footer {
             text-align: center;
-            font-size: 0.65rem;
+            font-size: 0.6rem;
             color: rgba(255,255,255,0.7);
             padding: 15px;
         }
 
-        /* Ajustes táctiles */
-        button, .add-btn, .edit-icon, .delete-icon, .delete-student {
-            cursor: pointer;
-            touch-action: manipulation;
-        }
+        .edit-icon { color: #667eea; cursor: pointer; }
+        .delete-icon { color: #ef4444; cursor: pointer; }
 
-        /* Mejoras para input en móvil */
-        input, select {
-            font-size: 16px; /* Evita zoom en iOS */
+        /* Scroll para la lista */
+        #listaContainer {
+            max-height: 55vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1><i class="fas fa-car"></i> AdminVehiculos</h1>
+        <h1><i class="fas fa-clipboard-list"></i> AutoRegistro</h1>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
@@ -427,70 +342,81 @@
         <i class="fas fa-spinner fa-pulse"></i> Conectando...
     </div>
 
-    <!-- Formulario de dueño -->
-    <div class="card">
-        <div class="card-title"><i class="fas fa-user-plus"></i> Registrar Dueño</div>
-        <input type="hidden" id="ownerIdEdit">
-        <div class="form-group">
-            <input type="text" id="ownerName" placeholder="Nombre completo *">
-        </div>
-        <div class="form-group">
-            <input type="tel" id="ownerPhone" placeholder="Teléfono *">
-        </div>
-        <div class="form-group">
-            <input type="text" id="ownerIdNumber" placeholder="Identificación *">
-        </div>
-        <div class="form-group">
-            <input type="email" id="ownerEmail" placeholder="Correo (opcional)">
-        </div>
-        
-        <div style="font-size:0.75rem; color:#667eea; margin: 10px 0 5px 0;">
-            <i class="fas fa-child"></i> Datos del estudiante (opcional)
-        </div>
-        <div class="form-group">
-            <input type="text" id="studentName" placeholder="Nombre del estudiante">
-        </div>
-        <div class="form-group">
-            <input type="text" id="studentGrade" placeholder="Grado que cursa">
-        </div>
-        
-        <div class="button-group">
-            <button class="btn btn-primary" id="saveOwnerBtn"><i class="fas fa-save"></i> Guardar</button>
-            <button class="btn btn-outline" id="cancelEditBtn"><i class="fas fa-times"></i> Cancelar</button>
+    <!-- Pestañas -->
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="registrar">
+            <i class="fas fa-pen-alt"></i> Registrar
+        </button>
+        <button class="tab-btn" data-tab="buscar">
+            <i class="fas fa-search"></i> Buscar
+        </button>
+    </div>
+
+    <!-- Panel Registrar -->
+    <div id="tab-registrar" class="tab-panel active">
+        <div class="card">
+            <div class="card-title"><i class="fas fa-plus-circle"></i> Registrar vehículo o persona</div>
+            <input type="hidden" id="editId">
+            
+            <div class="field-group">
+                <label><i class="fas fa-car"></i> PLACA (obligatorio) *</label>
+                <input type="text" id="placa" class="plate-input" placeholder="Ej: ABC123" maxlength="10" autocomplete="off">
+                <div style="font-size: 0.6rem; color: #999; margin-top: 3px;">Se formateará automáticamente como ABC-123</div>
+            </div>
+
+            <div class="field-group">
+                <label><i class="fas fa-user"></i> Nombre del dueño (opcional)</label>
+                <input type="text" id="nombre" placeholder="Ej: María González">
+            </div>
+
+            <div class="field-group">
+                <label><i class="fas fa-phone"></i> Teléfono (opcional)</label>
+                <input type="tel" id="telefono" placeholder="Ej: 555-1234">
+            </div>
+
+            <div class="field-group">
+                <label><i class="fas fa-id-card"></i> Identificación (opcional)</label>
+                <input type="text" id="identificacion" placeholder="Cédula/DNI">
+            </div>
+
+            <div class="field-group">
+                <label><i class="fas fa-envelope"></i> Correo (opcional)</label>
+                <input type="email" id="correo" placeholder="correo@ejemplo.com">
+            </div>
+
+            <div class="field-group">
+                <label><i class="fas fa-child"></i> Estudiante que recoge (opcional)</label>
+                <input type="text" id="estudianteNombre" placeholder="Nombre del estudiante">
+            </div>
+
+            <div class="field-group">
+                <label><i class="fas fa-graduation-cap"></i> Grado / Curso (opcional)</label>
+                <input type="text" id="estudianteGrado" placeholder="Ej: 5to Primaria">
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" id="guardarBtn"><i class="fas fa-save"></i> Guardar</button>
+                <button class="btn btn-outline" id="cancelarBtn"><i class="fas fa-times"></i> Cancelar</button>
+            </div>
         </div>
     </div>
 
-    <!-- Agregar vehículo rápido -->
-    <div class="card">
-        <div class="card-title"><i class="fas fa-plus-circle"></i> Agregar Vehículo</div>
-        <div class="form-group">
-            <select id="quickOwnerSelect">
-                <option value="">-- Seleccionar dueño --</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <input type="text" id="quickPlate" placeholder="Placa (ej: ABC-123)">
-        </div>
-        <div class="form-group">
-            <input type="text" id="quickModel" placeholder="Marca/Modelo">
-        </div>
-        <button class="btn btn-primary" id="addPlateBtn"><i class="fas fa-plus"></i> Asignar placa</button>
-    </div>
-
-    <!-- Lista de dueños -->
-    <div class="card">
-        <div class="card-title"><i class="fas fa-search"></i> Buscar</div>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Buscar por nombre, placa o estudiante...">
-            <button class="btn btn-outline" id="clearSearchBtn" style="padding:12px 16px;"><i class="fas fa-eraser"></i></button>
-        </div>
-        <div id="ownersListContainer">
-            <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Cargando...</div>
+    <!-- Panel Buscar -->
+    <div id="tab-buscar" class="tab-panel">
+        <div class="card">
+            <div class="card-title"><i class="fas fa-search"></i> Buscar registros</div>
+            <div class="search-bar">
+                <input type="text" id="buscarInput" placeholder="Buscar por placa, nombre o estudiante...">
+                <button class="btn btn-outline" id="limpiarBusqueda" style="width: auto; padding: 12px 16px;"><i class="fas fa-eraser"></i></button>
+            </div>
+            <div id="listaContainer">
+                <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Cargando registros...</div>
+            </div>
         </div>
     </div>
 
     <footer>
-        <i class="fas fa-shield-alt"></i> Datos seguros · Sincronización en tiempo real
+        <i class="fas fa-info-circle"></i> Todo es opcional excepto la placa. Puedes editar después.
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -523,123 +449,150 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    let localOwners = [];
-    let currentFilter = "";
-    let isAuthenticated = false;
+    let registros = [];
+    let filtroActual = "";
+    let autenticado = false;
 
-    // Elementos
-    const ownersContainer = document.getElementById("ownersListContainer");
-    const searchInput = document.getElementById("searchInput");
-    const clearSearchBtn = document.getElementById("clearSearchBtn");
+    // Elementos DOM
+    const listaContainer = document.getElementById("listaContainer");
+    const buscarInput = document.getElementById("buscarInput");
+    const limpiarBusqueda = document.getElementById("limpiarBusqueda");
     const globalStatsSpan = document.getElementById("globalStats");
-    const quickOwnerSelect = document.getElementById("quickOwnerSelect");
-    const ownerIdEdit = document.getElementById("ownerIdEdit");
-    const ownerName = document.getElementById("ownerName");
-    const ownerPhone = document.getElementById("ownerPhone");
-    const ownerIdNumber = document.getElementById("ownerIdNumber");
-    const ownerEmail = document.getElementById("ownerEmail");
-    const studentName = document.getElementById("studentName");
-    const studentGrade = document.getElementById("studentGrade");
-    const saveOwnerBtn = document.getElementById("saveOwnerBtn");
-    const cancelEditBtn = document.getElementById("cancelEditBtn");
-    const addPlateBtn = document.getElementById("addPlateBtn");
-    const quickPlate = document.getElementById("quickPlate");
-    const quickModel = document.getElementById("quickModel");
-    const loadingToast = document.getElementById("loadingToast");
     const authStatusDiv = document.getElementById("authStatus");
+    const editId = document.getElementById("editId");
+    const placa = document.getElementById("placa");
+    const nombre = document.getElementById("nombre");
+    const telefono = document.getElementById("telefono");
+    const identificacion = document.getElementById("identificacion");
+    const correo = document.getElementById("correo");
+    const estudianteNombre = document.getElementById("estudianteNombre");
+    const estudianteGrado = document.getElementById("estudianteGrado");
+    const guardarBtn = document.getElementById("guardarBtn");
+    const cancelarBtn = document.getElementById("cancelarBtn");
+    const loadingToast = document.getElementById("loadingToast");
+
+    // Pestañas
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const tabId = btn.dataset.tab;
+            tabBtns.forEach(b => b.classList.remove('active'));
+            tabPanels.forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+        });
+    });
 
     function showLoading(show) {
         loadingToast.style.display = show ? "flex" : "none";
     }
 
+    // Formatear placa: convertir a mayúsculas y agregar guión después de las primeras 3 letras/números
+    function formatearPlaca(texto) {
+        if (!texto) return "";
+        let limpio = texto.toUpperCase().replace(/\s/g, "");
+        limpio = limpio.replace(/-/g, "");
+        if (limpio.length > 3) {
+            return limpio.substring(0, 3) + "-" + limpio.substring(3, 8);
+        }
+        return limpio;
+    }
+
+    // Aplicar formato automático mientras escribe
+    placa.addEventListener("input", function(e) {
+        let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
+        if (raw.length > 3) {
+            this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
+        } else {
+            this.value = raw;
+        }
+    });
+
     function updateAuthStatus(user, error = null) {
         if (error) {
-            authStatusDiv.className = "auth-status";
             authStatusDiv.style.background = "#ffebee";
             authStatusDiv.style.color = "#c62828";
             authStatusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.substring(0, 100)}`;
-            isAuthenticated = false;
+            autenticado = false;
         } else if (user) {
-            authStatusDiv.className = "auth-status success";
             authStatusDiv.style.background = "#e8f5e9";
             authStatusDiv.style.color = "#2e7d32";
-            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Conectado · ${user.uid.substring(0, 6)}...`;
-            isAuthenticated = true;
-            loadOwnersRealtime();
+            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Conectado · Datos seguros`;
+            autenticado = true;
+            cargarRegistros();
         } else {
-            authStatusDiv.className = "auth-status";
             authStatusDiv.style.background = "#fff3cd";
-            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...`;
-            isAuthenticated = false;
+            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando...`;
+            autenticado = false;
         }
     }
 
-    function loadOwnersRealtime() {
-        if (!isAuthenticated) return;
+    function cargarRegistros() {
+        if (!autenticado) return;
         showLoading(true);
-        const q = query(collection(db, "owners"), orderBy("name"));
+        const q = query(collection(db, "vehiculos"), orderBy("placa"));
         onSnapshot(q, (snapshot) => {
-            localOwners = [];
+            registros = [];
             snapshot.forEach(doc => {
-                localOwners.push({ id: doc.id, ...doc.data() });
+                registros.push({ id: doc.id, ...doc.data() });
             });
-            updateGlobalStats();
-            refreshOwnerSelect();
-            renderOwnersList(currentFilter);
+            actualizarEstadisticas();
+            renderizarLista();
             showLoading(false);
         }, (error) => {
             console.error(error);
             showLoading(false);
-            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> Error: ${error.message}</div>`;
+            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> Error: ${error.message}</div>`;
         });
     }
 
-    async function saveOwner() {
-        if (!isAuthenticated) return;
-        const id = ownerIdEdit.value;
-        const name = ownerName.value.trim();
-        const phone = ownerPhone.value.trim();
-        const idNumber = ownerIdNumber.value.trim();
-        const email = ownerEmail.value.trim();
-        const newStudentName = studentName.value.trim();
-        const newStudentGrade = studentGrade.value.trim();
-
-        if (!name || !phone || !idNumber) {
-            alert("Complete nombre, teléfono e identificación");
+    async function guardarRegistro() {
+        if (!autenticado) return;
+        
+        let placaValue = placa.value.trim();
+        if (!placaValue) {
+            alert("La placa es obligatoria");
             return;
         }
-
+        
+        placaValue = formatearPlaca(placaValue);
+        
+        const id = editId.value;
+        const datos = {
+            placa: placaValue,
+            nombre: nombre.value.trim() || "",
+            telefono: telefono.value.trim() || "",
+            identificacion: identificacion.value.trim() || "",
+            correo: correo.value.trim() || "",
+            estudiante: {
+                nombre: estudianteNombre.value.trim() || "",
+                grado: estudianteGrado.value.trim() || ""
+            },
+            actualizado: new Date().toISOString()
+        };
+        
+        // Si no hay estudiante, guardar como null
+        if (!datos.estudiante.nombre && !datos.estudiante.grado) {
+            datos.estudiante = null;
+        }
+        
         showLoading(true);
         try {
-            let students = [];
             if (id) {
-                const existing = localOwners.find(o => o.id === id);
-                if (existing?.students) students = [...existing.students];
-            }
-            if (newStudentName) {
-                students.push({ id: Date.now().toString(), name: newStudentName, grade: newStudentGrade });
-            }
-
-            const ownerData = {
-                name, phone, idNumber, email,
-                vehicles: id ? (localOwners.find(o => o.id === id)?.vehicles || []) : [],
-                students: students,
-                updatedAt: new Date().toISOString()
-            };
-
-            if (id) {
-                await updateDoc(doc(db, "owners", id), ownerData);
+                await updateDoc(doc(db, "vehiculos", id), datos);
             } else {
-                await addDoc(collection(db, "owners"), ownerData);
+                // Verificar si ya existe una placa igual
+                const existe = registros.some(r => r.placa === placaValue);
+                if (existe) {
+                    alert("Ya existe un registro con esa placa");
+                    showLoading(false);
+                    return;
+                }
+                await addDoc(collection(db, "vehiculos"), datos);
             }
-
-            ownerIdEdit.value = "";
-            ownerName.value = "";
-            ownerPhone.value = "";
-            ownerIdNumber.value = "";
-            ownerEmail.value = "";
-            studentName.value = "";
-            studentGrade.value = "";
+            limpiarFormulario();
         } catch (error) {
             alert("Error: " + error.message);
         } finally {
@@ -647,12 +600,12 @@
         }
     }
 
-    async function deleteOwner(ownerId) {
-        if (!isAuthenticated) return;
-        if (!confirm("¿Eliminar este dueño y todos sus datos?")) return;
+    async function eliminarRegistro(id, placaTexto) {
+        if (!autenticado) return;
+        if (!confirm(`¿Eliminar el registro de la placa ${placaTexto}?`)) return;
         showLoading(true);
         try {
-            await deleteDoc(doc(db, "owners", ownerId));
+            await deleteDoc(doc(db, "vehiculos", id));
         } catch (error) {
             alert("Error: " + error.message);
         } finally {
@@ -660,258 +613,128 @@
         }
     }
 
-    async function addVehicle(ownerId, plate, model) {
-        if (!isAuthenticated) return;
-        if (!plate?.trim()) { alert("Ingrese una placa"); return; }
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        const vehicles = [...(owner.vehicles || [])];
-        if (vehicles.some(v => v.plate === plate.trim())) { alert("Ya existe esa placa"); return; }
-        vehicles.push({ plate: plate.trim(), model: model?.trim() || "" });
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { vehicles });
-            quickPlate.value = "";
-            quickModel.value = "";
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
+    function editarRegistro(registro) {
+        editId.value = registro.id;
+        placa.value = registro.placa;
+        nombre.value = registro.nombre || "";
+        telefono.value = registro.telefono || "";
+        identificacion.value = registro.identificacion || "";
+        correo.value = registro.correo || "";
+        estudianteNombre.value = registro.estudiante?.nombre || "";
+        estudianteGrado.value = registro.estudiante?.grado || "";
+        
+        // Cambiar a pestaña registrar
+        document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
 
-    async function deleteVehicle(ownerId, plateToDelete) {
-        if (!isAuthenticated) return;
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        const newVehicles = owner.vehicles.filter(v => v.plate !== plateToDelete);
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { vehicles: newVehicles });
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
+    function limpiarFormulario() {
+        editId.value = "";
+        placa.value = "";
+        nombre.value = "";
+        telefono.value = "";
+        identificacion.value = "";
+        correo.value = "";
+        estudianteNombre.value = "";
+        estudianteGrado.value = "";
     }
 
-    async function addStudent(ownerId, studentNameValue, studentGradeValue) {
-        if (!isAuthenticated) return;
-        if (!studentNameValue?.trim()) { alert("Ingrese el nombre del estudiante"); return; }
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        const students = [...(owner.students || [])];
-        students.push({ id: Date.now().toString(), name: studentNameValue.trim(), grade: studentGradeValue?.trim() || "" });
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { students });
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
+    function renderizarLista() {
+        let filtrados = [...registros];
+        if (filtroActual.trim()) {
+            const busqueda = filtroActual.toLowerCase();
+            filtrados = registros.filter(r => 
+                r.placa?.toLowerCase().includes(busqueda) ||
+                r.nombre?.toLowerCase().includes(busqueda) ||
+                r.estudiante?.nombre?.toLowerCase().includes(busqueda)
+            );
         }
-    }
-
-    async function deleteStudent(ownerId, studentId) {
-        if (!isAuthenticated) return;
-        const owner = localOwners.find(o => o.id === ownerId);
-        if (!owner) return;
-        const newStudents = owner.students.filter(s => s.id !== studentId);
-        showLoading(true);
-        try {
-            await updateDoc(doc(db, "owners", ownerId), { students: newStudents });
-        } catch (error) {
-            alert("Error: " + error.message);
-        } finally {
-            showLoading(false);
-        }
-    }
-
-    function renderOwnersList(filterText = "") {
-        currentFilter = filterText;
-        let filtered = [...localOwners];
-        if (filterText.trim()) {
-            const lowerFilter = filterText.toLowerCase();
-            filtered = localOwners.filter(owner => {
-                if (owner.name?.toLowerCase().includes(lowerFilter)) return true;
-                if (owner.phone?.toLowerCase().includes(lowerFilter)) return true;
-                if (owner.idNumber?.toLowerCase().includes(lowerFilter)) return true;
-                if (owner.vehicles?.some(v => v.plate?.toLowerCase().includes(lowerFilter))) return true;
-                if (owner.students?.some(s => s.name?.toLowerCase().includes(lowerFilter))) return true;
-                return false;
-            });
-        }
-        if (filtered.length === 0) {
-            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros</div>`;
+        
+        if (filtrados.length === 0) {
+            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros</div>`;
             return;
         }
-
+        
         let html = "";
-        filtered.forEach(owner => {
+        filtrados.forEach(r => {
             html += `
-            <div class="owner-card">
-                <div class="owner-header">
-                    <div class="owner-name">${escapeHtml(owner.name)}</div>
-                    <div class="owner-actions">
-                        <button class="edit-owner-btn" data-id="${owner.id}" style="background:#e8eaf6;"><i class="fas fa-edit"></i></button>
-                        <button class="delete-owner-btn" data-id="${owner.id}" style="background:#ffebee; color:#c62828;"><i class="fas fa-trash"></i></button>
+            <div class="registro-card">
+                <div class="registro-header">
+                    <div class="placa-badge"><i class="fas fa-car"></i> ${escapeHtml(r.placa)}</div>
+                    <div class="acciones-btns">
+                        <button onclick="window.editarRegistroDesdeGlobal(${JSON.stringify(r.id).replace(/"/g, '&quot;')}, ${JSON.stringify(r).replace(/"/g, '&quot;')})" style="color:#667eea;"><i class="fas fa-edit"></i></button>
+                        <button onclick="window.eliminarRegistroDesdeGlobal('${r.id}', '${escapeHtml(r.placa)}')" style="color:#ef4444;"><i class="fas fa-trash"></i></button>
                     </div>
-                </div>
-                <div class="owner-details">
-                    <span><i class="fas fa-id-card"></i> ${escapeHtml(owner.idNumber)}</span>
-                    <span><i class="fas fa-phone"></i> ${escapeHtml(owner.phone)}</span>
-                    ${owner.email ? `<span><i class="fas fa-envelope"></i> ${escapeHtml(owner.email)}</span>` : ''}
-                </div>
-                
-                <div class="students-section">
-                    <div class="section-header"><i class="fas fa-child"></i> Estudiantes</div>`;
-            if (!owner.students?.length) {
-                html += `<div style="padding:8px; text-align:center; color:#999; font-size:0.7rem;">Sin estudiantes</div>`;
-            } else {
-                owner.students.forEach(student => {
-                    html += `
-                    <div class="student-item">
-                        <div class="student-info">
-                            <span class="student-name">${escapeHtml(student.name)}</span>
-                            ${student.grade ? `<span class="student-grade"> 📚 ${escapeHtml(student.grade)}</span>` : ''}
-                        </div>
-                        <i class="fas fa-trash delete-student" data-owner="${owner.id}" data-student-id="${student.id}" style="color:#ef4444; font-size:0.9rem;"></i>
-                    </div>`;
-                });
+                </div>`;
+            
+            // Mostrar datos del dueño si existen
+            if (r.nombre || r.telefono || r.identificacion || r.correo) {
+                html += `<div class="info-persona">
+                            <div style="font-size:0.65rem; color:#888; margin-bottom:5px;"><i class="fas fa-user"></i> DATOS DEL DUEÑO</div>`;
+                if (r.nombre) html += `<div class="info-label">Nombre</div><div class="info-value">${escapeHtml(r.nombre)}</div>`;
+                if (r.telefono) html += `<div class="info-label">Teléfono</div><div class="info-value">${escapeHtml(r.telefono)}</div>`;
+                if (r.identificacion) html += `<div class="info-label">Identificación</div><div class="info-value">${escapeHtml(r.identificacion)}</div>`;
+                if (r.correo) html += `<div class="info-label">Correo</div><div class="info-value">${escapeHtml(r.correo)}</div>`;
+                html += `</div>`;
             }
-            html += `<div class="add-btn add-student-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar estudiante</div>
-                </div>
-                
-                <div class="vehicle-list">
-                    <div class="section-header" style="color:#667eea;"><i class="fas fa-car"></i> Vehículos</div>`;
-            if (!owner.vehicles?.length) {
-                html += `<div style="padding:8px; text-align:center; color:#999; font-size:0.7rem;">Sin vehículos</div>`;
-            } else {
-                owner.vehicles.forEach(vehicle => {
-                    html += `
-                    <div class="vehicle-item">
-                        <div class="vehicle-info">
-                            <div class="vehicle-plate">${escapeHtml(vehicle.plate)}</div>
-                            ${vehicle.model ? `<div class="vehicle-model">${escapeHtml(vehicle.model)}</div>` : ''}
-                        </div>
-                        <div class="vehicle-actions">
-                            <i class="fas fa-pen edit-placa edit-icon" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}" data-model="${escapeAttr(vehicle.model || '')}"></i>
-                            <i class="fas fa-trash delete-placa delete-icon" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}"></i>
-                        </div>
-                    </div>`;
-                });
+            
+            // Mostrar estudiante si existe
+            if (r.estudiante && (r.estudiante.nombre || r.estudiante.grado)) {
+                html += `<div class="estudiante-tag">
+                            <i class="fas fa-child"></i> <strong>Estudiante que recoge:</strong><br>
+                            ${r.estudiante.nombre ? escapeHtml(r.estudiante.nombre) : ''}
+                            ${r.estudiante.grado ? ` <span style="color:#ff9800;">📚 ${escapeHtml(r.estudiante.grado)}</span>` : ''}
+                         </div>`;
             }
-            html += `<div class="add-btn" style="margin-top:8px;" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar vehículo</div>
-                </div>
-            </div>`;
+            
+            html += `</div>`;
         });
-        ownersContainer.innerHTML = html;
-        attachEvents();
+        
+        listaContainer.innerHTML = html;
+    }
+    
+    // Exponer funciones globalmente para los botones dinámicos
+    window.editarRegistroDesdeGlobal = function(id, registro) {
+        editarRegistro(registro);
+    };
+    
+    window.eliminarRegistroDesdeGlobal = function(id, placaTexto) {
+        eliminarRegistro(id, placaTexto);
+    };
+
+    function actualizarEstadisticas() {
+        const total = registros.length;
+        globalStatsSpan.innerHTML = `<i class="fas fa-car"></i> ${total} vehículo${total !== 1 ? 's' : ''}`;
     }
 
-    function attachEvents() {
-        document.querySelectorAll('.edit-owner-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const owner = localOwners.find(o => o.id === btn.dataset.id);
-                if (owner) {
-                    ownerIdEdit.value = owner.id;
-                    ownerName.value = owner.name;
-                    ownerPhone.value = owner.phone;
-                    ownerIdNumber.value = owner.idNumber;
-                    ownerEmail.value = owner.email || "";
-                    studentName.value = "";
-                    studentGrade.value = "";
-                }
-            });
-        });
-        document.querySelectorAll('.delete-owner-btn').forEach(btn => {
-            btn.addEventListener('click', () => deleteOwner(btn.dataset.id));
-        });
-        document.querySelectorAll('.delete-placa').forEach(icon => {
-            icon.addEventListener('click', () => {
-                if (confirm("¿Eliminar este vehículo?")) deleteVehicle(icon.dataset.owner, icon.dataset.plate);
-            });
-        });
-        document.querySelectorAll('.edit-placa').forEach(icon => {
-            icon.addEventListener('click', () => {
-                const newPlate = prompt("Nueva placa:", icon.dataset.plate);
-                if (newPlate?.trim()) {
-                    const newModel = prompt("Nuevo modelo:", icon.dataset.model);
-                    addVehicle(icon.dataset.owner, newPlate.trim(), newModel);
-                    if (newPlate !== icon.dataset.plate) deleteVehicle(icon.dataset.owner, icon.dataset.plate);
-                }
-            });
-        });
-        document.querySelectorAll('.add-btn').forEach(btn => {
-            if (!btn.classList.contains('add-student-btn')) {
-                btn.addEventListener('click', () => {
-                    const plate = prompt("Placa del vehículo:");
-                    if (plate?.trim()) {
-                        const model = prompt("Modelo (opcional):");
-                        addVehicle(btn.dataset.ownerId, plate.trim(), model || "");
-                    }
-                });
-            }
-        });
-        document.querySelectorAll('.add-student-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const name = prompt("Nombre del estudiante:");
-                if (name?.trim()) {
-                    const grade = prompt("Grado que cursa (opcional):");
-                    addStudent(btn.dataset.ownerId, name.trim(), grade || "");
-                }
-            });
-        });
-        document.querySelectorAll('.delete-student').forEach(icon => {
-            icon.addEventListener('click', () => {
-                if (confirm("¿Eliminar este estudiante?")) deleteStudent(icon.dataset.owner, icon.dataset.studentId);
-            });
-        });
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    function refreshOwnerSelect() {
-        quickOwnerSelect.innerHTML = '<option value="">-- Seleccionar dueño --</option>';
-        localOwners.forEach(owner => {
-            quickOwnerSelect.appendChild(new Option(`${owner.name} (${owner.idNumber})`, owner.id));
-        });
-    }
-
-    function updateGlobalStats() {
-        const totalOwners = localOwners.length;
-        const totalVehicles = localOwners.reduce((a, o) => a + (o.vehicles?.length || 0), 0);
-        const totalStudents = localOwners.reduce((a, o) => a + (o.students?.length || 0), 0);
-        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> ${totalOwners} | 🚗 ${totalVehicles} | 👨‍👦 ${totalStudents}`;
-    }
-
-    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
-    function escapeAttr(str) { return str ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : ''; }
-
-    saveOwnerBtn.addEventListener("click", saveOwner);
-    cancelEditBtn.addEventListener("click", () => {
-        ownerIdEdit.value = "";
-        ownerName.value = "";
-        ownerPhone.value = "";
-        ownerIdNumber.value = "";
-        ownerEmail.value = "";
-        studentName.value = "";
-        studentGrade.value = "";
+    // Eventos
+    guardarBtn.addEventListener("click", guardarRegistro);
+    cancelarBtn.addEventListener("click", limpiarFormulario);
+    
+    buscarInput.addEventListener("input", (e) => {
+        filtroActual = e.target.value;
+        renderizarLista();
     });
-    addPlateBtn.addEventListener("click", () => {
-        const ownerId = quickOwnerSelect.value;
-        if (!ownerId) { alert("Seleccione un dueño"); return; }
-        const plate = quickPlate.value.trim();
-        if (!plate) { alert("Ingrese una placa"); return; }
-        addVehicle(ownerId, plate, quickModel.value.trim());
-    });
-    searchInput.addEventListener("input", (e) => renderOwnersList(e.target.value));
-    clearSearchBtn.addEventListener("click", () => {
-        searchInput.value = "";
-        renderOwnersList("");
+    
+    limpiarBusqueda.addEventListener("click", () => {
+        buscarInput.value = "";
+        filtroActual = "";
+        renderizarLista();
     });
 
+    // Autenticación
     onAuthStateChanged(auth, (user) => {
-        if (user) updateAuthStatus(user);
-        else signInAnonymously(auth).then(u => updateAuthStatus(u.user)).catch(e => updateAuthStatus(null, e.message));
+        if (user) {
+            updateAuthStatus(user);
+        } else {
+            signInAnonymously(auth)
+                .then(u => updateAuthStatus(u.user))
+                .catch(e => updateAuthStatus(null, e.message));
+        }
     });
 </script>
 </body>
