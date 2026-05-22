@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#1a1a2e">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>AutoRegistro PRO - Gestión Vehicular</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -201,6 +200,33 @@
             font-size: 1.2rem;
         }
 
+        /* Mensaje de error de placa duplicada */
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid #c62828;
+        }
+
+        .success-message {
+            background: #e8f5e9;
+            color: #2e7d32;
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-left: 4px solid #2e7d32;
+        }
+
         /* Botones grandes */
         .btn {
             padding: 16px 22px;
@@ -224,6 +250,11 @@
         }
 
         .btn-primary:active { transform: scale(0.98); }
+        .btn-primary:disabled {
+            opacity: 0.6;
+            transform: none;
+            cursor: not-allowed;
+        }
         
         .btn-outline {
             background: transparent;
@@ -436,6 +467,9 @@
                 <label><i class="fas fa-car"></i> PLACA * (obligatorio)</label>
                 <input type="text" id="placa" class="plate-input" placeholder="Ej: ABC123" maxlength="10" autocomplete="off">
                 <div style="font-size: 0.7rem; color: #00b4db; margin-top: 6px;">Se formatea automáticamente: ABC-123</div>
+                <div id="placaError" style="display: none;" class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i> <span id="placaErrorText"></span>
+                </div>
             </div>
 
             <div class="field-group">
@@ -490,7 +524,7 @@
     </div>
 
     <footer>
-        <i class="fas fa-shield-alt"></i> Datos seguros en la nube · Todo es opcional excepto la placa
+        <i class="fas fa-shield-alt"></i> Datos seguros en la nube · No se permiten placas duplicadas
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -507,7 +541,7 @@
 
 <script type="module">
     import { initializeApp } from "firebase/app";
-    import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+    import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy, getDocs, where } from "firebase/firestore";
     import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
 
     const firebaseConfig = {
@@ -544,6 +578,8 @@
     const guardarBtn = document.getElementById("guardarBtn");
     const cancelarBtn = document.getElementById("cancelarBtn");
     const loadingToast = document.getElementById("loadingToast");
+    const placaError = document.getElementById("placaError");
+    const placaErrorText = document.getElementById("placaErrorText");
 
     // Pestañas
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -573,12 +609,55 @@
         return limpio;
     }
 
-    placa.addEventListener("input", function(e) {
+    // Función para verificar si una placa ya existe (excluyendo un ID específico para edición)
+    async function verificarPlacaDuplicada(placaValue, idExcluir = null) {
+        const q = query(collection(db, "vehiculos"), where("placa", "==", placaValue));
+        const querySnapshot = await getDocs(q);
+        
+        if (idExcluir) {
+            // Para edición: excluir el registro actual
+            return querySnapshot.docs.some(doc => doc.id !== idExcluir);
+        }
+        // Para nuevo registro
+        return !querySnapshot.empty;
+    }
+
+    // Validar placa en tiempo real mientras el usuario escribe
+    let timeoutValidacion;
+    placa.addEventListener("input", async function(e) {
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
         if (raw.length > 3) {
             this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
         } else {
             this.value = raw;
+        }
+        
+        // Ocultar error mientras escribe
+        placaError.style.display = "none";
+        
+        // Validación en tiempo real (debounced)
+        clearTimeout(timeoutValidacion);
+        const placaValue = this.value.trim();
+        const idActual = editId.value;
+        
+        if (placaValue && placaValue.length >= 5) {
+            timeoutValidacion = setTimeout(async () => {
+                try {
+                    const esDuplicada = await verificarPlacaDuplicada(placaValue, idActual);
+                    if (esDuplicada) {
+                        placaErrorText.innerHTML = `La placa ${placaValue} ya está registrada. No se permiten duplicados.`;
+                        placaError.style.display = "flex";
+                        guardarBtn.disabled = true;
+                    } else {
+                        placaError.style.display = "none";
+                        guardarBtn.disabled = false;
+                    }
+                } catch (error) {
+                    console.error("Error validando placa:", error);
+                }
+            }, 500);
+        } else {
+            guardarBtn.disabled = false;
         }
     });
 
@@ -635,6 +714,15 @@
         placaValue = formatearPlaca(placaValue);
         
         const id = editId.value;
+        
+        // Verificar duplicado antes de guardar
+        const esDuplicada = await verificarPlacaDuplicada(placaValue, id);
+        if (esDuplicada) {
+            placaErrorText.innerHTML = `La placa ${placaValue} ya está registrada. No se permiten duplicados.`;
+            placaError.style.display = "flex";
+            return;
+        }
+        
         const datos = {
             placa: placaValue,
             nombre: nombre.value.trim() || "",
@@ -656,14 +744,19 @@
         try {
             if (id) {
                 await updateDoc(doc(db, "vehiculos", id), datos);
+                // Mostrar mensaje de éxito temporal
+                const successMsg = document.createElement('div');
+                successMsg.className = 'success-message';
+                successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Registro actualizado correctamente';
+                document.querySelector('#tab-registrar .card').insertBefore(successMsg, document.querySelector('#tab-registrar .button-group'));
+                setTimeout(() => successMsg.remove(), 3000);
             } else {
-                const existe = registros.some(r => r.placa === placaValue);
-                if (existe) {
-                    alert("Ya existe un registro con esa placa");
-                    showLoading(false);
-                    return;
-                }
                 await addDoc(collection(db, "vehiculos"), datos);
+                const successMsg = document.createElement('div');
+                successMsg.className = 'success-message';
+                successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Registro guardado correctamente';
+                document.querySelector('#tab-registrar .card').insertBefore(successMsg, document.querySelector('#tab-registrar .button-group'));
+                setTimeout(() => successMsg.remove(), 3000);
             }
             limpiarFormulario();
         } catch (error) {
@@ -695,6 +788,8 @@
         correo.value = registro.correo || "";
         estudianteNombre.value = registro.estudiante?.nombre || "";
         estudianteGrado.value = registro.estudiante?.grado || "";
+        placaError.style.display = "none";
+        guardarBtn.disabled = false;
         
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
@@ -708,6 +803,8 @@
         correo.value = "";
         estudianteNombre.value = "";
         estudianteGrado.value = "";
+        placaError.style.display = "none";
+        guardarBtn.disabled = false;
     }
 
     function renderizarLista() {
