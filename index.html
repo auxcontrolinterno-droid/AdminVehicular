@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#1a1a2e">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <title>AutoRegistro - Gestión de Vehículos</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>AutoRegistro PRO - Gestión Vehicular</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -16,97 +17,115 @@
         }
 
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
             min-height: 100vh;
-            padding: 12px;
+            padding: 16px;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
         }
 
-        /* Header */
+        /* Header profesional */
         .header {
-            background: rgba(255,255,255,0.98);
-            border-radius: 20px;
-            padding: 12px 18px;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: linear-gradient(135deg, #16213e 0%, #1a1a2e 100%);
+            border-radius: 24px;
+            padding: 20px 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
         .header h1 {
-            font-size: 1.2rem;
-            color: #333;
+            font-size: 1.6rem;
+            color: white;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
         }
 
         .header h1 i {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 8px;
-            border-radius: 12px;
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            padding: 12px;
+            border-radius: 16px;
             color: white;
-            font-size: 0.9rem;
+            font-size: 1.2rem;
         }
 
         .stats {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            padding: 5px 10px;
-            border-radius: 20px;
-            color: white;
-            font-size: 0.65rem;
+            background: rgba(0,180,219,0.2);
+            padding: 10px 18px;
+            border-radius: 30px;
+            color: #00b4db;
+            font-size: 0.9rem;
             font-weight: bold;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,180,219,0.3);
         }
 
+        /* Estado de autenticación */
         .auth-status {
-            background: #e8f5e9;
-            padding: 6px 10px;
-            border-radius: 12px;
-            margin-bottom: 12px;
+            background: rgba(0,180,219,0.15);
+            backdrop-filter: blur(10px);
+            padding: 12px 16px;
+            border-radius: 20px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-size: 0.65rem;
+            gap: 12px;
+            font-size: 0.85rem;
+            color: #00b4db;
+            border: 1px solid rgba(0,180,219,0.2);
+        }
+
+        .auth-status.success {
+            background: rgba(76,175,80,0.15);
+            color: #4caf50;
+            border-color: rgba(76,175,80,0.3);
         }
 
         /* Pestañas */
         .tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
 
         .tab-btn {
             flex: 1;
-            background: rgba(255,255,255,0.9);
-            border: none;
-            padding: 12px;
-            border-radius: 16px;
-            font-weight: 600;
-            font-size: 0.85rem;
+            background: rgba(255,255,255,0.08);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1rem;
             cursor: pointer;
-            transition: all 0.2s;
-            color: #667eea;
+            transition: all 0.3s;
+            color: rgba(255,255,255,0.7);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+        }
+
+        .tab-btn i {
+            font-size: 1.2rem;
         }
 
         .tab-btn.active {
-            background: white;
-            color: #667eea;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            border-bottom: 3px solid #667eea;
+            background: linear-gradient(135deg, #00b4db, #0083b0);
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 15px rgba(0,180,219,0.3);
         }
 
         .tab-panel {
@@ -115,231 +134,286 @@
 
         .tab-panel.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Tarjetas */
         .card {
-            background: white;
-            border-radius: 20px;
-            padding: 18px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.98);
+            border-radius: 28px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
         }
 
         .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 15px;
-            color: #667eea;
-            border-left: 3px solid #667eea;
-            padding-left: 10px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 22px;
+            color: #1a1a2e;
+            border-left: 5px solid #00b4db;
+            padding-left: 15px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
 
-        /* Formulario */
+        /* Formulario - campos más grandes */
         .field-group {
-            margin-bottom: 12px;
+            margin-bottom: 18px;
         }
 
         label {
-            font-size: 0.7rem;
+            font-size: 0.85rem;
             font-weight: 600;
-            color: #888;
+            color: #555;
             display: block;
-            margin-bottom: 3px;
+            margin-bottom: 6px;
         }
 
         input, select {
             width: 100%;
-            padding: 12px 14px;
-            border: 1.5px solid #e8e8e8;
-            border-radius: 14px;
-            font-size: 0.9rem;
+            padding: 16px 18px;
+            border: 2px solid #e8e8e8;
+            border-radius: 18px;
+            font-size: 1rem;
             background: #fafafa;
             transition: all 0.2s;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: #667eea;
+            border-color: #00b4db;
             background: white;
-            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+            box-shadow: 0 0 0 4px rgba(0,180,219,0.1);
         }
 
         .plate-input {
             font-family: monospace;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            font-size: 1.2rem;
         }
 
+        /* Botones grandes */
         .btn {
-            padding: 12px 18px;
-            border-radius: 14px;
-            font-weight: 600;
-            font-size: 0.85rem;
+            padding: 16px 22px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 1rem;
             border: none;
             cursor: pointer;
             transition: all 0.2s;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             width: 100%;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #00b4db, #0083b0);
             color: white;
+            box-shadow: 0 4px 12px rgba(0,180,219,0.3);
         }
 
-        .btn-primary:active { transform: scale(0.97); }
+        .btn-primary:active { transform: scale(0.98); }
         
         .btn-outline {
             background: transparent;
-            border: 1.5px solid #667eea;
-            color: #667eea;
+            border: 2px solid #00b4db;
+            color: #0083b0;
         }
 
         .button-group {
             display: flex;
-            gap: 10px;
-            margin-top: 15px;
+            gap: 14px;
+            margin-top: 20px;
         }
 
-        /* Tarjeta de registro en la lista */
+        /* Tarjetas de registro en la lista - más grandes */
         .registro-card {
-            background: #f8f9fa;
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 12px;
-            border-left: 4px solid #667eea;
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            margin-bottom: 16px;
+            border-left: 6px solid #00b4db;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s;
+        }
+
+        .registro-card:active {
+            transform: scale(0.99);
         }
 
         .registro-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 10px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
 
         .placa-badge {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #00b4db, #0083b0);
             color: white;
-            padding: 6px 12px;
-            border-radius: 12px;
+            padding: 12px 20px;
+            border-radius: 20px;
             font-family: monospace;
             font-weight: bold;
-            font-size: 0.85rem;
-            letter-spacing: 1px;
+            font-size: 1.2rem;
+            letter-spacing: 2px;
         }
 
         .acciones-btns {
             display: flex;
-            gap: 8px;
+            gap: 12px;
         }
 
         .acciones-btns button {
             background: transparent;
             border: none;
-            font-size: 0.9rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            padding: 5px 8px;
-            border-radius: 8px;
+            padding: 10px 14px;
+            border-radius: 14px;
+            transition: all 0.2s;
+        }
+
+        .acciones-btns button:first-child {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .acciones-btns button:last-child {
+            background: #ffebee;
+            color: #c62828;
         }
 
         .info-persona {
-            background: white;
-            border-radius: 12px;
-            padding: 10px;
-            margin: 8px 0;
-            font-size: 0.8rem;
+            background: #f8f9fa;
+            border-radius: 18px;
+            padding: 16px;
+            margin: 12px 0;
         }
 
         .info-label {
-            font-size: 0.65rem;
-            color: #888;
-            margin-bottom: 3px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #00b4db;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
         }
 
         .info-value {
+            font-size: 1rem;
             font-weight: 500;
             color: #333;
+            margin-bottom: 10px;
             word-break: break-word;
         }
 
+        .info-value:last-child {
+            margin-bottom: 0;
+        }
+
         .estudiante-tag {
-            background: #fff8e1;
-            border-radius: 10px;
-            padding: 8px;
-            margin-top: 8px;
-            font-size: 0.75rem;
+            background: linear-gradient(135deg, #fff8e1, #fff3e0);
+            border-radius: 18px;
+            padding: 14px;
+            margin-top: 12px;
+            border-left: 4px solid #ff9800;
         }
 
         .empty-message {
             text-align: center;
-            padding: 30px;
+            padding: 50px 30px;
             color: #999;
-            font-size: 0.8rem;
+            font-size: 0.95rem;
         }
 
+        /* Buscador más grande */
         .search-bar {
             display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 20px;
         }
         
         .search-bar input {
             flex: 1;
             margin: 0;
+            padding: 16px 18px;
+            font-size: 1rem;
         }
 
-        #loadingToast {
-            position: fixed;
-            bottom: 16px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.85);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            display: none;
-            z-index: 1000;
-            white-space: nowrap;
+        .search-bar button {
+            width: auto;
+            padding: 16px 20px;
         }
 
-        footer {
-            text-align: center;
-            font-size: 0.6rem;
-            color: rgba(255,255,255,0.7);
-            padding: 15px;
-        }
-
-        .edit-icon { color: #667eea; cursor: pointer; }
-        .delete-icon { color: #ef4444; cursor: pointer; }
-
-        /* Scroll para la lista */
+        /* Scroll */
         #listaContainer {
             max-height: 55vh;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
+        }
+
+        #loadingToast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.9);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            display: none;
+            z-index: 1000;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.6);
+            padding: 20px;
+        }
+
+        /* Scrollbar personalizado */
+        #listaContainer::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        #listaContainer::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        #listaContainer::-webkit-scrollbar-thumb {
+            background: #00b4db;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1><i class="fas fa-clipboard-list"></i> AutoRegistro</h1>
+        <h1><i class="fas fa-clipboard-list"></i> AutoRegistro PRO</h1>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
     <div id="authStatus" class="auth-status">
-        <i class="fas fa-spinner fa-pulse"></i> Conectando...
+        <i class="fas fa-spinner fa-pulse"></i> Conectando a la nube...
     </div>
 
     <!-- Pestañas -->
@@ -355,42 +429,42 @@
     <!-- Panel Registrar -->
     <div id="tab-registrar" class="tab-panel active">
         <div class="card">
-            <div class="card-title"><i class="fas fa-plus-circle"></i> Registrar vehículo o persona</div>
+            <div class="card-title"><i class="fas fa-plus-circle"></i> Nuevo Registro</div>
             <input type="hidden" id="editId">
             
             <div class="field-group">
-                <label><i class="fas fa-car"></i> PLACA (obligatorio) *</label>
+                <label><i class="fas fa-car"></i> PLACA * (obligatorio)</label>
                 <input type="text" id="placa" class="plate-input" placeholder="Ej: ABC123" maxlength="10" autocomplete="off">
-                <div style="font-size: 0.6rem; color: #999; margin-top: 3px;">Se formateará automáticamente como ABC-123</div>
+                <div style="font-size: 0.7rem; color: #00b4db; margin-top: 6px;">Se formatea automáticamente: ABC-123</div>
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-user"></i> Nombre del dueño (opcional)</label>
+                <label><i class="fas fa-user"></i> Nombre del dueño</label>
                 <input type="text" id="nombre" placeholder="Ej: María González">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-phone"></i> Teléfono (opcional)</label>
+                <label><i class="fas fa-phone"></i> Teléfono</label>
                 <input type="tel" id="telefono" placeholder="Ej: 555-1234">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-id-card"></i> Identificación (opcional)</label>
-                <input type="text" id="identificacion" placeholder="Cédula/DNI">
+                <label><i class="fas fa-id-card"></i> Identificación</label>
+                <input type="text" id="identificacion" placeholder="Cédula / DNI">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-envelope"></i> Correo (opcional)</label>
+                <label><i class="fas fa-envelope"></i> Correo electrónico</label>
                 <input type="email" id="correo" placeholder="correo@ejemplo.com">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-child"></i> Estudiante que recoge (opcional)</label>
+                <label><i class="fas fa-child"></i> Estudiante que recoge</label>
                 <input type="text" id="estudianteNombre" placeholder="Nombre del estudiante">
             </div>
 
             <div class="field-group">
-                <label><i class="fas fa-graduation-cap"></i> Grado / Curso (opcional)</label>
+                <label><i class="fas fa-graduation-cap"></i> Grado / Curso</label>
                 <input type="text" id="estudianteGrado" placeholder="Ej: 5to Primaria">
             </div>
 
@@ -404,10 +478,10 @@
     <!-- Panel Buscar -->
     <div id="tab-buscar" class="tab-panel">
         <div class="card">
-            <div class="card-title"><i class="fas fa-search"></i> Buscar registros</div>
+            <div class="card-title"><i class="fas fa-search"></i> Buscar Registros</div>
             <div class="search-bar">
-                <input type="text" id="buscarInput" placeholder="Buscar por placa, nombre o estudiante...">
-                <button class="btn btn-outline" id="limpiarBusqueda" style="width: auto; padding: 12px 16px;"><i class="fas fa-eraser"></i></button>
+                <input type="text" id="buscarInput" placeholder="🔍 Buscar por placa, nombre o estudiante...">
+                <button class="btn btn-outline" id="limpiarBusqueda" style="width: auto;"><i class="fas fa-eraser"></i></button>
             </div>
             <div id="listaContainer">
                 <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Cargando registros...</div>
@@ -416,7 +490,7 @@
     </div>
 
     <footer>
-        <i class="fas fa-info-circle"></i> Todo es opcional excepto la placa. Puedes editar después.
+        <i class="fas fa-shield-alt"></i> Datos seguros en la nube · Todo es opcional excepto la placa
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -489,7 +563,6 @@
         loadingToast.style.display = show ? "flex" : "none";
     }
 
-    // Formatear placa: convertir a mayúsculas y agregar guión después de las primeras 3 letras/números
     function formatearPlaca(texto) {
         if (!texto) return "";
         let limpio = texto.toUpperCase().replace(/\s/g, "");
@@ -500,7 +573,6 @@
         return limpio;
     }
 
-    // Aplicar formato automático mientras escribe
     placa.addEventListener("input", function(e) {
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
         if (raw.length > 3) {
@@ -512,19 +584,22 @@
 
     function updateAuthStatus(user, error = null) {
         if (error) {
-            authStatusDiv.style.background = "#ffebee";
-            authStatusDiv.style.color = "#c62828";
+            authStatusDiv.classList.remove('success');
+            authStatusDiv.style.background = "rgba(198,40,40,0.15)";
+            authStatusDiv.style.color = "#ef5350";
             authStatusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.substring(0, 100)}`;
             autenticado = false;
         } else if (user) {
-            authStatusDiv.style.background = "#e8f5e9";
-            authStatusDiv.style.color = "#2e7d32";
-            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Conectado · Datos seguros`;
+            authStatusDiv.classList.add('success');
+            authStatusDiv.style.background = "rgba(76,175,80,0.15)";
+            authStatusDiv.style.color = "#4caf50";
+            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Conectado a la nube · Datos seguros`;
             autenticado = true;
             cargarRegistros();
         } else {
-            authStatusDiv.style.background = "#fff3cd";
-            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando...`;
+            authStatusDiv.classList.remove('success');
+            authStatusDiv.style.background = "rgba(255,193,7,0.15)";
+            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando a la nube...`;
             autenticado = false;
         }
     }
@@ -573,7 +648,6 @@
             actualizado: new Date().toISOString()
         };
         
-        // Si no hay estudiante, guardar como null
         if (!datos.estudiante.nombre && !datos.estudiante.grado) {
             datos.estudiante = null;
         }
@@ -583,7 +657,6 @@
             if (id) {
                 await updateDoc(doc(db, "vehiculos", id), datos);
             } else {
-                // Verificar si ya existe una placa igual
                 const existe = registros.some(r => r.placa === placaValue);
                 if (existe) {
                     alert("Ya existe un registro con esa placa");
@@ -602,7 +675,7 @@
 
     async function eliminarRegistro(id, placaTexto) {
         if (!autenticado) return;
-        if (!confirm(`¿Eliminar el registro de la placa ${placaTexto}?`)) return;
+        if (!confirm(`¿Eliminar el registro de la placa ${placaTexto}?\nEsta acción no se puede deshacer.`)) return;
         showLoading(true);
         try {
             await deleteDoc(doc(db, "vehiculos", id));
@@ -623,7 +696,6 @@
         estudianteNombre.value = registro.estudiante?.nombre || "";
         estudianteGrado.value = registro.estudiante?.grado || "";
         
-        // Cambiar a pestaña registrar
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
 
@@ -650,7 +722,7 @@
         }
         
         if (filtrados.length === 0) {
-            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros</div>`;
+            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros<br><span style="font-size:0.8rem;">Comienza agregando un vehículo</span></div>`;
             return;
         }
         
@@ -661,28 +733,26 @@
                 <div class="registro-header">
                     <div class="placa-badge"><i class="fas fa-car"></i> ${escapeHtml(r.placa)}</div>
                     <div class="acciones-btns">
-                        <button onclick="window.editarRegistroDesdeGlobal(${JSON.stringify(r.id).replace(/"/g, '&quot;')}, ${JSON.stringify(r).replace(/"/g, '&quot;')})" style="color:#667eea;"><i class="fas fa-edit"></i></button>
-                        <button onclick="window.eliminarRegistroDesdeGlobal('${r.id}', '${escapeHtml(r.placa)}')" style="color:#ef4444;"><i class="fas fa-trash"></i></button>
+                        <button onclick="window.editarRegistroDesdeGlobal(${JSON.stringify(r.id).replace(/"/g, '&quot;')}, ${JSON.stringify(r).replace(/"/g, '&quot;')})"><i class="fas fa-edit"></i> Editar</button>
+                        <button onclick="window.eliminarRegistroDesdeGlobal('${r.id}', '${escapeHtml(r.placa)}')"><i class="fas fa-trash"></i></button>
                     </div>
                 </div>`;
             
-            // Mostrar datos del dueño si existen
             if (r.nombre || r.telefono || r.identificacion || r.correo) {
                 html += `<div class="info-persona">
-                            <div style="font-size:0.65rem; color:#888; margin-bottom:5px;"><i class="fas fa-user"></i> DATOS DEL DUEÑO</div>`;
-                if (r.nombre) html += `<div class="info-label">Nombre</div><div class="info-value">${escapeHtml(r.nombre)}</div>`;
-                if (r.telefono) html += `<div class="info-label">Teléfono</div><div class="info-value">${escapeHtml(r.telefono)}</div>`;
-                if (r.identificacion) html += `<div class="info-label">Identificación</div><div class="info-value">${escapeHtml(r.identificacion)}</div>`;
-                if (r.correo) html += `<div class="info-label">Correo</div><div class="info-value">${escapeHtml(r.correo)}</div>`;
+                            <div class="info-label"><i class="fas fa-user"></i> DATOS DEL DUEÑO</div>`;
+                if (r.nombre) html += `<div class="info-value"><strong>Nombre:</strong> ${escapeHtml(r.nombre)}</div>`;
+                if (r.telefono) html += `<div class="info-value"><strong>Teléfono:</strong> ${escapeHtml(r.telefono)}</div>`;
+                if (r.identificacion) html += `<div class="info-value"><strong>Identificación:</strong> ${escapeHtml(r.identificacion)}</div>`;
+                if (r.correo) html += `<div class="info-value"><strong>Correo:</strong> ${escapeHtml(r.correo)}</div>`;
                 html += `</div>`;
             }
             
-            // Mostrar estudiante si existe
             if (r.estudiante && (r.estudiante.nombre || r.estudiante.grado)) {
                 html += `<div class="estudiante-tag">
-                            <i class="fas fa-child"></i> <strong>Estudiante que recoge:</strong><br>
-                            ${r.estudiante.nombre ? escapeHtml(r.estudiante.nombre) : ''}
-                            ${r.estudiante.grado ? ` <span style="color:#ff9800;">📚 ${escapeHtml(r.estudiante.grado)}</span>` : ''}
+                            <i class="fas fa-child"></i> <strong>🎓 ESTUDIANTE QUE RECOGE</strong><br><br>
+                            ${r.estudiante.nombre ? `<strong>Nombre:</strong> ${escapeHtml(r.estudiante.nombre)}<br>` : ''}
+                            ${r.estudiante.grado ? `<strong>Grado:</strong> ${escapeHtml(r.estudiante.grado)}` : ''}
                          </div>`;
             }
             
@@ -692,7 +762,6 @@
         listaContainer.innerHTML = html;
     }
     
-    // Exponer funciones globalmente para los botones dinámicos
     window.editarRegistroDesdeGlobal = function(id, registro) {
         editarRegistro(registro);
     };
@@ -703,7 +772,8 @@
 
     function actualizarEstadisticas() {
         const total = registros.length;
-        globalStatsSpan.innerHTML = `<i class="fas fa-car"></i> ${total} vehículo${total !== 1 ? 's' : ''}`;
+        const conDatos = registros.filter(r => r.nombre).length;
+        globalStatsSpan.innerHTML = `<i class="fas fa-car"></i> ${total} vehículo${total !== 1 ? 's' : ''} · ${conDatos} con dueño`;
     }
 
     function escapeHtml(str) {
@@ -711,7 +781,6 @@
         return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    // Eventos
     guardarBtn.addEventListener("click", guardarRegistro);
     cancelarBtn.addEventListener("click", limpiarFormulario);
     
@@ -726,7 +795,6 @@
         renderizarLista();
     });
 
-    // Autenticación
     onAuthStateChanged(auth, (user) => {
         if (user) {
             updateAuthStatus(user);
