@@ -200,6 +200,52 @@
             font-size: 1.2rem;
         }
 
+        /* Selector de color personalizado */
+        .color-selector {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 8px;
+        }
+        
+        .color-option {
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: all 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .color-option.selected {
+            border-color: #1a1a2e;
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+        
+        .color-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .color-input-wrapper {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .color-input-wrapper input {
+            flex: 1;
+        }
+        
+        .color-preview {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            border: 2px solid #e0e0e0;
+            cursor: pointer;
+        }
+
         /* Mensaje de error de placa duplicada */
         .error-message {
             background: #ffebee;
@@ -268,7 +314,7 @@
             margin-top: 20px;
         }
 
-        /* Tarjetas de registro en la lista - más grandes */
+        /* Tarjetas de registro en la lista */
         .registro-card {
             background: white;
             border-radius: 24px;
@@ -301,6 +347,18 @@
             font-weight: bold;
             font-size: 1.2rem;
             letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            display: inline-block;
+            border: 2px solid white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2);
         }
 
         .acciones-btns {
@@ -350,6 +408,9 @@
             color: #333;
             margin-bottom: 10px;
             word-break: break-word;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .info-value:last-child {
@@ -473,6 +534,28 @@
             </div>
 
             <div class="field-group">
+                <label><i class="fas fa-palette"></i> Color del vehículo (opcional)</label>
+                <div class="color-selector" id="colorSelector">
+                    <div class="color-option" style="background-color: #FF0000;" data-color="#FF0000" title="Rojo"></div>
+                    <div class="color-option" style="background-color: #0000FF;" data-color="#0000FF" title="Azul"></div>
+                    <div class="color-option" style="background-color: #008000;" data-color="#008000" title="Verde"></div>
+                    <div class="color-option" style="background-color: #FFFF00;" data-color="#FFFF00" title="Amarillo"></div>
+                    <div class="color-option" style="background-color: #FFA500;" data-color="#FFA500" title="Naranja"></div>
+                    <div class="color-option" style="background-color: #800080;" data-color="#800080" title="Morado"></div>
+                    <div class="color-option" style="background-color: #FFC0CB;" data-color="#FFC0CB" title="Rosa"></div>
+                    <div class="color-option" style="background-color: #808080;" data-color="#808080" title="Gris"></div>
+                    <div class="color-option" style="background-color: #000000;" data-color="#000000" title="Negro"></div>
+                    <div class="color-option" style="background-color: #FFFFFF; border: 1px solid #ccc;" data-color="#FFFFFF" title="Blanco"></div>
+                    <div class="color-option" style="background-color: #A52A2A;" data-color="#A52A2A" title="Marrón"></div>
+                    <div class="color-option" style="background-color: #00FFFF;" data-color="#00FFFF" title="Cian"></div>
+                </div>
+                <div style="margin-top: 12px;" class="color-input-wrapper">
+                    <input type="text" id="colorVehiculo" placeholder="O escribe un color (ej: Rojo, Azul, Plata...)" autocomplete="off">
+                    <div id="colorPreview" class="color-preview" style="background-color: #ccc;"></div>
+                </div>
+            </div>
+
+            <div class="field-group">
                 <label><i class="fas fa-user"></i> Nombre del dueño</label>
                 <input type="text" id="nombre" placeholder="Ej: María González">
             </div>
@@ -514,7 +597,7 @@
         <div class="card">
             <div class="card-title"><i class="fas fa-search"></i> Buscar Registros</div>
             <div class="search-bar">
-                <input type="text" id="buscarInput" placeholder="🔍 Buscar por placa, nombre o estudiante...">
+                <input type="text" id="buscarInput" placeholder="🔍 Buscar por placa, nombre, color o estudiante...">
                 <button class="btn btn-outline" id="limpiarBusqueda" style="width: auto;"><i class="fas fa-eraser"></i></button>
             </div>
             <div id="listaContainer">
@@ -569,6 +652,8 @@
     const authStatusDiv = document.getElementById("authStatus");
     const editId = document.getElementById("editId");
     const placa = document.getElementById("placa");
+    const colorVehiculo = document.getElementById("colorVehiculo");
+    const colorPreview = document.getElementById("colorPreview");
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const identificacion = document.getElementById("identificacion");
@@ -580,6 +665,44 @@
     const loadingToast = document.getElementById("loadingToast");
     const placaError = document.getElementById("placaError");
     const placaErrorText = document.getElementById("placaErrorText");
+
+    // Selector de color
+    const colorOptions = document.querySelectorAll('.color-option');
+    
+    colorOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const selectedColor = option.dataset.color;
+            colorVehiculo.value = obtenerNombreColor(selectedColor);
+            colorPreview.style.backgroundColor = selectedColor;
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+        });
+    });
+    
+    colorVehiculo.addEventListener('input', () => {
+        const valor = colorVehiculo.value;
+        colorPreview.style.backgroundColor = valor;
+        // Limpiar selección de colores predefinidos
+        colorOptions.forEach(opt => opt.classList.remove('selected'));
+    });
+    
+    function obtenerNombreColor(hex) {
+        const colores = {
+            '#FF0000': 'Rojo',
+            '#0000FF': 'Azul',
+            '#008000': 'Verde',
+            '#FFFF00': 'Amarillo',
+            '#FFA500': 'Naranja',
+            '#800080': 'Morado',
+            '#FFC0CB': 'Rosa',
+            '#808080': 'Gris',
+            '#000000': 'Negro',
+            '#FFFFFF': 'Blanco',
+            '#A52A2A': 'Marrón',
+            '#00FFFF': 'Cian'
+        };
+        return colores[hex] || hex;
+    }
 
     // Pestañas
     const tabBtns = document.querySelectorAll('.tab-btn');
@@ -609,20 +732,16 @@
         return limpio;
     }
 
-    // Función para verificar si una placa ya existe (excluyendo un ID específico para edición)
     async function verificarPlacaDuplicada(placaValue, idExcluir = null) {
         const q = query(collection(db, "vehiculos"), where("placa", "==", placaValue));
         const querySnapshot = await getDocs(q);
         
         if (idExcluir) {
-            // Para edición: excluir el registro actual
             return querySnapshot.docs.some(doc => doc.id !== idExcluir);
         }
-        // Para nuevo registro
         return !querySnapshot.empty;
     }
 
-    // Validar placa en tiempo real mientras el usuario escribe
     let timeoutValidacion;
     placa.addEventListener("input", async function(e) {
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
@@ -632,10 +751,8 @@
             this.value = raw;
         }
         
-        // Ocultar error mientras escribe
         placaError.style.display = "none";
         
-        // Validación en tiempo real (debounced)
         clearTimeout(timeoutValidacion);
         const placaValue = this.value.trim();
         const idActual = editId.value;
@@ -715,7 +832,6 @@
         
         const id = editId.value;
         
-        // Verificar duplicado antes de guardar
         const esDuplicada = await verificarPlacaDuplicada(placaValue, id);
         if (esDuplicada) {
             placaErrorText.innerHTML = `La placa ${placaValue} ya está registrada. No se permiten duplicados.`;
@@ -725,6 +841,7 @@
         
         const datos = {
             placa: placaValue,
+            color: colorVehiculo.value.trim() || "",
             nombre: nombre.value.trim() || "",
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
@@ -744,7 +861,6 @@
         try {
             if (id) {
                 await updateDoc(doc(db, "vehiculos", id), datos);
-                // Mostrar mensaje de éxito temporal
                 const successMsg = document.createElement('div');
                 successMsg.className = 'success-message';
                 successMsg.innerHTML = '<i class="fas fa-check-circle"></i> Registro actualizado correctamente';
@@ -782,6 +898,8 @@
     function editarRegistro(registro) {
         editId.value = registro.id;
         placa.value = registro.placa;
+        colorVehiculo.value = registro.color || "";
+        colorPreview.style.backgroundColor = registro.color || "#ccc";
         nombre.value = registro.nombre || "";
         telefono.value = registro.telefono || "";
         identificacion.value = registro.identificacion || "";
@@ -797,6 +915,8 @@
     function limpiarFormulario() {
         editId.value = "";
         placa.value = "";
+        colorVehiculo.value = "";
+        colorPreview.style.backgroundColor = "#ccc";
         nombre.value = "";
         telefono.value = "";
         identificacion.value = "";
@@ -805,6 +925,7 @@
         estudianteGrado.value = "";
         placaError.style.display = "none";
         guardarBtn.disabled = false;
+        colorOptions.forEach(opt => opt.classList.remove('selected'));
     }
 
     function renderizarLista() {
@@ -813,94 +934,11 @@
             const busqueda = filtroActual.toLowerCase();
             filtrados = registros.filter(r => 
                 r.placa?.toLowerCase().includes(busqueda) ||
+                r.color?.toLowerCase().includes(busqueda) ||
                 r.nombre?.toLowerCase().includes(busqueda) ||
                 r.estudiante?.nombre?.toLowerCase().includes(busqueda)
             );
         }
         
         if (filtrados.length === 0) {
-            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros<br><span style="font-size:0.8rem;">Comienza agregando un vehículo</span></div>`;
-            return;
-        }
-        
-        let html = "";
-        filtrados.forEach(r => {
-            html += `
-            <div class="registro-card">
-                <div class="registro-header">
-                    <div class="placa-badge"><i class="fas fa-car"></i> ${escapeHtml(r.placa)}</div>
-                    <div class="acciones-btns">
-                        <button onclick="window.editarRegistroDesdeGlobal(${JSON.stringify(r.id).replace(/"/g, '&quot;')}, ${JSON.stringify(r).replace(/"/g, '&quot;')})"><i class="fas fa-edit"></i> Editar</button>
-                        <button onclick="window.eliminarRegistroDesdeGlobal('${r.id}', '${escapeHtml(r.placa)}')"><i class="fas fa-trash"></i></button>
-                    </div>
-                </div>`;
-            
-            if (r.nombre || r.telefono || r.identificacion || r.correo) {
-                html += `<div class="info-persona">
-                            <div class="info-label"><i class="fas fa-user"></i> DATOS DEL DUEÑO</div>`;
-                if (r.nombre) html += `<div class="info-value"><strong>Nombre:</strong> ${escapeHtml(r.nombre)}</div>`;
-                if (r.telefono) html += `<div class="info-value"><strong>Teléfono:</strong> ${escapeHtml(r.telefono)}</div>`;
-                if (r.identificacion) html += `<div class="info-value"><strong>Identificación:</strong> ${escapeHtml(r.identificacion)}</div>`;
-                if (r.correo) html += `<div class="info-value"><strong>Correo:</strong> ${escapeHtml(r.correo)}</div>`;
-                html += `</div>`;
-            }
-            
-            if (r.estudiante && (r.estudiante.nombre || r.estudiante.grado)) {
-                html += `<div class="estudiante-tag">
-                            <i class="fas fa-child"></i> <strong>🎓 ESTUDIANTE QUE RECOGE</strong><br><br>
-                            ${r.estudiante.nombre ? `<strong>Nombre:</strong> ${escapeHtml(r.estudiante.nombre)}<br>` : ''}
-                            ${r.estudiante.grado ? `<strong>Grado:</strong> ${escapeHtml(r.estudiante.grado)}` : ''}
-                         </div>`;
-            }
-            
-            html += `</div>`;
-        });
-        
-        listaContainer.innerHTML = html;
-    }
-    
-    window.editarRegistroDesdeGlobal = function(id, registro) {
-        editarRegistro(registro);
-    };
-    
-    window.eliminarRegistroDesdeGlobal = function(id, placaTexto) {
-        eliminarRegistro(id, placaTexto);
-    };
-
-    function actualizarEstadisticas() {
-        const total = registros.length;
-        const conDatos = registros.filter(r => r.nombre).length;
-        globalStatsSpan.innerHTML = `<i class="fas fa-car"></i> ${total} vehículo${total !== 1 ? 's' : ''} · ${conDatos} con dueño`;
-    }
-
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-    }
-
-    guardarBtn.addEventListener("click", guardarRegistro);
-    cancelarBtn.addEventListener("click", limpiarFormulario);
-    
-    buscarInput.addEventListener("input", (e) => {
-        filtroActual = e.target.value;
-        renderizarLista();
-    });
-    
-    limpiarBusqueda.addEventListener("click", () => {
-        buscarInput.value = "";
-        filtroActual = "";
-        renderizarLista();
-    });
-
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            updateAuthStatus(user);
-        } else {
-            signInAnonymously(auth)
-                .then(u => updateAuthStatus(u.user))
-                .catch(e => updateAuthStatus(null, e.message));
-        }
-    });
-</script>
-</body>
-</html>
+            listaContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i>
