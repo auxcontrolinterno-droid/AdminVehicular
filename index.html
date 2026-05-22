@@ -2,129 +2,504 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diagnóstico Firebase - AdminVehiculos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>AdminVehiculos - Gestión móvil</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
-        .container { max-width: 900px; margin: 0 auto; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Header móvil */
+        .header {
+            background: rgba(255,255,255,0.98);
+            border-radius: 20px;
+            padding: 15px 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header h1 i {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 8px;
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .stats {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 6px 12px;
+            border-radius: 20px;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Estado de autenticación */
+        .auth-status {
+            background: #e8f5e9;
+            padding: 8px 12px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.75rem;
+            justify-content: center;
+        }
+
+        .auth-status.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        /* Tarjetas */
         .card {
             background: white;
             border-radius: 20px;
-            padding: 30px;
-            margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 18px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         }
-        h1 { color: #333; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .status-box {
-            padding: 15px;
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #667eea;
+            border-left: 3px solid #667eea;
+            padding-left: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Formularios */
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1.5px solid #e0e0e0;
             border-radius: 12px;
-            margin: 15px 0;
-            font-family: monospace;
+            font-size: 0.9rem;
+            background: white;
+            transition: all 0.2s;
         }
-        .error { background: #ffebee; border-left: 4px solid #c62828; color: #c62828; }
-        .success { background: #e8f5e9; border-left: 4px solid #2e7d32; color: #2e7d32; }
-        .warning { background: #fff3e0; border-left: 4px solid #ff9800; color: #e65100; }
-        .info { background: #e3f2fd; border-left: 4px solid #1976d2; color: #0d47a1; }
-        .step {
-            background: #f5f5f5;
-            padding: 15px;
-            border-radius: 12px;
-            margin: 15px 0;
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
         }
-        button {
+
+        /* Botones */
+        .btn {
+            padding: 12px 18px;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 10px;
-            cursor: pointer;
+        }
+
+        .btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #667eea;
+            color: #667eea;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.7rem;
+        }
+
+        /* Grid de botones */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        /* Búsqueda */
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .search-bar input {
+            flex: 1;
+            margin: 0;
+        }
+
+        /* Lista de dueños */
+        .owner-card {
+            background: #f8f9fa;
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .owner-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .owner-name {
             font-size: 1rem;
-            margin-top: 15px;
+            font-weight: 700;
+            color: #333;
+            word-break: break-word;
         }
-        code {
-            background: #e0e0e0;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: monospace;
+
+        .owner-actions {
+            display: flex;
+            gap: 6px;
         }
-        pre {
-            background: #263238;
-            color: #aed581;
-            padding: 15px;
-            border-radius: 10px;
-            overflow-x: auto;
+
+        .owner-actions button {
+            background: transparent;
+            border: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+
+        .owner-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Sección estudiantes */
+        .students-section {
+            background: #fff8e1;
+            border-radius: 12px;
+            padding: 10px;
             margin: 10px 0;
         }
-        .firebase-link {
-            color: #1976d2;
-            text-decoration: none;
-            font-weight: bold;
+
+        .section-header {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #ff9800;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
-        .firebase-link:hover { text-decoration: underline; }
+
+        .student-item {
+            background: white;
+            padding: 8px 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .student-info {
+            flex: 1;
+            font-size: 0.8rem;
+        }
+
+        .student-name {
+            font-weight: 600;
+        }
+
+        .student-grade {
+            font-size: 0.7rem;
+            color: #ff9800;
+        }
+
+        /* Tabla de vehículos */
+        .vehicle-list {
+            margin-top: 10px;
+        }
+
+        .vehicle-item {
+            background: white;
+            padding: 8px 10px;
+            margin: 5px 0;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vehicle-info {
+            flex: 1;
+        }
+
+        .vehicle-plate {
+            font-weight: 600;
+            font-size: 0.85rem;
+            font-family: monospace;
+        }
+
+        .vehicle-model {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        .vehicle-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .vehicle-actions i {
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 6px;
+        }
+
+        .edit-icon { color: #667eea; }
+        .delete-icon { color: #ef4444; }
+
+        /* Botones de agregar */
+        .add-btn {
+            background: transparent;
+            border: 1.5px dashed #667eea;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-top: 8px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #667eea;
+            width: auto;
+        }
+
+        .add-student-btn {
+            border-color: #ff9800;
+            color: #ff9800;
+        }
+
+        /* Loading */
+        #loadingToast {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.85);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            display: none;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            white-space: nowrap;
+        }
+
+        /* Empty state */
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #999;
+            font-size: 0.85rem;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+
+        /* Scroll suave */
+        #ownersListContainer {
+            max-height: 55vh;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        hr {
+            margin: 15px 0;
+            border: none;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.7);
+            padding: 15px;
+        }
+
+        /* Ajustes táctiles */
+        button, .add-btn, .edit-icon, .delete-icon, .delete-student {
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+
+        /* Mejoras para input en móvil */
+        input, select {
+            font-size: 16px; /* Evita zoom en iOS */
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <div class="card">
-        <h1><i class="fas fa-stethoscope"></i> Diagnóstico Firebase</h1>
-        
-        <div id="diagnosticBox" class="status-box info">
-            <i class="fas fa-spinner fa-pulse"></i> Ejecutando diagnóstico...
-        </div>
-        
-        <div id="solutionBox" style="display: none;"></div>
-        
-        <button onclick="location.reload()"><i class="fas fa-sync-alt"></i> Reintentar diagnóstico</button>
-        <button onclick="window.location.href='https://console.firebase.google.com/project/admin-vehiculos-88011/authentication/providers'" style="margin-left: 10px;">
-            <i class="fas fa-external-link-alt"></i> Abrir Firebase Console
-        </button>
+    <div class="header">
+        <h1><i class="fas fa-car"></i> AdminVehiculos</h1>
+        <div class="stats" id="globalStats">Cargando...</div>
     </div>
-    
+
+    <div id="authStatus" class="auth-status">
+        <i class="fas fa-spinner fa-pulse"></i> Conectando...
+    </div>
+
+    <!-- Formulario de dueño -->
     <div class="card">
-        <h2><i class="fas fa-clipboard-list"></i> Pasos para corregir el error</h2>
-        
-        <div class="step">
-            <h3><i class="fas fa-1-circle"></i> Habilitar autenticación anónima</h3>
-            <ol style="margin-left: 20px; line-height: 1.8;">
-                <li>Ve a <a href="https://console.firebase.google.com/project/admin-vehiculos-88011/authentication/providers" target="_blank" class="firebase-link">Firebase Console → Authentication → Sign-in methods</a></li>
-                <li>Busca <strong>"Anónimo" (Anonymous)</strong> en la lista</li>
-                <li>Haz clic en <strong>Editar</strong> (lápiz)</li>
-                <li><strong>Activa el interruptor</strong> (debe quedar en azul)</li>
-                <li>Haz clic en <strong>Guardar</strong></li>
-            </ol>
+        <div class="card-title"><i class="fas fa-user-plus"></i> Registrar Dueño</div>
+        <input type="hidden" id="ownerIdEdit">
+        <div class="form-group">
+            <input type="text" id="ownerName" placeholder="Nombre completo *">
+        </div>
+        <div class="form-group">
+            <input type="tel" id="ownerPhone" placeholder="Teléfono *">
+        </div>
+        <div class="form-group">
+            <input type="text" id="ownerIdNumber" placeholder="Identificación *">
+        </div>
+        <div class="form-group">
+            <input type="email" id="ownerEmail" placeholder="Correo (opcional)">
         </div>
         
-        <div class="step">
-            <h3><i class="fas fa-2-circle"></i> Configurar Firestore</h3>
-            <ol style="margin-left: 20px; line-height: 1.8;">
-                <li>Ve a <strong>Firestore Database</strong></li>
-                <li>Si no existe, haz clic en <strong>Crear base de datos</strong></li>
-                <li>Selecciona <strong>Iniciar en modo de prueba</strong></li>
-                <li>En la pestaña <strong>Reglas</strong>, pega este código:</li>
-            </ol>
-            <pre>rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}</pre>
+        <div style="font-size:0.75rem; color:#667eea; margin: 10px 0 5px 0;">
+            <i class="fas fa-child"></i> Datos del estudiante (opcional)
+        </div>
+        <div class="form-group">
+            <input type="text" id="studentName" placeholder="Nombre del estudiante">
+        </div>
+        <div class="form-group">
+            <input type="text" id="studentGrade" placeholder="Grado que cursa">
         </div>
         
-        <div class="step">
-            <h3><i class="fas fa-3-circle"></i> Probar la conexión</h3>
-            <p>Después de guardar los cambios, espera 30 segundos y <strong>recarga esta página</strong> (Ctrl+Shift+R).</p>
+        <div class="button-group">
+            <button class="btn btn-primary" id="saveOwnerBtn"><i class="fas fa-save"></i> Guardar</button>
+            <button class="btn btn-outline" id="cancelEditBtn"><i class="fas fa-times"></i> Cancelar</button>
         </div>
     </div>
+
+    <!-- Agregar vehículo rápido -->
+    <div class="card">
+        <div class="card-title"><i class="fas fa-plus-circle"></i> Agregar Vehículo</div>
+        <div class="form-group">
+            <select id="quickOwnerSelect">
+                <option value="">-- Seleccionar dueño --</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input type="text" id="quickPlate" placeholder="Placa (ej: ABC-123)">
+        </div>
+        <div class="form-group">
+            <input type="text" id="quickModel" placeholder="Marca/Modelo">
+        </div>
+        <button class="btn btn-primary" id="addPlateBtn"><i class="fas fa-plus"></i> Asignar placa</button>
+    </div>
+
+    <!-- Lista de dueños -->
+    <div class="card">
+        <div class="card-title"><i class="fas fa-search"></i> Buscar</div>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, placa o estudiante...">
+            <button class="btn btn-outline" id="clearSearchBtn" style="padding:12px 16px;"><i class="fas fa-eraser"></i></button>
+        </div>
+        <div id="ownersListContainer">
+            <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Cargando...</div>
+        </div>
+    </div>
+
+    <footer>
+        <i class="fas fa-shield-alt"></i> Datos seguros · Sincronización en tiempo real
+    </footer>
 </div>
+<div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
 <script type="importmap">
     {
         "imports": {
             "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
             "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
         }
     }
@@ -132,8 +507,9 @@ service cloud.firestore {
 
 <script type="module">
     import { initializeApp } from "firebase/app";
-    import { getAuth, signInAnonymously } from "firebase/auth";
-    
+    import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, onSnapshot, query, orderBy } from "firebase/firestore";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+
     const firebaseConfig = {
         apiKey: "AIzaSyBPZFMfCwuVrTZVvEGNnEfe1rJohQgVOzI",
         authDomain: "admin-vehiculos-88011.firebaseapp.com",
@@ -142,83 +518,401 @@ service cloud.firestore {
         messagingSenderId: "548122701117",
         appId: "1:548122701117:web:69bc9781a18bd0dedc6954"
     };
-    
-    const diagnosticBox = document.getElementById("diagnosticBox");
-    const solutionBox = document.getElementById("solutionBox");
-    
-    async function runDiagnostic() {
-        diagnosticBox.className = "status-box info";
-        diagnosticBox.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...';
-        
-        try {
-            const app = initializeApp(firebaseConfig);
-            const auth = getAuth(app);
-            
-            diagnosticBox.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Intentando autenticación anónima...';
-            
-            const userCredential = await signInAnonymously(auth);
-            const user = userCredential.user;
-            
-            diagnosticBox.className = "status-box success";
-            diagnosticBox.innerHTML = `
-                <i class="fas fa-check-circle"></i> ✅ ¡Conexión exitosa!<br>
-                <strong>UID:</strong> ${user.uid}<br>
-                <strong>Estado:</strong> Autenticado correctamente<br><br>
-                <i class="fas fa-rocket"></i> La autenticación funciona. ¡Puedes usar la aplicación completa!
-            `;
-            
-            // Mostrar botón para ir a la app
-            solutionBox.style.display = "block";
-            solutionBox.innerHTML = `
-                <div class="status-box success">
-                    <i class="fas fa-thumbs-up"></i> Todo está configurado correctamente.<br><br>
-                    <button onclick="window.location.href='aplicacion-completa.html'" style="background:#2e7d32;">
-                        <i class="fas fa-arrow-right"></i> Ir a la aplicación completa
-                    </button>
-                </div>
-            `;
-            
-        } catch (error) {
-            console.error("Error detallado:", error);
-            
-            let errorMessage = "";
-            let solution = "";
-            
-            if (error.code === 'auth/configuration-not-found') {
-                errorMessage = "❌ La autenticación anónima NO está habilitada en tu proyecto Firebase.";
-                solution = `
-                    <div class="status-box warning">
-                        <strong><i class="fas fa-exclamation-triangle"></i> Solución:</strong><br><br>
-                        <ol style="margin-left: 20px;">
-                            <li>Ve a <strong>Firebase Console</strong></li>
-                            <li>Selecciona <strong>Authentication</strong></li>
-                            <li>Haz clic en <strong>Sign-in methods</strong></li>
-                            <li>Busca <strong>Anónimo (Anonymous)</strong></li>
-                            <li><strong>ACTÍVALO</strong> y guarda los cambios</li>
-                            <li>Espera 30 segundos y recarga esta página</li>
-                        </ol>
-                    </div>
-                `;
-            } else if (error.code === 'auth/network-request-failed') {
-                errorMessage = "❌ Error de red. Verifica tu conexión a internet.";
-                solution = `<div class="status-box warning">Verifica que tengas conexión a internet y que no haya bloqueos de firewall.</div>`;
-            } else {
-                errorMessage = `❌ Error: ${error.message}`;
-                solution = `<div class="status-box warning">Error inesperado. Verifica la configuración de tu proyecto Firebase.</div>`;
-            }
-            
-            diagnosticBox.className = "status-box error";
-            diagnosticBox.innerHTML = `
-                <i class="fas fa-times-circle"></i> ${errorMessage}<br>
-                <strong>Código:</strong> ${error.code}
-            `;
-            
-            solutionBox.style.display = "block";
-            solutionBox.innerHTML = solution;
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let localOwners = [];
+    let currentFilter = "";
+    let isAuthenticated = false;
+
+    // Elementos
+    const ownersContainer = document.getElementById("ownersListContainer");
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+    const globalStatsSpan = document.getElementById("globalStats");
+    const quickOwnerSelect = document.getElementById("quickOwnerSelect");
+    const ownerIdEdit = document.getElementById("ownerIdEdit");
+    const ownerName = document.getElementById("ownerName");
+    const ownerPhone = document.getElementById("ownerPhone");
+    const ownerIdNumber = document.getElementById("ownerIdNumber");
+    const ownerEmail = document.getElementById("ownerEmail");
+    const studentName = document.getElementById("studentName");
+    const studentGrade = document.getElementById("studentGrade");
+    const saveOwnerBtn = document.getElementById("saveOwnerBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const addPlateBtn = document.getElementById("addPlateBtn");
+    const quickPlate = document.getElementById("quickPlate");
+    const quickModel = document.getElementById("quickModel");
+    const loadingToast = document.getElementById("loadingToast");
+    const authStatusDiv = document.getElementById("authStatus");
+
+    function showLoading(show) {
+        loadingToast.style.display = show ? "flex" : "none";
+    }
+
+    function updateAuthStatus(user, error = null) {
+        if (error) {
+            authStatusDiv.className = "auth-status";
+            authStatusDiv.style.background = "#ffebee";
+            authStatusDiv.style.color = "#c62828";
+            authStatusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.substring(0, 100)}`;
+            isAuthenticated = false;
+        } else if (user) {
+            authStatusDiv.className = "auth-status success";
+            authStatusDiv.style.background = "#e8f5e9";
+            authStatusDiv.style.color = "#2e7d32";
+            authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Conectado · ${user.uid.substring(0, 6)}...`;
+            isAuthenticated = true;
+            loadOwnersRealtime();
+        } else {
+            authStatusDiv.className = "auth-status";
+            authStatusDiv.style.background = "#fff3cd";
+            authStatusDiv.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Conectando a Firebase...`;
+            isAuthenticated = false;
         }
     }
-    
-    runDiagnostic();
+
+    function loadOwnersRealtime() {
+        if (!isAuthenticated) return;
+        showLoading(true);
+        const q = query(collection(db, "owners"), orderBy("name"));
+        onSnapshot(q, (snapshot) => {
+            localOwners = [];
+            snapshot.forEach(doc => {
+                localOwners.push({ id: doc.id, ...doc.data() });
+            });
+            updateGlobalStats();
+            refreshOwnerSelect();
+            renderOwnersList(currentFilter);
+            showLoading(false);
+        }, (error) => {
+            console.error(error);
+            showLoading(false);
+            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> Error: ${error.message}</div>`;
+        });
+    }
+
+    async function saveOwner() {
+        if (!isAuthenticated) return;
+        const id = ownerIdEdit.value;
+        const name = ownerName.value.trim();
+        const phone = ownerPhone.value.trim();
+        const idNumber = ownerIdNumber.value.trim();
+        const email = ownerEmail.value.trim();
+        const newStudentName = studentName.value.trim();
+        const newStudentGrade = studentGrade.value.trim();
+
+        if (!name || !phone || !idNumber) {
+            alert("Complete nombre, teléfono e identificación");
+            return;
+        }
+
+        showLoading(true);
+        try {
+            let students = [];
+            if (id) {
+                const existing = localOwners.find(o => o.id === id);
+                if (existing?.students) students = [...existing.students];
+            }
+            if (newStudentName) {
+                students.push({ id: Date.now().toString(), name: newStudentName, grade: newStudentGrade });
+            }
+
+            const ownerData = {
+                name, phone, idNumber, email,
+                vehicles: id ? (localOwners.find(o => o.id === id)?.vehicles || []) : [],
+                students: students,
+                updatedAt: new Date().toISOString()
+            };
+
+            if (id) {
+                await updateDoc(doc(db, "owners", id), ownerData);
+            } else {
+                await addDoc(collection(db, "owners"), ownerData);
+            }
+
+            ownerIdEdit.value = "";
+            ownerName.value = "";
+            ownerPhone.value = "";
+            ownerIdNumber.value = "";
+            ownerEmail.value = "";
+            studentName.value = "";
+            studentGrade.value = "";
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    async function deleteOwner(ownerId) {
+        if (!isAuthenticated) return;
+        if (!confirm("¿Eliminar este dueño y todos sus datos?")) return;
+        showLoading(true);
+        try {
+            await deleteDoc(doc(db, "owners", ownerId));
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    async function addVehicle(ownerId, plate, model) {
+        if (!isAuthenticated) return;
+        if (!plate?.trim()) { alert("Ingrese una placa"); return; }
+        const owner = localOwners.find(o => o.id === ownerId);
+        if (!owner) return;
+        const vehicles = [...(owner.vehicles || [])];
+        if (vehicles.some(v => v.plate === plate.trim())) { alert("Ya existe esa placa"); return; }
+        vehicles.push({ plate: plate.trim(), model: model?.trim() || "" });
+        showLoading(true);
+        try {
+            await updateDoc(doc(db, "owners", ownerId), { vehicles });
+            quickPlate.value = "";
+            quickModel.value = "";
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    async function deleteVehicle(ownerId, plateToDelete) {
+        if (!isAuthenticated) return;
+        const owner = localOwners.find(o => o.id === ownerId);
+        if (!owner) return;
+        const newVehicles = owner.vehicles.filter(v => v.plate !== plateToDelete);
+        showLoading(true);
+        try {
+            await updateDoc(doc(db, "owners", ownerId), { vehicles: newVehicles });
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    async function addStudent(ownerId, studentNameValue, studentGradeValue) {
+        if (!isAuthenticated) return;
+        if (!studentNameValue?.trim()) { alert("Ingrese el nombre del estudiante"); return; }
+        const owner = localOwners.find(o => o.id === ownerId);
+        if (!owner) return;
+        const students = [...(owner.students || [])];
+        students.push({ id: Date.now().toString(), name: studentNameValue.trim(), grade: studentGradeValue?.trim() || "" });
+        showLoading(true);
+        try {
+            await updateDoc(doc(db, "owners", ownerId), { students });
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    async function deleteStudent(ownerId, studentId) {
+        if (!isAuthenticated) return;
+        const owner = localOwners.find(o => o.id === ownerId);
+        if (!owner) return;
+        const newStudents = owner.students.filter(s => s.id !== studentId);
+        showLoading(true);
+        try {
+            await updateDoc(doc(db, "owners", ownerId), { students: newStudents });
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    function renderOwnersList(filterText = "") {
+        currentFilter = filterText;
+        let filtered = [...localOwners];
+        if (filterText.trim()) {
+            const lowerFilter = filterText.toLowerCase();
+            filtered = localOwners.filter(owner => {
+                if (owner.name?.toLowerCase().includes(lowerFilter)) return true;
+                if (owner.phone?.toLowerCase().includes(lowerFilter)) return true;
+                if (owner.idNumber?.toLowerCase().includes(lowerFilter)) return true;
+                if (owner.vehicles?.some(v => v.plate?.toLowerCase().includes(lowerFilter))) return true;
+                if (owner.students?.some(s => s.name?.toLowerCase().includes(lowerFilter))) return true;
+                return false;
+            });
+        }
+        if (filtered.length === 0) {
+            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-info-circle"></i> No hay registros</div>`;
+            return;
+        }
+
+        let html = "";
+        filtered.forEach(owner => {
+            html += `
+            <div class="owner-card">
+                <div class="owner-header">
+                    <div class="owner-name">${escapeHtml(owner.name)}</div>
+                    <div class="owner-actions">
+                        <button class="edit-owner-btn" data-id="${owner.id}" style="background:#e8eaf6;"><i class="fas fa-edit"></i></button>
+                        <button class="delete-owner-btn" data-id="${owner.id}" style="background:#ffebee; color:#c62828;"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+                <div class="owner-details">
+                    <span><i class="fas fa-id-card"></i> ${escapeHtml(owner.idNumber)}</span>
+                    <span><i class="fas fa-phone"></i> ${escapeHtml(owner.phone)}</span>
+                    ${owner.email ? `<span><i class="fas fa-envelope"></i> ${escapeHtml(owner.email)}</span>` : ''}
+                </div>
+                
+                <div class="students-section">
+                    <div class="section-header"><i class="fas fa-child"></i> Estudiantes</div>`;
+            if (!owner.students?.length) {
+                html += `<div style="padding:8px; text-align:center; color:#999; font-size:0.7rem;">Sin estudiantes</div>`;
+            } else {
+                owner.students.forEach(student => {
+                    html += `
+                    <div class="student-item">
+                        <div class="student-info">
+                            <span class="student-name">${escapeHtml(student.name)}</span>
+                            ${student.grade ? `<span class="student-grade"> 📚 ${escapeHtml(student.grade)}</span>` : ''}
+                        </div>
+                        <i class="fas fa-trash delete-student" data-owner="${owner.id}" data-student-id="${student.id}" style="color:#ef4444; font-size:0.9rem;"></i>
+                    </div>`;
+                });
+            }
+            html += `<div class="add-btn add-student-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar estudiante</div>
+                </div>
+                
+                <div class="vehicle-list">
+                    <div class="section-header" style="color:#667eea;"><i class="fas fa-car"></i> Vehículos</div>`;
+            if (!owner.vehicles?.length) {
+                html += `<div style="padding:8px; text-align:center; color:#999; font-size:0.7rem;">Sin vehículos</div>`;
+            } else {
+                owner.vehicles.forEach(vehicle => {
+                    html += `
+                    <div class="vehicle-item">
+                        <div class="vehicle-info">
+                            <div class="vehicle-plate">${escapeHtml(vehicle.plate)}</div>
+                            ${vehicle.model ? `<div class="vehicle-model">${escapeHtml(vehicle.model)}</div>` : ''}
+                        </div>
+                        <div class="vehicle-actions">
+                            <i class="fas fa-pen edit-placa edit-icon" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}" data-model="${escapeAttr(vehicle.model || '')}"></i>
+                            <i class="fas fa-trash delete-placa delete-icon" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}"></i>
+                        </div>
+                    </div>`;
+                });
+            }
+            html += `<div class="add-btn" style="margin-top:8px;" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar vehículo</div>
+                </div>
+            </div>`;
+        });
+        ownersContainer.innerHTML = html;
+        attachEvents();
+    }
+
+    function attachEvents() {
+        document.querySelectorAll('.edit-owner-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const owner = localOwners.find(o => o.id === btn.dataset.id);
+                if (owner) {
+                    ownerIdEdit.value = owner.id;
+                    ownerName.value = owner.name;
+                    ownerPhone.value = owner.phone;
+                    ownerIdNumber.value = owner.idNumber;
+                    ownerEmail.value = owner.email || "";
+                    studentName.value = "";
+                    studentGrade.value = "";
+                }
+            });
+        });
+        document.querySelectorAll('.delete-owner-btn').forEach(btn => {
+            btn.addEventListener('click', () => deleteOwner(btn.dataset.id));
+        });
+        document.querySelectorAll('.delete-placa').forEach(icon => {
+            icon.addEventListener('click', () => {
+                if (confirm("¿Eliminar este vehículo?")) deleteVehicle(icon.dataset.owner, icon.dataset.plate);
+            });
+        });
+        document.querySelectorAll('.edit-placa').forEach(icon => {
+            icon.addEventListener('click', () => {
+                const newPlate = prompt("Nueva placa:", icon.dataset.plate);
+                if (newPlate?.trim()) {
+                    const newModel = prompt("Nuevo modelo:", icon.dataset.model);
+                    addVehicle(icon.dataset.owner, newPlate.trim(), newModel);
+                    if (newPlate !== icon.dataset.plate) deleteVehicle(icon.dataset.owner, icon.dataset.plate);
+                }
+            });
+        });
+        document.querySelectorAll('.add-btn').forEach(btn => {
+            if (!btn.classList.contains('add-student-btn')) {
+                btn.addEventListener('click', () => {
+                    const plate = prompt("Placa del vehículo:");
+                    if (plate?.trim()) {
+                        const model = prompt("Modelo (opcional):");
+                        addVehicle(btn.dataset.ownerId, plate.trim(), model || "");
+                    }
+                });
+            }
+        });
+        document.querySelectorAll('.add-student-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const name = prompt("Nombre del estudiante:");
+                if (name?.trim()) {
+                    const grade = prompt("Grado que cursa (opcional):");
+                    addStudent(btn.dataset.ownerId, name.trim(), grade || "");
+                }
+            });
+        });
+        document.querySelectorAll('.delete-student').forEach(icon => {
+            icon.addEventListener('click', () => {
+                if (confirm("¿Eliminar este estudiante?")) deleteStudent(icon.dataset.owner, icon.dataset.studentId);
+            });
+        });
+    }
+
+    function refreshOwnerSelect() {
+        quickOwnerSelect.innerHTML = '<option value="">-- Seleccionar dueño --</option>';
+        localOwners.forEach(owner => {
+            quickOwnerSelect.appendChild(new Option(`${owner.name} (${owner.idNumber})`, owner.id));
+        });
+    }
+
+    function updateGlobalStats() {
+        const totalOwners = localOwners.length;
+        const totalVehicles = localOwners.reduce((a, o) => a + (o.vehicles?.length || 0), 0);
+        const totalStudents = localOwners.reduce((a, o) => a + (o.students?.length || 0), 0);
+        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> ${totalOwners} | 🚗 ${totalVehicles} | 👨‍👦 ${totalStudents}`;
+    }
+
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+    function escapeAttr(str) { return str ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : ''; }
+
+    saveOwnerBtn.addEventListener("click", saveOwner);
+    cancelEditBtn.addEventListener("click", () => {
+        ownerIdEdit.value = "";
+        ownerName.value = "";
+        ownerPhone.value = "";
+        ownerIdNumber.value = "";
+        ownerEmail.value = "";
+        studentName.value = "";
+        studentGrade.value = "";
+    });
+    addPlateBtn.addEventListener("click", () => {
+        const ownerId = quickOwnerSelect.value;
+        if (!ownerId) { alert("Seleccione un dueño"); return; }
+        const plate = quickPlate.value.trim();
+        if (!plate) { alert("Ingrese una placa"); return; }
+        addVehicle(ownerId, plate, quickModel.value.trim());
+    });
+    searchInput.addEventListener("input", (e) => renderOwnersList(e.target.value));
+    clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        renderOwnersList("");
+    });
+
+    onAuthStateChanged(auth, (user) => {
+        if (user) updateAuthStatus(user);
+        else signInAnonymously(auth).then(u => updateAuthStatus(u.user)).catch(e => updateAuthStatus(null, e.message));
+    });
 </script>
 </body>
 </html>
