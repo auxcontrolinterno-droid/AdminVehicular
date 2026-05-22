@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>AdminVehicular - Gestión de Placas y Propietarios</title>
-    <!-- Font Awesome 6 (Free) -->
+    <title>AdminVehiculos PRO - Sistema de Gestión de Placas</title>
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -15,7 +15,7 @@
         }
 
         body {
-            background: linear-gradient(145deg, #e9f0fc 0%, #d9e4f0 100%);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
             padding: 30px 20px;
         }
@@ -27,16 +27,16 @@
 
         /* Header */
         .header {
-            background: #0b2b44;
-            color: white;
+            background: rgba(255,255,255,0.95);
             border-radius: 28px;
             padding: 20px 30px;
             margin-bottom: 28px;
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
             display: flex;
             flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
+            backdrop-filter: blur(10px);
         }
 
         .header h1 {
@@ -44,24 +44,25 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            color: #333;
         }
 
         .header h1 i {
-            background: #ffb347;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 12px;
             border-radius: 50%;
-            color: #0b2b44;
+            color: white;
         }
 
         .stats {
-            background: #1f4e6e;
-            padding: 8px 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 20px;
             border-radius: 40px;
             font-weight: bold;
-            font-size: 1.1rem;
+            color: white;
         }
 
-        /* Tarjetas de dueños y formularios */
+        /* Two columns */
         .two-columns {
             display: flex;
             flex-wrap: wrap;
@@ -75,8 +76,7 @@
             background: white;
             border-radius: 28px;
             padding: 24px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
-            transition: all 0.2s;
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
         }
 
         .list-panel {
@@ -85,15 +85,15 @@
             background: white;
             border-radius: 28px;
             padding: 24px;
-            box-shadow: 0 12px 24px rgba(0,0,0,0.08);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.1);
         }
 
         .form-title {
             font-size: 1.6rem;
             font-weight: 700;
             margin-bottom: 20px;
-            color: #0b2b44;
-            border-left: 8px solid #ffb347;
+            color: #333;
+            border-left: 8px solid #667eea;
             padding-left: 16px;
         }
 
@@ -105,35 +105,34 @@
             font-weight: 600;
             display: block;
             margin-bottom: 6px;
-            color: #1e3a4d;
+            color: #555;
         }
 
         input, select {
             width: 100%;
             padding: 12px 14px;
-            border-radius: 18px;
-            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
             font-size: 1rem;
             transition: 0.2s;
-            background-color: #fefefe;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: #ffb347;
-            box-shadow: 0 0 0 3px rgba(255,180,71,0.2);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
         }
 
         button {
-            background: #ffb347;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border: none;
             padding: 12px 18px;
-            border-radius: 40px;
+            border-radius: 12px;
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
             transition: 0.2s;
-            color: #0b2b44;
+            color: white;
             margin-right: 10px;
             margin-top: 8px;
         }
@@ -143,23 +142,16 @@
         }
 
         button:hover {
-            background: #ff9f1a;
-            transform: scale(0.97);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.4);
         }
 
         .btn-danger {
-            background: #dc2626;
-            color: white;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
         }
-        .btn-danger:hover {
-            background: #b91c1c;
-        }
+
         .btn-secondary {
-            background: #475569;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background: #334155;
+            background: linear-gradient(135deg, #868f96 0%, #596164 100%);
         }
 
         .search-bar {
@@ -168,23 +160,27 @@
             margin-bottom: 28px;
             flex-wrap: wrap;
         }
+
         .search-bar input {
             flex: 2;
             margin-bottom: 0;
         }
-        .search-bar button {
-            margin: 0;
+
+        .owner-card {
+            background: #f8f9fa;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            padding: 20px;
+            border-left: 6px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: 0.2s;
         }
 
-        /* Tabla de dueños/vehículos */
-        .owner-card {
-            background: #f8fafc;
-            border-radius: 24px;
-            margin-bottom: 24px;
-            padding: 16px;
-            border-left: 6px solid #ffb347;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        .owner-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
+
         .owner-header {
             display: flex;
             justify-content: space-between;
@@ -192,106 +188,155 @@
             flex-wrap: wrap;
             margin-bottom: 12px;
             padding-bottom: 8px;
-            border-bottom: 1px dashed #cbd5e1;
+            border-bottom: 2px solid #e0e0e0;
         }
+
         .owner-name {
             font-size: 1.4rem;
             font-weight: 800;
-            color: #0f3b2c;
+            color: #333;
         }
+
         .owner-details {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
             font-size: 0.9rem;
-            color: #2c3e50;
+            color: #666;
             margin-bottom: 14px;
         }
+
         .vehicle-table {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
             margin-top: 8px;
         }
+
         .vehicle-table th, .vehicle-table td {
             text-align: left;
             padding: 12px 8px;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e0e0e0;
         }
+
         .vehicle-table th {
-            background: #eef2ff;
-            color: #1e293b;
+            background: #f0f0f0;
+            color: #555;
         }
+
         .actions-cell i {
             margin: 0 5px;
             cursor: pointer;
             font-size: 1.2rem;
             transition: 0.1s;
         }
+
         .edit-placa {
-            color: #ffb347;
+            color: #667eea;
         }
+
         .delete-placa {
-            color: #dc2626;
+            color: #f5576c;
         }
+
         .edit-placa:hover, .delete-placa:hover {
             opacity: 0.7;
-            transform: scale(1.05);
+            transform: scale(1.1);
         }
+
         .add-placa-btn {
-            background: #e6f0fa;
-            border: 1px dashed #ffb347;
-            border-radius: 30px;
-            padding: 6px 14px;
-            font-size: 0.8rem;
+            background: #f0f0f0;
+            border: 2px dashed #667eea;
+            border-radius: 12px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 12px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            color: #0b2b44;
+            color: #667eea;
+            transition: 0.2s;
         }
+
+        .add-placa-btn:hover {
+            background: #667eea;
+            color: white;
+        }
+
         .no-vehicles {
             padding: 12px;
             text-align: center;
-            color: #6c757d;
+            color: #999;
             font-style: italic;
         }
+
         .empty-message {
             text-align: center;
-            padding: 40px;
-            color: #4a5568;
+            padding: 60px;
+            color: #999;
         }
+
+        .highlight {
+            background-color: #fff3cd;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        #loadingToast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #333;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
         footer {
             text-align: center;
-            margin-top: 40px;
-            color: #4b5563;
+            margin-top: 30px;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
         }
+
         @media (max-width: 780px) {
-            .owner-header { flex-direction: column; gap: 8px; }
-            .vehicle-table th, .vehicle-table td { font-size: 0.8rem; padding: 8px 4px; }
+            .owner-header { flex-direction: column; gap: 10px; }
+            .vehicle-table th, .vehicle-table td { font-size: 0.75rem; padding: 8px 4px; }
         }
-        .highlight {
-            background-color: #fff3e0;
+
+        .status-badge {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-left: 10px;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1><i class="fas fa-car-side"></i> AdminPlacas · Gestión Vehicular</h1>
-        <div class="stats" id="globalStats">Cargando...</div>
+        <h1><i class="fas fa-cloud-upload-alt"></i> AdminVehiculos · Firebase Sync</h1>
+        <div class="stats" id="globalStats">Conectando a Firebase...</div>
     </div>
 
     <div class="two-columns">
-        <!-- Panel izquierdo: registro / edición de dueño y agregar placa rápida -->
+        <!-- Panel izquierdo: registro / edición de dueño -->
         <div class="form-panel">
-            <div class="form-title" id="formTitle"><i class="fas fa-user-plus"></i> Registrar / Editar Dueño</div>
-            <form id="ownerForm">
-                <input type="hidden" id="ownerIdEdit" value="">
+            <div class="form-title" id="formTitle"><i class="fas fa-user-plus"></i> Registrar Dueño</div>
+            <form id="ownerForm" onsubmit="return false;">
+                <input type="hidden" id="ownerIdEdit">
                 <div class="form-group">
                     <label><i class="fas fa-user"></i> Nombre completo</label>
                     <input type="text" id="ownerName" placeholder="Ej: María González" required>
@@ -305,7 +350,7 @@
                     <input type="text" id="ownerIdNumber" placeholder="Documento único" required>
                 </div>
                 <div class="form-group">
-                    <label><i class="fas fa-envelope"></i> Correo (opcional)</label>
+                    <label><i class="fas fa-envelope"></i> Correo electrónico</label>
                     <input type="email" id="ownerEmail" placeholder="correo@ejemplo.com">
                 </div>
                 <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 8px;">
@@ -314,23 +359,23 @@
                 </div>
             </form>
             <hr style="margin: 25px 0 10px;">
-            <div class="form-title" style="font-size:1.2rem;"><i class="fas fa-plus-circle"></i> Agregar placa a dueño existente</div>
+            <div class="form-title" style="font-size:1.2rem;"><i class="fas fa-plus-circle"></i> Agregar vehículo rápido</div>
             <div class="form-group">
                 <label>Seleccionar dueño</label>
                 <select id="quickOwnerSelect"></select>
             </div>
             <div class="form-group">
                 <label>Placa del vehículo</label>
-                <input type="text" id="quickPlate" placeholder="Ej: ABC-123" maxlength="10">
+                <input type="text" id="quickPlate" placeholder="Ej: ABC-123">
             </div>
             <div class="form-group">
-                <label>Marca / Modelo (opcional)</label>
+                <label>Marca / Modelo</label>
                 <input type="text" id="quickModel" placeholder="Toyota Corolla">
             </div>
             <button id="addPlateBtn"><i class="fas fa-plus"></i> Asignar placa</button>
         </div>
 
-        <!-- Panel derecho: lista de dueños y sus placas -->
+        <!-- Panel derecho: lista de dueños -->
         <div class="list-panel">
             <div class="form-title"><i class="fas fa-search"></i> Buscar</div>
             <div class="search-bar">
@@ -338,104 +383,222 @@
                 <button id="clearSearchBtn"><i class="fas fa-eraser"></i> Limpiar</button>
             </div>
             <div id="ownersListContainer" style="max-height: 65vh; overflow-y: auto; padding-right: 6px;">
-                <!-- Aquí se cargarán dinámicamente los dueños y sus vehículos -->
                 <div class="empty-message"><i class="fas fa-spinner fa-pulse"></i> Cargando información...</div>
             </div>
         </div>
     </div>
     <footer>
-        <i class="fas fa-database"></i> Datos almacenados localmente · Relación 1:N dueño ⇢ vehículos
+        <i class="fas fa-fire"></i> Base de datos en tiempo real · Sincronización automática
     </footer>
 </div>
+<div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Sincronizando...</div>
 
-<script>
-    // ---------- MODELO DE DATOS ----------
-    // owners: array de objetos { id, name, phone, idNumber, email, vehicles: [ { plate, model } ] }
-    let owners = [];
-
-    // Cargar datos desde localStorage
-    function loadData() {
-        const stored = localStorage.getItem("vehicular_admin_data");
-        if(stored) {
-            owners = JSON.parse(stored);
-        } else {
-            // Datos de ejemplo
-            owners = [
-                { id: "owner1", name: "Ana Rodríguez", phone: "+34 611 223 344", idNumber: "45678901L", email: "ana@mail.com", vehicles: [{ plate: "1234-JKL", model: "Seat Ibiza" }, { plate: "5678-MNP", model: "Renault Megane" }] },
-                { id: "owner2", name: "Carlos Méndez", phone: "+52 55 1234 5678", idNumber: "MEX123456", email: "carlos@mail.com", vehicles: [{ plate: "ABC-1234", model: "Chevrolet Onix" }] },
-                { id: "owner3", name: "Lucía Fernández", phone: "+57 300 987 6543", idNumber: "CC 98765432", email: "lucia@mail.com", vehicles: [{ plate: "XYZ-789", model: "Mazda 3" }, { plate: "PLACA-999", model: "Kia Sportage" }] }
-            ];
-            saveData();
+<!-- Firebase SDKs -->
+<script type="importmap">
+    {
+        "imports": {
+            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
+            "firebase/database": "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js",
+            "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
         }
-        updateGlobalStats();
-        refreshOwnerSelect();
-        renderOwnersList();
+    }
+</script>
+
+<script type="module">
+    import { initializeApp } from "firebase/app";
+    import { getDatabase, ref, onValue, set, push, remove, update } from "firebase/database";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
+
+    // Tu configuración de Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBPZFMfCwuVrTZVvEGNnEfe1rJohQgVOzI",
+        authDomain: "admin-vehiculos-88011.firebaseapp.com",
+        projectId: "admin-vehiculos-88011",
+        storageBucket: "admin-vehiculos-88011.firebasestorage.app",
+        messagingSenderId: "548122701117",
+        appId: "1:548122701117:web:69bc9781a18bd0dedc6954",
+        measurementId: "G-7XCPG0HT93"
+    };
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+    const ownersRef = ref(db, 'owners');
+
+    // Estado local
+    let localOwners = [];
+    let currentFilter = "";
+
+    // Elementos DOM
+    const ownersContainer = document.getElementById("ownersListContainer");
+    const searchInput = document.getElementById("searchInput");
+    const clearSearchBtn = document.getElementById("clearSearchBtn");
+    const globalStatsSpan = document.getElementById("globalStats");
+    const quickOwnerSelect = document.getElementById("quickOwnerSelect");
+    const formTitle = document.getElementById("formTitle");
+    const ownerIdEdit = document.getElementById("ownerIdEdit");
+    const ownerName = document.getElementById("ownerName");
+    const ownerPhone = document.getElementById("ownerPhone");
+    const ownerIdNumber = document.getElementById("ownerIdNumber");
+    const ownerEmail = document.getElementById("ownerEmail");
+    const saveOwnerBtn = document.getElementById("saveOwnerBtn");
+    const cancelEditBtn = document.getElementById("cancelEditBtn");
+    const addPlateBtn = document.getElementById("addPlateBtn");
+    const quickPlate = document.getElementById("quickPlate");
+    const quickModel = document.getElementById("quickModel");
+    const loadingToast = document.getElementById("loadingToast");
+
+    function showLoading(show) {
+        loadingToast.style.display = show ? "flex" : "none";
     }
 
-    function saveData() {
-        localStorage.setItem("vehicular_admin_data", JSON.stringify(owners));
-        updateGlobalStats();
-    }
-
-    function updateGlobalStats() {
-        const totalOwners = owners.length;
-        const totalVehicles = owners.reduce((acc, owner) => acc + owner.vehicles.length, 0);
-        document.getElementById("globalStats").innerHTML = `<i class="fas fa-users"></i> Dueños: ${totalOwners} &nbsp;|&nbsp; <i class="fas fa-car"></i> Vehículos: ${totalVehicles}`;
-    }
-
-    // Funciones auxiliares para dueños
-    function generateId() {
-        return Date.now() + '-' + Math.random().toString(36).substr(2, 6);
-    }
-
-    // Refrescar select de dueños para asignar placa rápida
-    function refreshOwnerSelect() {
-        const select = document.getElementById("quickOwnerSelect");
-        if(!select) return;
-        select.innerHTML = '<option value="">-- Seleccione dueño --</option>';
-        owners.forEach(owner => {
-            const option = document.createElement("option");
-            option.value = owner.id;
-            option.textContent = `${owner.name} (${owner.idNumber})`;
-            select.appendChild(option);
+    // Escuchar cambios en tiempo real
+    function syncFromFirebase() {
+        showLoading(true);
+        onValue(ownersRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                localOwners = Object.keys(data).map(key => ({
+                    id: key,
+                    ...data[key],
+                    vehicles: data[key].vehicles || []
+                }));
+            } else {
+                localOwners = [];
+            }
+            updateGlobalStats();
+            refreshOwnerSelect();
+            renderOwnersList(currentFilter);
+            showLoading(false);
+        }, (error) => {
+            console.error("Error:", error);
+            showLoading(false);
+            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-exclamation-triangle"></i> Error de conexión: ${error.message}</div>`;
         });
     }
 
-    // Renderizar lista completa de dueños y sus vehículos, con búsqueda integrada
+    // Guardar dueño
+    async function saveOwnerToFirebase(ownerData, id = null) {
+        showLoading(true);
+        try {
+            if (id) {
+                await update(ref(db, `owners/${id}`), ownerData);
+            } else {
+                const newRef = push(ownersRef);
+                await set(newRef, ownerData);
+            }
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // Eliminar dueño
+    async function deleteOwnerFromFirebase(ownerId) {
+        if (!confirm("¿Eliminar este dueño y todos sus vehículos?")) return;
+        showLoading(true);
+        try {
+            await remove(ref(db, `owners/${ownerId}`));
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // Guardar vehículo
+    async function saveVehicleToOwner(ownerId, oldPlate = null, newPlate, newModel) {
+        if (!newPlate?.trim()) {
+            alert("La placa es obligatoria");
+            return false;
+        }
+        const owner = localOwners.find(o => o.id === ownerId);
+        if (!owner) return false;
+        
+        let vehicles = [...(owner.vehicles || [])];
+        
+        if (oldPlate !== null) {
+            const index = vehicles.findIndex(v => v.plate === oldPlate);
+            if (index !== -1) {
+                if (oldPlate !== newPlate.trim() && vehicles.some(v => v.plate === newPlate.trim())) {
+                    alert("Ya existe esa placa para este dueño");
+                    return false;
+                }
+                vehicles[index] = { plate: newPlate.trim(), model: newModel?.trim() || "" };
+            }
+        } else {
+            if (vehicles.some(v => v.plate === newPlate.trim())) {
+                alert("Este dueño ya tiene esa placa");
+                return false;
+            }
+            vehicles.push({ plate: newPlate.trim(), model: newModel?.trim() || "" });
+        }
+        
+        showLoading(true);
+        try {
+            await update(ref(db, `owners/${ownerId}`), { vehicles });
+            return true;
+        } catch (error) {
+            alert("Error: " + error.message);
+            return false;
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // Eliminar vehículo
+    async function deleteVehicleFromOwner(ownerId, plateToDelete) {
+        const owner = localOwners.find(o => o.id === ownerId);
+        if (!owner) return;
+        const newVehicles = owner.vehicles.filter(v => v.plate !== plateToDelete);
+        showLoading(true);
+        try {
+            await update(ref(db, `owners/${ownerId}`), { vehicles: newVehicles });
+        } catch (error) {
+            alert("Error: " + error.message);
+        } finally {
+            showLoading(false);
+        }
+    }
+
+    // Renderizar lista
     function renderOwnersList(filterText = "") {
-        const container = document.getElementById("ownersListContainer");
-        if(!container) return;
-        let filteredOwners = [...owners];
-        if(filterText.trim() !== "") {
+        currentFilter = filterText;
+        let filtered = [...localOwners];
+        
+        if (filterText.trim()) {
             const lowerFilter = filterText.toLowerCase();
-            filteredOwners = owners.filter(owner => {
-                // Buscar por nombre, teléfono, cédula, o en las placas/modelos
-                const matchOwner = owner.name.toLowerCase().includes(lowerFilter) ||
-                                   owner.phone.toLowerCase().includes(lowerFilter) ||
-                                   owner.idNumber.toLowerCase().includes(lowerFilter) ||
+            filtered = localOwners.filter(owner => {
+                const matchOwner = owner.name?.toLowerCase().includes(lowerFilter) ||
+                                   owner.phone?.toLowerCase().includes(lowerFilter) ||
+                                   owner.idNumber?.toLowerCase().includes(lowerFilter) ||
                                    (owner.email && owner.email.toLowerCase().includes(lowerFilter));
-                if(matchOwner) return true;
-                // buscar en sus vehículos
-                return owner.vehicles.some(veh => 
-                    veh.plate.toLowerCase().includes(lowerFilter) || 
-                    (veh.model && veh.model.toLowerCase().includes(lowerFilter))
+                if (matchOwner) return true;
+                return owner.vehicles?.some(v => 
+                    v.plate?.toLowerCase().includes(lowerFilter) ||
+                    (v.model && v.model.toLowerCase().includes(lowerFilter))
                 );
             });
         }
-        if(filteredOwners.length === 0) {
-            container.innerHTML = `<div class="empty-message"><i class="fas fa-search"></i> No se encontraron dueños o placas.</div>`;
+        
+        if (filtered.length === 0) {
+            ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-car"></i> No hay registros. ¡Agrega un dueño!</div>`;
             return;
         }
+        
         let html = "";
-        filteredOwners.forEach(owner => {
-            // Resaltar coincidencias en nombre si hay búsqueda (simple)
-            const highlightName = (filterText && owner.name.toLowerCase().includes(filterText.toLowerCase())) ? `<span class="highlight">${escapeHtml(owner.name)}</span>` : escapeHtml(owner.name);
-            html += `<div class="owner-card" data-owner-id="${owner.id}">
+        filtered.forEach(owner => {
+            const nameHighlight = (filterText && owner.name?.toLowerCase().includes(filterText.toLowerCase())) ? 
+                `<span class="highlight">${escapeHtml(owner.name)}</span>` : escapeHtml(owner.name);
+            
+            html += `<div class="owner-card">
                         <div class="owner-header">
-                            <div class="owner-name">${highlightName}</div>
-                            <div style="display: flex; gap: 10px;">
-                                <button class="edit-owner-btn btn-secondary" data-id="${owner.id}" style="padding: 6px 12px; font-size:0.8rem;"><i class="fas fa-edit"></i> Editar dueño</button>
-                                <button class="delete-owner-btn btn-danger" data-id="${owner.id}" style="padding: 6px 12px; font-size:0.8rem;"><i class="fas fa-trash-alt"></i> Eliminar</button>
+                            <div class="owner-name">${nameHighlight}</div>
+                            <div>
+                                <button class="edit-owner-btn" data-id="${owner.id}" style="padding:6px 12px; font-size:0.8rem;"><i class="fas fa-edit"></i> Editar</button>
+                                <button class="delete-owner-btn" data-id="${owner.id}" style="padding:6px 12px; font-size:0.8rem; background:#f5576c;"><i class="fas fa-trash"></i> Eliminar</button>
                             </div>
                         </div>
                         <div class="owner-details">
@@ -443,261 +606,177 @@
                             <span><i class="fas fa-phone"></i> ${escapeHtml(owner.phone)}</span>
                             ${owner.email ? `<span><i class="fas fa-envelope"></i> ${escapeHtml(owner.email)}</span>` : ''}
                         </div>
-                        <div style="margin-top: 8px; font-weight: 600;"><i class="fas fa-list"></i> Vehículos registrados:</div>
+                        <div style="margin-top: 8px; font-weight: 600;"><i class="fas fa-car"></i> Vehículos:</div>
                         <table class="vehicle-table">
-                            <thead>
-                                <tr><th>Placa</th><th>Marca/Modelo</th><th style="width:80px;">Acciones</th></tr>
-                            </thead>
+                            <thead><tr><th>Placa</th><th>Modelo</th><th>Acciones</th></tr></thead>
                             <tbody>`;
-            if(owner.vehicles.length === 0) {
-                html += `<tr><td colspan="3" class="no-vehicles">Sin vehículos asociados. <i class="fas fa-plus-circle add-placa-icon" style="cursor:pointer;" data-owner="${owner.id}"> Agregar placa</i></td></tr>`;
+            
+            if (!owner.vehicles?.length) {
+                html += `<tr><td colspan="3" class="no-vehicles">Sin vehículos asociados</td></tr>`;
             } else {
-                owner.vehicles.forEach((vehicle, idx) => {
-                    const plateHighlight = (filterText && vehicle.plate.toLowerCase().includes(filterText.toLowerCase())) ? `<span class="highlight">${escapeHtml(vehicle.plate)}</span>` : escapeHtml(vehicle.plate);
-                    const modelHighlight = (filterText && vehicle.model && vehicle.model.toLowerCase().includes(filterText.toLowerCase())) ? `<span class="highlight">${escapeHtml(vehicle.model)}</span>` : escapeHtml(vehicle.model || '—');
-                    html += `<tr data-plate-index="${idx}" data-owner-id="${owner.id}">
+                owner.vehicles.forEach(vehicle => {
+                    const plateHighlight = (filterText && vehicle.plate?.toLowerCase().includes(filterText.toLowerCase())) ? 
+                        `<span class="highlight">${escapeHtml(vehicle.plate)}</span>` : escapeHtml(vehicle.plate);
+                    html += `<tr>
                                 <td>${plateHighlight}</td>
-                                <td>${modelHighlight}</td>
+                                <td>${escapeHtml(vehicle.model || '—')}</td>
                                 <td class="actions-cell">
-                                    <i class="fas fa-pen edit-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}" data-model="${escapeAttr(vehicle.model || '')}" title="Editar placa"></i>
-                                    <i class="fas fa-trash delete-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}" title="Eliminar placa"></i>
+                                    <i class="fas fa-pen edit-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}" data-model="${escapeAttr(vehicle.model || '')}"></i>
+                                    <i class="fas fa-trash delete-placa" data-owner="${owner.id}" data-plate="${escapeAttr(vehicle.plate)}"></i>
                                 </td>
                             </tr>`;
                 });
             }
-            html += `</tbody></table>
-                    <div class="add-placa-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar otro vehículo a este dueño</div>
-                    </div>`;
+            
+            html += `</tbody>
+                    </table>
+                    <div class="add-placa-btn" data-owner-id="${owner.id}"><i class="fas fa-plus-circle"></i> Agregar vehículo</div>
+                </div>`;
         });
-        container.innerHTML = html;
-
-        // Eventos dinámicos después de renderizar
-        attachOwnerActions();
-        attachVehicleActions();
-        attachAddVehicleFromCard();
-    }
-
-    function attachOwnerActions() {
+        
+        ownersContainer.innerHTML = html;
+        
+        // Eventos
         document.querySelectorAll('.edit-owner-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const ownerId = btn.getAttribute('data-id');
-                const owner = owners.find(o => o.id === ownerId);
-                if(owner) {
-                    document.getElementById("ownerIdEdit").value = owner.id;
-                    document.getElementById("ownerName").value = owner.name;
-                    document.getElementById("ownerPhone").value = owner.phone;
-                    document.getElementById("ownerIdNumber").value = owner.idNumber;
-                    document.getElementById("ownerEmail").value = owner.email || "";
-                    document.getElementById("formTitle").innerHTML = '<i class="fas fa-user-edit"></i> Editando Dueño';
+            btn.addEventListener('click', () => {
+                const owner = localOwners.find(o => o.id === btn.dataset.id);
+                if (owner) {
+                    ownerIdEdit.value = owner.id;
+                    ownerName.value = owner.name;
+                    ownerPhone.value = owner.phone;
+                    ownerIdNumber.value = owner.idNumber;
+                    ownerEmail.value = owner.email || "";
+                    formTitle.innerHTML = '<i class="fas fa-user-edit"></i> Editando Dueño';
                 }
             });
         });
+        
         document.querySelectorAll('.delete-owner-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const ownerId = btn.getAttribute('data-id');
-                if(confirm("¿Eliminar este dueño y todos sus vehículos asociados? Esta acción es irreversible.")) {
-                    owners = owners.filter(o => o.id !== ownerId);
-                    saveData();
-                    renderOwnersList(document.getElementById("searchInput").value);
-                    refreshOwnerSelect();
-                    clearOwnerForm();
-                }
-            });
+            btn.addEventListener('click', () => deleteOwnerFromFirebase(btn.dataset.id));
         });
-    }
-
-    function attachVehicleActions() {
-        // Editar placa (abre un prompt con datos actuales)
+        
         document.querySelectorAll('.edit-placa').forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                const ownerId = icon.getAttribute('data-owner');
-                const oldPlate = icon.getAttribute('data-plate');
-                const oldModel = icon.getAttribute('data-model');
+            icon.addEventListener('click', () => {
+                const ownerId = icon.dataset.owner;
+                const oldPlate = icon.dataset.plate;
+                const oldModel = icon.dataset.model;
                 const newPlate = prompt("Editar placa:", oldPlate);
-                if(newPlate && newPlate.trim() !== "") {
-                    const newModel = prompt("Editar modelo / marca:", oldModel);
-                    const owner = owners.find(o => o.id === ownerId);
-                    if(owner) {
-                        const vehicleIndex = owner.vehicles.findIndex(v => v.plate === oldPlate);
-                        if(vehicleIndex !== -1) {
-                            // Verificar si nueva placa ya existe en otro vehículo del mismo dueño (evitar duplicado)
-                            const duplicate = owner.vehicles.some((v, idx) => idx !== vehicleIndex && v.plate === newPlate.trim());
-                            if(duplicate) {
-                                alert("Ya existe un vehículo con esa placa para este dueño.");
-                                return;
-                            }
-                            owner.vehicles[vehicleIndex].plate = newPlate.trim();
-                            if(newModel !== null) owner.vehicles[vehicleIndex].model = newModel.trim() || "";
-                            saveData();
-                            renderOwnersList(document.getElementById("searchInput").value);
-                            refreshOwnerSelect();
-                        } else {
-                            alert("No se encontró el vehículo.");
-                        }
-                    }
+                if (newPlate?.trim()) {
+                    const newModel = prompt("Editar modelo:", oldModel);
+                    saveVehicleToOwner(ownerId, oldPlate, newPlate.trim(), newModel);
                 }
             });
         });
-        // Eliminar placa
+        
         document.querySelectorAll('.delete-placa').forEach(icon => {
-            icon.addEventListener('click', (e) => {
-                const ownerId = icon.getAttribute('data-owner');
-                const plateToDelete = icon.getAttribute('data-plate');
-                if(confirm(`¿Eliminar la placa ${plateToDelete}?`)) {
-                    const owner = owners.find(o => o.id === ownerId);
-                    if(owner) {
-                        owner.vehicles = owner.vehicles.filter(v => v.plate !== plateToDelete);
-                        saveData();
-                        renderOwnersList(document.getElementById("searchInput").value);
-                        refreshOwnerSelect();
-                    }
+            icon.addEventListener('click', () => {
+                if (confirm("¿Eliminar este vehículo?")) {
+                    deleteVehicleFromOwner(icon.dataset.owner, icon.dataset.plate);
                 }
             });
         });
-    }
-
-    function attachAddVehicleFromCard() {
+        
         document.querySelectorAll('.add-placa-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const ownerId = btn.getAttribute('data-owner-id');
-                const owner = owners.find(o => o.id === ownerId);
-                if(owner) {
-                    const newPlate = prompt("Ingrese la nueva placa (ej: AB-123CD):");
-                    if(newPlate && newPlate.trim()) {
-                        // validar placa duplicada dentro del mismo dueño
-                        if(owner.vehicles.some(v => v.plate === newPlate.trim())) {
-                            alert("Este dueño ya tiene un vehículo con esa placa.");
-                            return;
-                        }
-                        const newModel = prompt("Marca / Modelo (opcional):");
-                        owner.vehicles.push({ plate: newPlate.trim(), model: newModel ? newModel.trim() : "" });
-                        saveData();
-                        renderOwnersList(document.getElementById("searchInput").value);
-                        refreshOwnerSelect();
-                    }
+            btn.addEventListener('click', () => {
+                const ownerId = btn.dataset.ownerId;
+                const newPlate = prompt("Ingrese la placa:");
+                if (newPlate?.trim()) {
+                    const newModel = prompt("Ingrese el modelo:");
+                    saveVehicleToOwner(ownerId, null, newPlate.trim(), newModel);
                 }
             });
         });
     }
-
-    // Guardar dueño (nuevo o edición)
-    function saveOwnerFromForm(event) {
-        event.preventDefault();
-        const editId = document.getElementById("ownerIdEdit").value;
-        const name = document.getElementById("ownerName").value.trim();
-        const phone = document.getElementById("ownerPhone").value.trim();
-        const idNumber = document.getElementById("ownerIdNumber").value.trim();
-        const email = document.getElementById("ownerEmail").value.trim();
-
-        if(!name || !phone || !idNumber) {
-            alert("Nombre, teléfono e identificación son obligatorios.");
+    
+    function refreshOwnerSelect() {
+        quickOwnerSelect.innerHTML = '<option value="">-- Seleccionar dueño --</option>';
+        localOwners.forEach(owner => {
+            quickOwnerSelect.appendChild(new Option(`${owner.name} (${owner.idNumber})`, owner.id));
+        });
+    }
+    
+    function updateGlobalStats() {
+        const totalOwners = localOwners.length;
+        const totalVehicles = localOwners.reduce((acc, o) => acc + (o.vehicles?.length || 0), 0);
+        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> Dueños: ${totalOwners} | <i class="fas fa-car"></i> Vehículos: ${totalVehicles}`;
+    }
+    
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
+    function escapeAttr(str) { return str ? str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;') : ''; }
+    
+    // Handlers
+    async function handleSaveOwner() {
+        const id = ownerIdEdit.value;
+        const name = ownerName.value.trim();
+        const phone = ownerPhone.value.trim();
+        const idNumber = ownerIdNumber.value.trim();
+        const email = ownerEmail.value.trim();
+        
+        if (!name || !phone || !idNumber) {
+            alert("Complete nombre, teléfono e identificación");
             return;
         }
-        if(editId === "") {
-            // Nuevo dueño
-            const newId = generateId();
-            const newOwner = {
-                id: newId,
-                name: name,
-                phone: phone,
-                idNumber: idNumber,
-                email: email || "",
-                vehicles: []
-            };
-            owners.push(newOwner);
+        
+        const ownerData = { name, phone, idNumber, email, vehicles: [] };
+        if (id) {
+            const existing = localOwners.find(o => o.id === id);
+            if (existing?.vehicles) ownerData.vehicles = existing.vehicles;
+            await saveOwnerToFirebase(ownerData, id);
         } else {
-            // Actualizar existente
-            const index = owners.findIndex(o => o.id === editId);
-            if(index !== -1) {
-                owners[index].name = name;
-                owners[index].phone = phone;
-                owners[index].idNumber = idNumber;
-                owners[index].email = email || "";
+            await saveOwnerToFirebase(ownerData);
+        }
+        ownerIdEdit.value = "";
+        ownerName.value = "";
+        ownerPhone.value = "";
+        ownerIdNumber.value = "";
+        ownerEmail.value = "";
+        formTitle.innerHTML = '<i class="fas fa-user-plus"></i> Registrar Dueño';
+    }
+    
+    async function handleAddQuickVehicle() {
+        const ownerId = quickOwnerSelect.value;
+        if (!ownerId) { alert("Seleccione un dueño"); return; }
+        const plate = quickPlate.value.trim();
+        if (!plate) { alert("Ingrese una placa"); return; }
+        const model = quickModel.value.trim();
+        await saveVehicleToOwner(ownerId, null, plate, model);
+        quickPlate.value = "";
+        quickModel.value = "";
+    }
+    
+    // Autenticación
+    function initAuth() {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("✅ Conectado a Firebase:", user.uid);
+                syncFromFirebase();
             } else {
-                alert("Dueño no encontrado");
+                signInAnonymously(auth).catch(err => {
+                    console.error("Auth error:", err);
+                    ownersContainer.innerHTML = `<div class="empty-message"><i class="fas fa-lock"></i> Error de autenticación. Verifica Firebase.</div>`;
+                });
             }
-        }
-        saveData();
-        renderOwnersList(document.getElementById("searchInput").value);
-        refreshOwnerSelect();
-        clearOwnerForm();
-    }
-
-    function clearOwnerForm() {
-        document.getElementById("ownerIdEdit").value = "";
-        document.getElementById("ownerName").value = "";
-        document.getElementById("ownerPhone").value = "";
-        document.getElementById("ownerIdNumber").value = "";
-        document.getElementById("ownerEmail").value = "";
-        document.getElementById("formTitle").innerHTML = '<i class="fas fa-user-plus"></i> Registrar / Editar Dueño';
-    }
-
-    // Agregar placa a dueño existente (desde panel rápido)
-    function addPlateToOwner() {
-        const ownerId = document.getElementById("quickOwnerSelect").value;
-        const plate = document.getElementById("quickPlate").value.trim();
-        const model = document.getElementById("quickModel").value.trim();
-        if(!ownerId) {
-            alert("Debe seleccionar un dueño.");
-            return;
-        }
-        if(!plate) {
-            alert("Debe ingresar una placa.");
-            return;
-        }
-        const owner = owners.find(o => o.id === ownerId);
-        if(owner) {
-            if(owner.vehicles.some(v => v.plate === plate)) {
-                alert(`El dueño ${owner.name} ya tiene registrada la placa ${plate}.`);
-                return;
-            }
-            owner.vehicles.push({ plate: plate, model: model });
-            saveData();
-            renderOwnersList(document.getElementById("searchInput").value);
-            refreshOwnerSelect();
-            document.getElementById("quickPlate").value = "";
-            document.getElementById("quickModel").value = "";
-        } else {
-            alert("Dueño no válido");
-        }
-    }
-
-    // Buscar y limpiar
-    function setupSearch() {
-        const searchInput = document.getElementById("searchInput");
-        const clearBtn = document.getElementById("clearSearchBtn");
-        const updateSearch = () => renderOwnersList(searchInput.value);
-        searchInput.addEventListener("input", updateSearch);
-        clearBtn.addEventListener("click", () => {
-            searchInput.value = "";
-            renderOwnersList("");
         });
     }
-
-    function escapeHtml(str) {
-        if(!str) return '';
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
-        });
-    }
-    function escapeAttr(str) {
-        if(!str) return '';
-        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-    }
-
-    // Inicialización
-    document.addEventListener("DOMContentLoaded", () => {
-        loadData();
-        document.getElementById("ownerForm").addEventListener("submit", saveOwnerFromForm);
-        document.getElementById("cancelEditBtn").addEventListener("click", clearOwnerForm);
-        document.getElementById("addPlateBtn").addEventListener("click", addPlateToOwner);
-        setupSearch();
+    
+    // Setup
+    saveOwnerBtn.addEventListener("click", handleSaveOwner);
+    cancelEditBtn.addEventListener("click", () => {
+        ownerIdEdit.value = "";
+        ownerName.value = "";
+        ownerPhone.value = "";
+        ownerIdNumber.value = "";
+        ownerEmail.value = "";
+        formTitle.innerHTML = '<i class="fas fa-user-plus"></i> Registrar Dueño';
     });
+    addPlateBtn.addEventListener("click", handleAddQuickVehicle);
+    searchInput.addEventListener("input", (e) => renderOwnersList(e.target.value));
+    clearSearchBtn.addEventListener("click", () => {
+        searchInput.value = "";
+        renderOwnersList("");
+    });
+    
+    initAuth();
 </script>
 </body>
 </html>
