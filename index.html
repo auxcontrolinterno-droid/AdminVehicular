@@ -26,7 +26,6 @@
             margin: 0 auto;
         }
 
-        /* Header elegante */
         .header {
             margin-bottom: 40px;
             text-align: center;
@@ -39,7 +38,6 @@
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            letter-spacing: -0.5px;
         }
 
         .header p {
@@ -58,10 +56,8 @@
             margin-top: 12px;
         }
 
-        /* Estado sincronización */
         .sync-status {
             font-size: 0.75rem;
-            color: #5a6e7c;
             margin-bottom: 28px;
             padding: 10px 0;
             text-align: center;
@@ -70,25 +66,10 @@
             border: 1px solid #e0e8f0;
         }
 
-        .sync-status.success {
-            background: #e8f5e9;
-            color: #2e7d32;
-            border-color: #c8e6c9;
-        }
+        .sync-status.success { background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
+        .sync-status.error { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
+        .sync-status.loading { background: #e3f2fd; color: #1a5f7a; border-color: #bbdef5; }
 
-        .sync-status.error {
-            background: #ffebee;
-            color: #c62828;
-            border-color: #ffcdd2;
-        }
-
-        .sync-status.loading {
-            background: #e3f2fd;
-            color: #1a5f7a;
-            border-color: #bbdef5;
-        }
-
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 12px;
@@ -108,8 +89,8 @@
             font-weight: 600;
             cursor: pointer;
             color: #8ba0b0;
-            transition: all 0.2s;
             border-radius: 50px;
+            transition: all 0.2s;
         }
 
         .tab-btn.active {
@@ -118,21 +99,10 @@
             box-shadow: 0 2px 8px rgba(10,37,64,0.2);
         }
 
-        .tab-panel {
-            display: none;
-        }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .tab-panel.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Tarjetas */
         .card {
             background: white;
             border-radius: 24px;
@@ -145,7 +115,7 @@
         .card-title {
             font-size: 1rem;
             font-weight: 600;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             color: #0a2540;
             display: flex;
             align-items: center;
@@ -154,64 +124,59 @@
             border-bottom: 2px solid #e0e8f0;
         }
 
-        .card-title i {
-            color: #1a5f7a;
-            font-size: 1.1rem;
+        .field-group { margin-bottom: 20px; }
+        label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #5a6e7c; display: block; margin-bottom: 8px; }
+        label .required { color: #c62828; }
+        label .optional { font-weight: normal; color: #a8bbd0; }
+        input { width: 100%; padding: 14px 0; border: none; border-bottom: 2px solid #e0e8f0; font-size: 1rem; background: transparent; transition: all 0.2s; color: #1a202c; }
+        input:focus { outline: none; border-bottom-color: #1a5f7a; }
+        .plate-input { font-family: monospace; font-weight: 600; font-size: 1rem; letter-spacing: 1px; }
+
+        /* Lista de vehículos en el dueño */
+        .vehicles-list {
+            background: #f8fafc;
+            border-radius: 16px;
+            padding: 12px;
+            margin: 12px 0;
         }
 
-        /* Formulario */
-        .field-group {
-            margin-bottom: 20px;
+        .vehicle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            border: 1px solid #e0e8f0;
         }
 
-        label {
+        .vehicle-info { flex: 1; }
+        .vehicle-placa { font-weight: 700; color: #0a2540; font-family: monospace; }
+        .vehicle-color { font-size: 0.75rem; color: #8ba0b0; margin-left: 8px; }
+        .vehicle-actions { display: flex; gap: 12px; }
+        .vehicle-actions i { cursor: pointer; color: #a8bbd0; transition: color 0.2s; }
+        .vehicle-actions i:hover { color: #1a5f7a; }
+        .delete-vehicle:hover { color: #c62828 !important; }
+
+        .add-btn {
+            background: none;
+            border: 2px dashed #c0d0dc;
+            border-radius: 40px;
+            padding: 10px 16px;
             font-size: 0.75rem;
             font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #5a6e7c;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        label .required {
-            color: #c62828;
-            margin-left: 4px;
-        }
-
-        label .optional {
-            font-weight: normal;
-            color: #a8bbd0;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 0;
-            border: none;
-            border-bottom: 2px solid #e0e8f0;
-            font-size: 1rem;
-            background: transparent;
+            color: #8ba0b0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
             transition: all 0.2s;
-            color: #1a202c;
         }
+        .add-btn:hover { border-color: #1a5f7a; color: #1a5f7a; background: #f0f4f8; }
 
-        input:focus {
-            outline: none;
-            border-bottom-color: #1a5f7a;
-        }
-
-        .plate-input {
-            font-family: monospace;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-        }
-
-        /* Listas dinámicas */
-        .dynamic-list {
-            margin: 8px 0;
-        }
-
+        .dynamic-list { margin: 8px 0; }
         .list-item {
             display: flex;
             justify-content: space-between;
@@ -219,46 +184,19 @@
             padding: 12px 0;
             border-bottom: 1px solid #f0f0f0;
         }
+        .list-item-info strong { font-size: 0.9rem; color: #0a2540; }
+        .list-item-info span { font-size: 0.75rem; color: #8ba0b0; margin-left: 8px; }
+        .list-item-actions { display: flex; gap: 12px; }
+        .list-item-actions i { font-size: 0.9rem; cursor: pointer; color: #a8bbd0; transition: color 0.2s; }
+        .list-item-actions i:hover { color: #1a5f7a; }
+        .delete-item:hover { color: #c62828 !important; }
 
-        .list-item-info strong {
-            font-size: 0.9rem;
-            color: #0a2540;
-        }
-
-        .list-item-info span {
-            font-size: 0.75rem;
-            color: #8ba0b0;
-            margin-left: 8px;
-        }
-
-        .list-item-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .list-item-actions i {
-            font-size: 0.9rem;
-            cursor: pointer;
-            color: #a8bbd0;
-            transition: color 0.2s;
-        }
-
-        .list-item-actions i:hover {
-            color: #1a5f7a;
-        }
-
-        .delete-item:hover {
-            color: #c62828 !important;
-        }
-
-        /* Formulario inline */
         .inline-form {
             display: flex;
             gap: 10px;
             margin-top: 12px;
             flex-wrap: wrap;
         }
-
         .inline-input {
             flex: 2;
             padding: 12px 0;
@@ -267,12 +205,7 @@
             font-size: 0.9rem;
             background: transparent;
         }
-
-        .inline-input:focus {
-            outline: none;
-            border-bottom-color: #1a5f7a;
-        }
-
+        .inline-input:focus { outline: none; border-bottom-color: #1a5f7a; }
         .inline-btn {
             background: none;
             border: 2px solid #e0e8f0;
@@ -284,14 +217,8 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+        .inline-btn:hover { background: #f0f4f8; border-color: #1a5f7a; color: #1a5f7a; }
 
-        .inline-btn:hover {
-            background: #f0f4f8;
-            border-color: #1a5f7a;
-            color: #1a5f7a;
-        }
-
-        /* Botones principales */
         .btn {
             padding: 14px 28px;
             border-radius: 40px;
@@ -305,71 +232,22 @@
             gap: 10px;
             transition: all 0.2s;
         }
-
         .btn-primary {
             background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
             color: white;
             box-shadow: 0 2px 8px rgba(10,37,64,0.2);
         }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-outline { background: transparent; border: 2px solid #e0e8f0; color: #5a6e7c; }
+        .button-group { display: flex; gap: 12px; margin-top: 28px; }
 
-        .btn-primary:active {
-            transform: scale(0.98);
-        }
+        .search-section { margin-bottom: 28px; }
+        .search-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #8ba0b0; margin-bottom: 12px; display: block; }
+        .search-wrapper { position: relative; }
+        .search-wrapper i { position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: #a8bbd0; font-size: 1rem; }
+        .search-wrapper input { padding: 14px 0 14px 32px; border: none; border-bottom: 2px solid #e0e8f0; width: 100%; background: transparent; font-size: 1rem; }
+        .search-wrapper input:focus { border-bottom-color: #1a5f7a; }
 
-        .btn-outline {
-            background: transparent;
-            border: 2px solid #e0e8f0;
-            color: #5a6e7c;
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 28px;
-        }
-
-        /* Buscador */
-        .search-section {
-            margin-bottom: 28px;
-        }
-
-        .search-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8ba0b0;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .search-wrapper {
-            position: relative;
-        }
-
-        .search-wrapper i {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #a8bbd0;
-            font-size: 1rem;
-        }
-
-        .search-wrapper input {
-            padding: 14px 0 14px 32px;
-            border: none;
-            border-bottom: 2px solid #e0e8f0;
-            width: 100%;
-            background: transparent;
-            font-size: 1rem;
-        }
-
-        .search-wrapper input:focus {
-            border-bottom-color: #1a5f7a;
-        }
-
-        /* Tarjetas de resultados */
         .result-card {
             background: white;
             border-radius: 20px;
@@ -378,80 +256,46 @@
             border: 1px solid #e0e8f0;
             transition: all 0.2s;
         }
+        .result-card:hover { border-color: #c0d0dc; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
 
-        .result-card:hover {
-            border-color: #c0d0dc;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-        }
-
-        .vehicle-header {
+        .owner-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
             flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 16px;
             padding-bottom: 12px;
             border-bottom: 2px solid #f0f0f0;
         }
+        .owner-name { font-size: 1.1rem; font-weight: 700; color: #0a2540; }
+        .owner-badge { background: #e8edf2; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; color: #5a6e7c; }
 
-        .vehicle-placa {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #0a2540;
-            font-family: monospace;
+        .owner-details { margin: 12px 0; padding: 12px 16px; background: #f8fafc; border-radius: 16px; }
+        .owner-detail { font-size: 0.8rem; color: #6a8aaa; margin-top: 4px; }
+        .owner-detail i { width: 20px; color: #1a5f7a; }
+
+        .vehicles-section { margin: 12px 0; }
+        .section-title { font-weight: 600; color: #0a2540; margin-bottom: 12px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
+        .vehicle-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             background: #f0f4f8;
-            padding: 4px 12px;
+            padding: 8px 16px;
             border-radius: 30px;
-        }
-
-        .vehicle-color {
-            background: #f0f4f8;
-            padding: 4px 12px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            color: #5a6e7c;
-        }
-
-        .owner-info {
-            margin: 12px 0;
-            padding: 12px 16px;
-            background: #f8fafc;
-            border-radius: 16px;
-        }
-
-        .owner-name {
-            font-weight: 600;
-            color: #0a2540;
-            margin-bottom: 6px;
-            font-size: 0.95rem;
-        }
-
-        .owner-detail {
             font-size: 0.8rem;
-            color: #6a8aaa;
-            margin-top: 4px;
+            margin: 4px 6px 4px 0;
         }
+        .vehicle-tag i { color: #1a5f7a; }
 
-        .students-section {
-            margin: 12px 0;
-            padding: 12px 16px;
-            background: #fff8e7;
-            border-radius: 16px;
-        }
-
-        .students-title {
-            font-weight: 600;
-            color: #b86b2c;
-            margin-bottom: 8px;
-            font-size: 0.8rem;
-        }
-
+        .students-section { margin: 12px 0; padding: 12px 16px; background: #fff8e7; border-radius: 16px; }
+        .students-title { font-weight: 600; color: #b86b2c; margin-bottom: 8px; font-size: 0.8rem; }
         .student-tag {
             display: inline-block;
             background: white;
-            padding: 4px 12px;
-            border-radius: 20px;
+            padding: 6px 14px;
+            border-radius: 30px;
             font-size: 0.75rem;
             color: #5a6e7c;
             margin: 4px 6px 4px 0;
@@ -464,7 +308,6 @@
             padding-top: 12px;
             border-top: 1px solid #f0f0f0;
         }
-
         .action-btn {
             background: none;
             border: none;
@@ -479,36 +322,12 @@
             border-radius: 30px;
             transition: all 0.2s;
         }
+        .action-btn.edit:hover { background: #e3f2fd; color: #1a5f7a; }
+        .action-btn.delete:hover { background: #ffebee; color: #c62828; }
 
-        .action-btn.edit:hover {
-            background: #e3f2fd;
-            color: #1a5f7a;
-        }
-
-        .action-btn.delete:hover {
-            background: #ffebee;
-            color: #c62828;
-        }
-
-        .empty-result {
-            text-align: center;
-            padding: 60px 20px;
-            color: #a8bbd0;
-        }
-
-        .highlight {
-            background: #fff3cd;
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-weight: 600;
-        }
-
-        .refresh-btn {
-            background: transparent;
-            border: 2px solid #e0e8f0;
-            margin-top: 20px;
-            width: 100%;
-        }
+        .empty-result { text-align: center; padding: 60px 20px; color: #a8bbd0; }
+        .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
+        .refresh-btn { background: transparent; border: 2px solid #e0e8f0; margin-top: 20px; width: 100%; }
 
         #loadingToast {
             position: fixed;
@@ -522,36 +341,16 @@
             font-size: 0.8rem;
             display: none;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        footer {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #a8bbd0;
-            padding: 24px 0 16px;
-            margin-top: 16px;
-        }
-
-        #listaContainer {
-            max-height: 60vh;
-            overflow-y: auto;
-        }
+        footer { text-align: center; font-size: 0.7rem; color: #a8bbd0; padding: 24px 0 16px; margin-top: 16px; }
+        #listaContainer { max-height: 60vh; overflow-y: auto; }
 
         @media (max-width: 600px) {
-            body {
-                padding: 20px 16px;
-            }
-            .inline-form {
-                flex-direction: column;
-            }
-            .inline-btn {
-                width: fit-content;
-            }
-            .vehicle-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+            body { padding: 20px 16px; }
+            .inline-form { flex-direction: column; }
+            .inline-btn { width: fit-content; }
+            .owner-header { flex-direction: column; }
         }
     </style>
 </head>
@@ -575,51 +374,50 @@
     <!-- Panel Registrar -->
     <div id="tab-registrar" class="tab-panel">
         <div class="card">
-            <div class="card-title"><i class="fas fa-car"></i> Datos del Vehículo</div>
+            <div class="card-title"><i class="fas fa-user"></i> Datos del Dueño</div>
             <input type="hidden" id="editId" value="">
             
             <div class="field-group">
-                <label>Placa <span class="required">*</span></label>
-                <input type="text" id="placa" class="plate-input" placeholder="Ej: ABC-123" autocomplete="off">
-                <div style="font-size: 0.65rem; color: #a8bbd0; margin-top: 4px;">Se formatea automáticamente</div>
+                <label>Nombre del dueño <span class="optional">(opcional)</span></label>
+                <input type="text" id="nombre" placeholder="Ej: María González">
             </div>
 
             <div class="field-group">
-                <label>Color <span class="optional">(opcional)</span></label>
-                <input type="text" id="color" placeholder="Ej: Rojo, Azul, Blanco">
-            </div>
-
-            <div class="card-title" style="margin-top: 24px;"><i class="fas fa-user"></i> Datos del Dueño <span class="optional">(opcional)</span></div>
-            
-            <div class="field-group">
-                <label>Nombre</label>
-                <input type="text" id="nombre" placeholder="Nombre del dueño">
+                <label>Teléfono <span class="optional">(opcional)</span></label>
+                <input type="tel" id="telefono" placeholder="Ej: 555-1234">
             </div>
 
             <div class="field-group">
-                <label>Teléfono</label>
-                <input type="tel" id="telefono" placeholder="Teléfono de contacto">
-            </div>
-
-            <div class="field-group">
-                <label>Identificación</label>
+                <label>Identificación <span class="optional">(opcional)</span></label>
                 <input type="text" id="identificacion" placeholder="Cédula / DNI">
             </div>
 
             <div class="field-group">
-                <label>Correo electrónico</label>
+                <label>Correo electrónico <span class="optional">(opcional)</span></label>
                 <input type="email" id="correo" placeholder="correo@ejemplo.com">
             </div>
 
+            <!-- Vehículos del dueño (múltiples) -->
+            <div class="card-title" style="margin-top: 24px;"><i class="fas fa-car"></i> Vehículos <span class="required">*</span></div>
+            <div id="vehiculosList" class="vehicles-list"></div>
+            <div class="inline-form" style="margin-top: 0;">
+                <input type="text" id="nuevaPlaca" class="inline-input" placeholder="Placa (ej: ABC-123)">
+                <input type="text" id="nuevoColor" class="inline-input" placeholder="Color (opcional)">
+                <button type="button" id="agregarVehiculoBtn" class="inline-btn">
+                    <i class="fas fa-plus-circle"></i> Agregar vehículo
+                </button>
+            </div>
+
+            <!-- Estudiantes -->
             <div class="card-title" style="margin-top: 24px;"><i class="fas fa-child"></i> Estudiantes <span class="optional">(opcional)</span></div>
             <div class="dynamic-list">
                 <div id="listaEstudiantes"></div>
             </div>
-            <div class="inline-form">
+            <div class="inline-form" style="margin-top: 0;">
                 <input type="text" id="nuevoEstudianteNombre" class="inline-input" placeholder="Nombre del estudiante">
                 <input type="text" id="nuevoEstudianteGrado" class="inline-input" placeholder="Grado">
                 <button type="button" id="agregarEstudianteBtn" class="inline-btn">
-                    <i class="fas fa-plus-circle"></i> Agregar
+                    <i class="fas fa-plus-circle"></i> Agregar estudiante
                 </button>
             </div>
 
@@ -636,7 +434,7 @@
             <div class="card-title"><i class="fas fa-search"></i> Buscar Registros</div>
             
             <div class="search-section">
-                <div class="search-label">BUSCAR POR PLACA, NOMBRE, TELÉFONO O ESTUDIANTE</div>
+                <div class="search-label">BUSCAR POR NOMBRE, PLACA, TELÉFONO O ESTUDIANTE</div>
                 <div class="search-wrapper">
                     <i class="fas fa-search"></i>
                     <input type="text" id="buscarInput" placeholder="Escribe para buscar...">
@@ -657,7 +455,7 @@
     </div>
 
     <footer>
-        Datos sincronizados con Google Sheets · Solo la placa es obligatoria
+        Datos sincronizados con Google Sheets · Un dueño puede tener múltiples vehículos
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -665,8 +463,9 @@
 <script>
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     
-    let vehicles = [];
+    let owners = [];
     let filtroActual = "";
+    let vehiculosTemp = [];
     let estudiantesTemp = [];
 
     // DOM elements
@@ -676,8 +475,6 @@
     const syncStatus = document.getElementById("syncStatus");
     const refreshBtn = document.getElementById("refreshBtn");
     const editId = document.getElementById("editId");
-    const placa = document.getElementById("placa");
-    const color = document.getElementById("color");
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const identificacion = document.getElementById("identificacion");
@@ -689,138 +486,83 @@
     const nuevoEstudianteNombre = document.getElementById("nuevoEstudianteNombre");
     const nuevoEstudianteGrado = document.getElementById("nuevoEstudianteGrado");
     const agregarEstudianteBtn = document.getElementById("agregarEstudianteBtn");
+    const vehiculosList = document.getElementById("vehiculosList");
+    const nuevaPlaca = document.getElementById("nuevaPlaca");
+    const nuevoColor = document.getElementById("nuevoColor");
+    const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
 
-    function showLoading(show) {
-        loadingToast.style.display = show ? "flex" : "none";
-    }
+    function showLoading(show) { loadingToast.style.display = show ? "flex" : "none"; }
 
     function formatearPlaca(texto) {
         if (!texto) return "";
         let limpio = texto.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-        if (limpio.length > 3) {
-            return limpio.substring(0, 3) + "-" + limpio.substring(3, 8);
-        }
+        if (limpio.length > 3) return limpio.substring(0, 3) + "-" + limpio.substring(3, 8);
         return limpio;
     }
 
-    placa.addEventListener("input", function(e) {
+    nuevaPlaca.addEventListener("input", function(e) {
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-        if (raw.length > 3) {
-            this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
-        } else {
-            this.value = raw;
-        }
+        if (raw.length > 3) this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
+        else this.value = raw;
     });
 
-    function parseCSV(csvText) {
-        const lines = csvText.split(/\r?\n/);
-        if (lines.length < 2) return [];
+    function renderizarVehiculos() {
+        if (vehiculosTemp.length === 0) {
+            vehiculosList.innerHTML = '<div style="color:#a8bbd0; padding:12px 0; text-align:center;">Sin vehículos. Agrega al menos uno.</div>';
+            return;
+        }
+        let html = '';
+        vehiculosTemp.forEach((veh, index) => {
+            html += `<div class="vehicle-item">
+                        <div class="vehicle-info">
+                            <span class="vehicle-placa">${escapeHtml(veh.placa)}</span>
+                            ${veh.color ? `<span class="vehicle-color">🎨 ${escapeHtml(veh.color)}</span>` : ''}
+                        </div>
+                        <div class="vehicle-actions">
+                            <i class="fas fa-edit edit-vehiculo" data-index="${index}"></i>
+                            <i class="fas fa-trash delete-vehiculo delete-item" data-index="${index}"></i>
+                        </div>
+                    </div>`;
+        });
+        vehiculosList.innerHTML = html;
         
-        const data = [];
-        for (let i = 1; i < lines.length; i++) {
-            if (!lines[i].trim()) continue;
-            
-            const values = [];
-            let inQuote = false;
-            let currentValue = "";
-            
-            for (let j = 0; j < lines[i].length; j++) {
-                const char = lines[i][j];
-                if (char === '"') {
-                    inQuote = !inQuote;
-                } else if (char === "," && !inQuote) {
-                    values.push(currentValue);
-                    currentValue = "";
-                } else {
-                    currentValue += char;
+        document.querySelectorAll('.edit-vehiculo').forEach(icon => {
+            icon.onclick = () => {
+                const idx = parseInt(icon.dataset.index);
+                nuevaPlaca.value = vehiculosTemp[idx].placa;
+                nuevoColor.value = vehiculosTemp[idx].color || "";
+                vehiculosTemp.splice(idx, 1);
+                renderizarVehiculos();
+            };
+        });
+        document.querySelectorAll('.delete-vehiculo').forEach(icon => {
+            icon.onclick = () => {
+                if (confirm("¿Eliminar este vehículo?")) {
+                    vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
+                    renderizarVehiculos();
                 }
-            }
-            values.push(currentValue);
-            
-            if (values.length >= 2) {
-                const estudiantesRaw = values[7] || "";
-                const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
-                    const [nombreEst, gradoEst] = s.split("|");
-                    return { nombre: nombreEst || "", grado: gradoEst || "" };
-                });
-                
-                data.push({
-                    id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(),
-                    placa: values[1] ? values[1].replace(/^"|"$/g, '') : "",
-                    color: values[2] ? values[2].replace(/^"|"$/g, '') : "",
-                    nombre: values[3] ? values[3].replace(/^"|"$/g, '') : "",
-                    telefono: values[4] ? values[4].replace(/^"|"$/g, '') : "",
-                    identificacion: values[5] ? values[5].replace(/^"|"$/g, '') : "",
-                    correo: values[6] ? values[6].replace(/^"|"$/g, '') : "",
-                    estudiantes: estudiantes,
-                    actualizado: new Date().toISOString()
-                });
-            }
+            };
+        });
+    }
+
+    function agregarVehiculo() {
+        let placaValue = nuevaPlaca.value.trim();
+        if (!placaValue) {
+            mostrarMensaje("Ingrese la placa del vehículo", true);
+            return;
         }
-        return data;
-    }
-
-    async function cargarDesdeSheets() {
-        showLoading(true);
-        syncStatus.className = "sync-status loading";
-        syncStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Cargando datos desde Google Sheets...`;
-        
-        try {
-            const response = await fetch(CSV_URL);
-            if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            const csvText = await response.text();
-            const datos = parseCSV(csvText);
-            
-            if (datos.length > 0) {
-                vehicles = datos;
-                syncStatus.className = "sync-status success";
-                syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${vehicles.length} registros sincronizados`;
-                mostrarMensaje(`${vehicles.length} registros cargados`);
-            } else {
-                syncStatus.className = "sync-status error";
-                syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se encontraron datos`;
-                vehicles = [];
-            }
-        } catch (error) {
-            syncStatus.className = "sync-status error";
-            syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error al conectar`;
-            vehicles = [];
-        } finally {
-            showLoading(false);
-            actualizarEstadisticas();
-            aplicarBusqueda();
+        placaValue = formatearPlaca(placaValue);
+        if (vehiculosTemp.some(v => v.placa === placaValue)) {
+            mostrarMensaje("Esta placa ya está agregada", true);
+            return;
         }
+        vehiculosTemp.push({ placa: placaValue, color: nuevoColor.value.trim() || "" });
+        renderizarVehiculos();
+        nuevaPlaca.value = "";
+        nuevoColor.value = "";
     }
 
-    function guardarBackupLocal() {
-        localStorage.setItem("autoregistro_backup", JSON.stringify(vehicles));
-    }
-
-    function cargarBackupLocal() {
-        const backup = localStorage.getItem("autoregistro_backup");
-        if (backup && vehicles.length === 0) {
-            try {
-                vehicles = JSON.parse(backup);
-                syncStatus.className = "sync-status success";
-                syncStatus.innerHTML = `<i class="fas fa-database"></i> ${vehicles.length} registros locales`;
-                actualizarEstadisticas();
-                aplicarBusqueda();
-            } catch(e) {}
-        }
-    }
-
-    function mostrarMensaje(mensaje, esError = false) {
-        const toast = document.createElement('div');
-        toast.style.cssText = `
-            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-            background: ${esError ? '#c62828' : '#2e7d32'}; color: white;
-            padding: 10px 24px; border-radius: 40px; font-size: 0.8rem;
-            z-index: 1000; animation: slideUp 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        `;
-        toast.innerHTML = `<i class="fas ${esError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${mensaje}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
-    }
+    agregarVehiculoBtn.onclick = agregarVehiculo;
 
     function renderizarListaEstudiantes() {
         if (estudiantesTemp.length === 0) {
@@ -867,8 +609,7 @@
             mostrarMensaje("Ingrese el nombre del estudiante", true);
             return;
         }
-        const gradoEst = nuevoEstudianteGrado.value.trim();
-        estudiantesTemp.push({ nombre: nombreEst, grado: gradoEst });
+        estudiantesTemp.push({ nombre: nombreEst, grado: nuevoEstudianteGrado.value.trim() || "" });
         renderizarListaEstudiantes();
         nuevoEstudianteNombre.value = "";
         nuevoEstudianteGrado.value = "";
@@ -876,66 +617,150 @@
 
     agregarEstudianteBtn.onclick = agregarEstudiante;
 
+    function parseCSV(csvText) {
+        const lines = csvText.split(/\r?\n/);
+        if (lines.length < 2) return [];
+        const data = [];
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            const values = [];
+            let inQuote = false, currentValue = "";
+            for (let j = 0; j < lines[i].length; j++) {
+                const char = lines[i][j];
+                if (char === '"') inQuote = !inQuote;
+                else if (char === "," && !inQuote) { values.push(currentValue); currentValue = ""; }
+                else currentValue += char;
+            }
+            values.push(currentValue);
+            
+            if (values.length >= 2) {
+                // Formato CSV: id,placa,color,nombre,telefono,identificacion,correo,estudiantes
+                const estudiantesRaw = values[7] || "";
+                const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
+                    const [nombreEst, gradoEst] = s.split("|");
+                    return { nombre: nombreEst || "", grado: gradoEst || "" };
+                });
+                const vehiculos = [{ placa: values[1] || "", color: values[2] || "" }];
+                data.push({
+                    id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(),
+                    nombre: values[3] ? values[3].replace(/^"|"$/g, '') : "",
+                    telefono: values[4] ? values[4].replace(/^"|"$/g, '') : "",
+                    identificacion: values[5] ? values[5].replace(/^"|"$/g, '') : "",
+                    correo: values[6] ? values[6].replace(/^"|"$/g, '') : "",
+                    vehiculos: vehiculos,
+                    estudiantes: estudiantes,
+                    actualizado: new Date().toISOString()
+                });
+            }
+        }
+        return data;
+    }
+
+    async function cargarDesdeSheets() {
+        showLoading(true);
+        syncStatus.className = "sync-status loading";
+        syncStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Cargando datos...`;
+        try {
+            const response = await fetch(CSV_URL);
+            if (!response.ok) throw new Error();
+            const csvText = await response.text();
+            const datos = parseCSV(csvText);
+            if (datos.length > 0) {
+                owners = datos;
+                syncStatus.className = "sync-status success";
+                syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${owners.length} dueños sincronizados`;
+            } else {
+                owners = [];
+                syncStatus.className = "sync-status error";
+                syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se encontraron datos`;
+            }
+        } catch (error) {
+            owners = [];
+            syncStatus.className = "sync-status error";
+            syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error al conectar`;
+        } finally {
+            showLoading(false);
+            actualizarEstadisticas();
+            aplicarBusqueda();
+        }
+    }
+
+    function guardarBackupLocal() { localStorage.setItem("autoregistro_backup", JSON.stringify(owners)); }
+    function cargarBackupLocal() {
+        const backup = localStorage.getItem("autoregistro_backup");
+        if (backup && owners.length === 0) {
+            try {
+                owners = JSON.parse(backup);
+                syncStatus.className = "sync-status success";
+                syncStatus.innerHTML = `<i class="fas fa-database"></i> ${owners.length} dueños (local)`;
+                actualizarEstadisticas();
+                aplicarBusqueda();
+            } catch(e) {}
+        }
+    }
+
+    function mostrarMensaje(mensaje, esError = false) {
+        const toast = document.createElement('div');
+        toast.style.cssText = `position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:${esError ? '#c62828' : '#2e7d32'}; color:white; padding:10px 24px; border-radius:40px; font-size:0.8rem; z-index:1000; animation:slideUp 0.3s ease;`;
+        toast.innerHTML = `<i class="fas ${esError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${mensaje}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+    }
+
     function limpiarFormulario() {
         editId.value = "";
-        placa.value = "";
-        color.value = "";
         nombre.value = "";
         telefono.value = "";
         identificacion.value = "";
         correo.value = "";
+        vehiculosTemp = [];
         estudiantesTemp = [];
+        renderizarVehiculos();
         renderizarListaEstudiantes();
+        nuevaPlaca.value = "";
+        nuevoColor.value = "";
         nuevoEstudianteNombre.value = "";
         nuevoEstudianteGrado.value = "";
     }
 
-    async function guardarVehiculo() {
-        let placaValue = placa.value.trim();
-        if (!placaValue) {
-            mostrarMensaje("La placa es obligatoria", true);
+    async function guardarOwner() {
+        const nombreValue = nombre.value.trim();
+        if (!nombreValue && vehiculosTemp.length === 0) {
+            mostrarMensaje("Agregue al menos un vehículo o un nombre", true);
             return;
         }
-        placaValue = formatearPlaca(placaValue);
+        if (vehiculosTemp.length === 0) {
+            mostrarMensaje("Agregue al menos un vehículo", true);
+            return;
+        }
         const idActual = editId.value;
-        
-        if (!idActual && vehicles.some(v => v.placa === placaValue)) {
-            mostrarMensaje(`La placa ${placaValue} ya está registrada`, true);
-            return;
-        }
-        
-        const nuevoVehiculo = {
+        const nuevoOwner = {
             id: idActual || Date.now().toString(),
-            placa: placaValue,
-            color: color.value.trim() || "",
-            nombre: nombre.value.trim() || "",
+            nombre: nombreValue,
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
             correo: correo.value.trim() || "",
+            vehiculos: vehiculosTemp,
             estudiantes: estudiantesTemp,
             actualizado: new Date().toISOString()
         };
         
         if (idActual) {
-            const index = vehicles.findIndex(v => v.id === idActual);
-            if (index !== -1) {
-                vehicles[index] = nuevoVehiculo;
-                mostrarMensaje("Registro actualizado");
-            }
+            const index = owners.findIndex(o => o.id === idActual);
+            if (index !== -1) owners[index] = nuevoOwner;
         } else {
-            vehicles.push(nuevoVehiculo);
-            mostrarMensaje("Registro guardado");
+            owners.push(nuevoOwner);
         }
-        
         guardarBackupLocal();
         limpiarFormulario();
         actualizarEstadisticas();
         aplicarBusqueda();
+        mostrarMensaje(idActual ? "Actualizado" : "Guardado");
     }
 
-    function eliminarVehiculo(id, placaVehiculo) {
-        if (confirm(`¿Eliminar el vehículo ${placaVehiculo}?`)) {
-            vehicles = vehicles.filter(v => v.id !== id);
+    function eliminarOwner(id, nombreOwner) {
+        if (confirm(`¿Eliminar a "${nombreOwner || 'este dueño'}" y todos sus vehículos?`)) {
+            owners = owners.filter(o => o.id !== id);
             guardarBackupLocal();
             actualizarEstadisticas();
             aplicarBusqueda();
@@ -943,15 +768,15 @@
         }
     }
 
-    function editarVehiculo(vehiculo) {
-        editId.value = vehiculo.id;
-        placa.value = vehiculo.placa;
-        color.value = vehiculo.color || "";
-        nombre.value = vehiculo.nombre || "";
-        telefono.value = vehiculo.telefono || "";
-        identificacion.value = vehiculo.identificacion || "";
-        correo.value = vehiculo.correo || "";
-        estudiantesTemp = vehiculo.estudiantes ? [...vehiculo.estudiantes] : [];
+    function editarOwner(owner) {
+        editId.value = owner.id;
+        nombre.value = owner.nombre || "";
+        telefono.value = owner.telefono || "";
+        identificacion.value = owner.identificacion || "";
+        correo.value = owner.correo || "";
+        vehiculosTemp = owner.vehiculos ? [...owner.vehiculos] : [];
+        estudiantesTemp = owner.estudiantes ? [...owner.estudiantes] : [];
+        renderizarVehiculos();
         renderizarListaEstudiantes();
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
@@ -959,17 +784,15 @@
     function aplicarBusqueda() {
         const termino = buscarInput.value.trim().toLowerCase();
         filtroActual = termino;
-        let filtrados = [...vehicles];
-        
+        let filtrados = [...owners];
         if (termino) {
-            filtrados = vehicles.filter(v => 
-                v.placa?.toLowerCase().includes(termino) ||
-                v.color?.toLowerCase().includes(termino) ||
-                v.nombre?.toLowerCase().includes(termino) ||
-                v.telefono?.toLowerCase().includes(termino) ||
-                v.identificacion?.toLowerCase().includes(termino) ||
-                v.correo?.toLowerCase().includes(termino) ||
-                (v.estudiantes && v.estudiantes.some(e => e.nombre?.toLowerCase().includes(termino)))
+            filtrados = owners.filter(o => 
+                o.nombre?.toLowerCase().includes(termino) ||
+                o.telefono?.toLowerCase().includes(termino) ||
+                o.identificacion?.toLowerCase().includes(termino) ||
+                o.correo?.toLowerCase().includes(termino) ||
+                o.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
+                o.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
             );
         }
         renderizarResultados(filtrados, termino);
@@ -980,42 +803,47 @@
             listaContainer.innerHTML = `<div class="empty-result"><i class="fas fa-search"></i><div>No se encontraron resultados</div></div>`;
             return;
         }
-        
         let html = "";
-        filtrados.forEach(vehiculo => {
-            const tieneDueño = vehiculo.nombre || vehiculo.telefono || vehiculo.identificacion || vehiculo.correo;
-            const tieneEstudiantes = vehiculo.estudiantes && vehiculo.estudiantes.length > 0;
-            
+        filtrados.forEach(owner => {
+            const totalVehiculos = owner.vehiculos?.length || 0;
             html += `
             <div class="result-card">
-                <div class="vehicle-header">
-                    <span class="vehicle-placa"><i class="fas fa-car"></i> ${resaltarTexto(vehiculo.placa, termino)}</span>
-                    ${vehiculo.color ? `<span class="vehicle-color">🎨 ${resaltarTexto(vehiculo.color, termino)}</span>` : ''}
+                <div class="owner-header">
+                    <div class="owner-name">${resaltarTexto(owner.nombre || "Dueño sin nombre", termino)}</div>
+                    <span class="owner-badge"><i class="fas fa-car"></i> ${totalVehiculos} vehículo${totalVehiculos !== 1 ? 's' : ''}</span>
                 </div>`;
             
-            if (tieneDueño) {
-                html += `<div class="owner-info">
-                            ${vehiculo.nombre ? `<div class="owner-name"><i class="fas fa-user"></i> ${resaltarTexto(vehiculo.nombre, termino)}</div>` : ''}`;
-                if (vehiculo.telefono) html += `<div class="owner-detail"><i class="fas fa-phone"></i> ${resaltarTexto(vehiculo.telefono, termino)}</div>`;
-                if (vehiculo.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ${resaltarTexto(vehiculo.identificacion, termino)}</div>`;
-                if (vehiculo.correo) html += `<div class="owner-detail"><i class="fas fa-envelope"></i> ${escapeHtml(vehiculo.correo)}</div>`;
+            if (owner.telefono || owner.identificacion || owner.correo) {
+                html += `<div class="owner-details">`;
+                if (owner.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ${resaltarTexto(owner.identificacion, termino)}</div>`;
+                if (owner.telefono) html += `<div class="owner-detail"><i class="fas fa-phone"></i> ${resaltarTexto(owner.telefono, termino)}</div>`;
+                if (owner.correo) html += `<div class="owner-detail"><i class="fas fa-envelope"></i> ${escapeHtml(owner.correo)}</div>`;
                 html += `</div>`;
             }
             
-            if (tieneEstudiantes) {
+            if (owner.vehiculos && owner.vehiculos.length > 0) {
+                html += `<div class="vehicles-section">
+                            <div class="section-title"><i class="fas fa-car"></i> VEHÍCULOS</div>`;
+                owner.vehiculos.forEach(veh => {
+                    html += `<span class="vehicle-tag"><i class="fas fa-car"></i> ${resaltarTexto(veh.placa, termino)}${veh.color ? ` · 🎨 ${escapeHtml(veh.color)}` : ''}</span>`;
+                });
+                html += `</div>`;
+            }
+            
+            if (owner.estudiantes && owner.estudiantes.length > 0) {
                 html += `<div class="students-section">
                             <div class="students-title"><i class="fas fa-child"></i> ESTUDIANTES</div>`;
-                vehiculo.estudiantes.forEach(est => {
-                    html += `<span class="student-tag"><i class="fas fa-user-graduate"></i> ${resaltarTexto(est.nombre, termino)}${est.grado ? ` · ${escapeHtml(est.grado)}` : ''}</span>`;
+                owner.estudiantes.forEach(est => {
+                    html += `<span class="student-tag"><i class="fas fa-user-graduate"></i> ${resaltarTexto(est.nombre, termino)}${est.grado ? ` · 📚 ${escapeHtml(est.grado)}` : ''}</span>`;
                 });
                 html += `</div>`;
             }
             
             html += `<div class="card-actions">
-                        <button class="action-btn edit" onclick="window.editarVehiculoDesdeGlobal('${vehiculo.id}', ${JSON.stringify(vehiculo).replace(/"/g, '&quot;')})">
+                        <button class="action-btn edit" onclick="window.editarOwnerDesdeGlobal('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="action-btn delete" onclick="window.eliminarVehiculoDesdeGlobal('${vehiculo.id}', '${escapeHtml(vehiculo.placa)}')">
+                        <button class="action-btn delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </div>
@@ -1024,13 +852,8 @@
         listaContainer.innerHTML = html;
     }
 
-    window.editarVehiculoDesdeGlobal = function(id, vehiculo) {
-        editarVehiculo(vehiculo);
-    };
-    
-    window.eliminarVehiculoDesdeGlobal = function(id, placa) {
-        eliminarVehiculo(id, placa);
-    };
+    window.editarOwnerDesdeGlobal = (id, owner) => editarOwner(owner);
+    window.eliminarOwnerDesdeGlobal = (id, nombre) => eliminarOwner(id, nombre);
 
     function resaltarTexto(texto, busqueda) {
         if (!busqueda || !texto) return escapeHtml(texto);
@@ -1039,29 +862,24 @@
     }
 
     function actualizarEstadisticas() {
-        const total = vehicles.length;
-        globalStatsSpan.innerHTML = `${total} vehículo${total !== 1 ? 's' : ''}`;
+        const total = owners.length;
+        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0);
+        globalStatsSpan.innerHTML = `${total} dueños · ${totalVehiculos} vehículos`;
     }
 
-    function escapeHtml(str) {
-        if (!str) return '';
-        return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
-    }
+    function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
 
-    // Tabs
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
-    tabBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const tabId = btn.dataset.tab;
-            tabBtns.forEach(b => b.classList.remove('active'));
-            tabPanels.forEach(p => p.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(`tab-${tabId}`).classList.add('active');
-        });
-    });
+    tabBtns.forEach(btn => btn.addEventListener('click', () => {
+        const tabId = btn.dataset.tab;
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabPanels.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+    }));
 
-    guardarBtn.onclick = guardarVehiculo;
+    guardarBtn.onclick = guardarOwner;
     cancelarBtn.onclick = limpiarFormulario;
     buscarInput.oninput = () => aplicarBusqueda();
     refreshBtn.onclick = () => cargarDesdeSheets();
