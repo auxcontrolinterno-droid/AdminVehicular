@@ -188,15 +188,6 @@
             margin-bottom: 8px;
         }
 
-        label .optional {
-            font-weight: normal;
-            color: #94a3b8;
-        }
-
-        label .required {
-            color: #ef4444;
-        }
-
         input {
             width: 100%;
             padding: 14px 16px;
@@ -823,14 +814,12 @@
                 vehicles = datos;
                 syncStatus.className = "sync-status success";
                 syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${vehicles.length} vehículos cargados`;
-                console.log("Vehículos cargados:", vehicles.length);
             } else {
                 syncStatus.className = "sync-status error";
                 syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No hay datos`;
                 vehicles = [];
             }
         } catch (error) {
-            console.error("Error cargando:", error);
             syncStatus.className = "sync-status error";
             syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error: ${error.message}`;
             vehicles = [];
@@ -1041,8 +1030,12 @@
             const tieneDueño = vehiculo.nombre || vehiculo.telefono || vehiculo.identificacion || vehiculo.correo;
             const tieneEstudiantes = vehiculo.estudiantes && vehiculo.estudiantes.length > 0;
             
+            // Escapamos correctamente los datos para el onclick
+            const placaEscapada = escapeHtml(vehiculo.placa);
+            const idVehiculo = vehiculo.id;
+            
             html += `
-            <div class="result-card">
+            <div class="result-card" data-id="${idVehiculo}">
                 <div class="result-header">
                     <span class="vehicle-placa"><i class="fas fa-car"></i> ${resaltarTexto(vehiculo.placa, termino)}</span>
                     ${vehiculo.color ? `<span class="vehicle-color"><i class="fas fa-palette"></i> ${resaltarTexto(vehiculo.color, termino)}</span>` : ''}
@@ -1078,10 +1071,10 @@
             }
             
             html += `<div class="card-actions">
-                        <button class="action-btn edit" onclick="window.editarVehiculo(${JSON.stringify(vehiculo.id).replace(/"/g, '&quot;')}, ${JSON.stringify(vehiculo).replace(/"/g, '&quot;')})">
+                        <button class="action-btn edit" onclick="window.editarVehiculo('${idVehiculo}')">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="action-btn delete" onclick="window.eliminarVehiculo('${vehiculo.id}', '${escapeHtml(vehiculo.placa)}')">
+                        <button class="action-btn delete" onclick="window.eliminarVehiculo('${idVehiculo}', '${placaEscapada}')">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </div>
@@ -1090,9 +1083,14 @@
         listaContainer.innerHTML = html;
     }
 
-    // Funciones globales - CORREGIDAS (sin recursión)
-    window.editarVehiculo = function(id, vehiculo) {
-        editarVehiculo(vehiculo);
+    // Funciones globales
+    window.editarVehiculo = function(id) {
+        const vehiculo = vehicles.find(v => v.id === id);
+        if (vehiculo) {
+            editarVehiculo(vehiculo);
+        } else {
+            mostrarMensaje("No se encontró el vehículo", true);
+        }
     };
     
     window.eliminarVehiculo = function(id, placa) {
