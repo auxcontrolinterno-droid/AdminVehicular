@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="theme-color" content="#f8f9fa">
-    <title>Gestor Vehicular</title>
+    <meta name="theme-color" content="#1f2937">
+    <title>AutoRegistro - Gestión Vehicular</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -14,85 +14,102 @@
             -webkit-tap-highlight-color: transparent;
         }
 
+        /* ============================================
+           PALETA 3: GRIS SOFISTICADO (Minimalista Premium)
+           ============================================ */
+        :root {
+            --color-primary: #1f2937;
+            --color-primary-dark: #111827;
+            --color-primary-light: #374151;
+            
+            --color-bg: #fafafa;
+            --color-bg-card: #ffffff;
+            --color-bg-alt: #f3f4f6;
+            
+            --color-text-primary: #111827;
+            --color-text-secondary: #4b5563;
+            --color-text-muted: #6b7280;
+            --color-text-placeholder: #9ca3af;
+            
+            --color-border: #e5e7eb;
+            --color-border-light: #f3f4f6;
+            
+            --color-success: #10b981;
+            --color-error: #ef4444;
+            --color-warning: #f59e0b;
+            --color-info: #3b82f6;
+            
+            --color-hover-bg: #f9fafb;
+        }
+
         body {
-            background: #f0f2f5;
+            background: var(--color-bg);
             min-height: 100vh;
-            padding: 24px 20px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            padding: 32px 24px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            color: var(--color-text-primary);
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         /* Header */
         .header {
-            margin-bottom: 28px;
-            text-align: left;
+            margin-bottom: 48px;
         }
 
         .header h1 {
             font-size: 1.8rem;
             font-weight: 600;
-            color: #1a1a2e;
-            letter-spacing: -0.5px;
-            margin-bottom: 4px;
+            color: var(--color-primary);
+            letter-spacing: -0.3px;
+            margin-bottom: 8px;
         }
 
         .header p {
-            font-size: 0.85rem;
-            color: #6c757d;
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
         }
 
         .stats {
-            background: #e9ecef;
-            padding: 4px 12px;
+            background: var(--color-bg-alt);
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 0.7rem;
-            color: #495057;
+            font-size: 0.75rem;
+            color: var(--color-text-secondary);
             display: inline-block;
-            margin-top: 10px;
+            margin-top: 12px;
         }
 
         /* Estado sincronización */
         .sync-status {
-            background: #ffffff;
-            padding: 10px 16px;
-            border-radius: 12px;
-            margin-bottom: 20px;
             font-size: 0.75rem;
-            color: #6c757d;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid #e9ecef;
+            color: var(--color-text-muted);
+            margin-bottom: 32px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .sync-status.success {
-            background: #d4edda;
-            color: #155724;
-            border-color: #c3e6cb;
+            color: var(--color-success);
         }
 
         .sync-status.error {
-            background: #f8d7da;
-            color: #721c24;
-            border-color: #f5c6cb;
+            color: var(--color-error);
         }
 
         .sync-status.loading {
-            background: #d1ecf1;
-            color: #0c5460;
-            border-color: #bee5eb;
+            color: var(--color-info);
         }
 
         /* Tabs */
         .tabs {
             display: flex;
-            gap: 24px;
-            margin-bottom: 24px;
-            border-bottom: 2px solid #e9ecef;
+            gap: 32px;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--color-border);
         }
 
         .tab-btn {
@@ -100,25 +117,25 @@
             border: none;
             padding: 10px 0;
             font-size: 0.9rem;
-            font-weight: 600;
+            font-weight: 500;
             cursor: pointer;
-            color: #6c757d;
+            color: var(--color-text-muted);
             transition: all 0.2s;
             position: relative;
         }
 
         .tab-btn.active {
-            color: #1a1a2e;
+            color: var(--color-primary);
         }
 
         .tab-btn.active::after {
             content: '';
             position: absolute;
-            bottom: -2px;
+            bottom: -1px;
             left: 0;
             right: 0;
             height: 2px;
-            background: #1a1a2e;
+            background: var(--color-primary);
         }
 
         .tab-panel {
@@ -135,103 +152,55 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Tarjetas */
-        .card {
-            background: #ffffff;
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            border: 1px solid #e9ecef;
+        /* Formulario */
+        .form-section {
+            margin-bottom: 32px;
         }
 
-        .card-title {
-            font-size: 0.75rem;
+        .form-section-title {
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #6c757d;
-            margin-bottom: 24px;
-            font-weight: 600;
-        }
-
-        /* Grid para formulario de dos columnas */
-        .form-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-bottom: 28px;
+            color: var(--color-text-muted);
+            margin-bottom: 16px;
         }
 
         .field-group {
-            margin-bottom: 0;
-        }
-
-        .field-group-full {
-            grid-column: span 2;
+            margin-bottom: 20px;
         }
 
         label {
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #6c757d;
+            color: var(--color-text-muted);
             display: block;
             margin-bottom: 8px;
-            font-weight: 500;
         }
 
         input {
             width: 100%;
             padding: 12px 0;
             border: none;
-            border-bottom: 1px solid #dee2e6;
-            font-size: 0.95rem;
+            border-bottom: 1px solid var(--color-border);
+            font-size: 1rem;
             background: transparent;
             transition: all 0.2s;
+            color: var(--color-text-primary);
+        }
+
+        input::placeholder {
+            color: var(--color-text-placeholder);
         }
 
         input:focus {
             outline: none;
-            border-bottom-color: #1a1a2e;
+            border-bottom-color: var(--color-primary-light);
         }
 
-        /* Listas dinámicas */
-        .dynamic-list {
-            margin: 12px 0 0 0;
-        }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-
-        .list-item:last-child {
-            border-bottom: none;
-        }
-
-        .btn-agregar {
-            background: none;
-            border: none;
-            padding: 10px 0;
-            font-size: 0.75rem;
-            color: #6c757d;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 12px;
-        }
-
-        .btn-agregar:hover {
-            color: #1a1a2e;
-        }
-
-        /* Botones principales */
+        /* Botones */
         .btn {
-            padding: 12px 28px;
+            padding: 12px 24px;
             border-radius: 30px;
             font-weight: 500;
             font-size: 0.85rem;
@@ -245,54 +214,39 @@
         }
 
         .btn-primary {
-            background: #1a1a2e;
+            background: var(--color-primary);
             color: white;
         }
 
         .btn-primary:active {
             transform: scale(0.97);
-        }
-
-        .btn-primary:disabled {
-            background: #adb5bd;
-            cursor: not-allowed;
+            background: var(--color-primary-dark);
         }
 
         .btn-outline {
             background: transparent;
-            border: 1px solid #dee2e6;
-            color: #6c757d;
+            border: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
         }
 
         .button-group {
             display: flex;
             gap: 12px;
-            margin-top: 24px;
-        }
-
-        /* Mensaje de error duplicado */
-        .error-message {
-            font-size: 0.7rem;
-            color: #dc3545;
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+            margin-top: 32px;
         }
 
         /* Buscador */
         .search-section {
-            margin-bottom: 28px;
+            margin-bottom: 32px;
         }
 
         .search-label {
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #6c757d;
+            color: var(--color-text-muted);
             margin-bottom: 12px;
             display: block;
-            font-weight: 500;
         }
 
         .search-wrapper {
@@ -304,46 +258,53 @@
             left: 0;
             top: 50%;
             transform: translateY(-50%);
-            color: #adb5bd;
+            color: var(--color-text-placeholder);
+            font-size: 0.9rem;
         }
 
         .search-wrapper input {
             padding: 14px 0 14px 28px;
             border: none;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid var(--color-border);
             width: 100%;
             background: transparent;
+            font-size: 1rem;
         }
 
         .search-wrapper input:focus {
-            border-bottom-color: #1a1a2e;
-            outline: none;
+            border-bottom-color: var(--color-primary-light);
         }
 
         /* Resultados */
         .results-list {
-            margin-top: 20px;
+            margin-top: 24px;
         }
 
         .result-card {
-            background: #ffffff;
-            border-radius: 20px;
-            padding: 20px;
+            background: var(--color-bg-card);
+            border-radius: 16px;
+            padding: 24px;
             margin-bottom: 16px;
-            border: 1px solid #e9ecef;
+            border: 1px solid var(--color-border-light);
+            transition: all 0.2s;
+        }
+
+        .result-card:hover {
+            border-color: var(--color-border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
 
         .result-name {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-weight: 600;
-            color: #1a1a2e;
+            color: var(--color-primary);
             margin-bottom: 16px;
         }
 
         .result-details {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .detail-row {
@@ -357,27 +318,28 @@
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #6c757d;
-            min-width: 90px;
-            font-weight: 500;
+            color: var(--color-text-muted);
+            min-width: 100px;
         }
 
         .detail-value {
-            font-size: 0.9rem;
-            color: #1a1a2e;
+            font-size: 0.95rem;
+            color: var(--color-text-secondary);
+            font-weight: 500;
         }
 
         .sub-section {
-            margin-top: 14px;
+            margin-top: 16px;
+            padding-top: 8px;
+            border-top: 1px solid var(--color-border-light);
         }
 
         .sub-title {
             font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #6c757d;
-            margin-bottom: 10px;
-            font-weight: 500;
+            color: var(--color-text-muted);
+            margin: 8px 0 12px 0;
         }
 
         .badge-list {
@@ -387,57 +349,89 @@
         }
 
         .badge {
-            background: #f8f9fa;
+            background: var(--color-bg-alt);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.8rem;
-            color: #495057;
-            border: 1px solid #e9ecef;
+            color: var(--color-text-secondary);
         }
 
         .result-actions {
             display: flex;
             gap: 20px;
-            margin-top: 18px;
-            padding-top: 12px;
-            border-top: 1px solid #e9ecef;
+            margin-top: 20px;
+            padding-top: 16px;
+            border-top: 1px solid var(--color-border-light);
         }
 
         .action-link {
             background: none;
             border: none;
-            font-size: 0.75rem;
-            color: #adb5bd;
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
+            padding: 0;
+            transition: color 0.2s;
         }
 
         .action-link.edit:hover {
-            color: #1a1a2e;
+            color: var(--color-primary-light);
         }
 
         .action-link.delete:hover {
-            color: #dc3545;
+            color: var(--color-error);
+        }
+
+        /* Listas dinámicas */
+        .dynamic-list {
+            margin: 8px 0;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--color-border-light);
+        }
+
+        .btn-agregar {
+            background: none;
+            border: none;
+            padding: 10px 0;
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
+            transition: color 0.2s;
+        }
+
+        .btn-agregar:hover {
+            color: var(--color-primary-light);
         }
 
         .empty-result {
             text-align: center;
             padding: 60px 20px;
-            color: #adb5bd;
+            color: var(--color-text-muted);
         }
 
         .highlight {
-            background: #fff3cd;
+            background: #fef9c3;
             padding: 2px 6px;
             border-radius: 4px;
         }
 
         .refresh-btn {
-            background: #ffffff;
-            border: 1px solid #e9ecef;
-            margin-top: 20px;
+            background: transparent;
+            border: 1px solid var(--color-border);
+            margin-top: 24px;
             width: auto;
         }
 
@@ -446,7 +440,7 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1a1a2e;
+            background: var(--color-primary);
             color: white;
             padding: 10px 24px;
             border-radius: 40px;
@@ -458,10 +452,10 @@
         footer {
             text-align: center;
             font-size: 0.7rem;
-            color: #adb5bd;
-            padding: 24px 0 16px;
-            border-top: 1px solid #e9ecef;
-            margin-top: 24px;
+            color: var(--color-text-muted);
+            padding: 32px 0 16px;
+            border-top: 1px solid var(--color-border);
+            margin-top: 16px;
         }
 
         #listaContainer {
@@ -469,19 +463,18 @@
             overflow-y: auto;
         }
 
-        @media (max-width: 640px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-                gap: 16px;
-            }
-            .field-group-full {
-                grid-column: span 1;
-            }
-            .card {
-                padding: 20px;
+        @media (max-width: 600px) {
+            body {
+                padding: 24px 20px;
             }
             .detail-label {
-                min-width: 70px;
+                min-width: 80px;
+            }
+            .tabs {
+                gap: 24px;
+            }
+            .result-card {
+                padding: 18px;
             }
         }
     </style>
@@ -489,8 +482,8 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1>GESTOR VEHICULAR</h1>
-        <p>Administración de vehículos, dueños y estudiantes</p>
+        <h1>AutoRegistro</h1>
+        <p>Gestión de vehículos y estudiantes</p>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
@@ -499,102 +492,85 @@
     </div>
 
     <div class="tabs">
-        <button class="tab-btn" data-tab="registrar">REGISTRAR</button>
-        <button class="tab-btn active" data-tab="buscar">BUSCADOR</button>
+        <button class="tab-btn" data-tab="registrar">Registrar</button>
+        <button class="tab-btn active" data-tab="buscar">Buscar</button>
     </div>
 
-    <!-- Panel Registrar -->
     <div id="tab-registrar" class="tab-panel">
-        <div class="card">
-            <div class="card-title">DATOS DEL VEHÍCULO Y DUEÑO</div>
+        <div class="form-section">
+            <div class="form-section-title">DATOS DEL DUEÑO</div>
             <input type="hidden" id="editId" value="">
             
-            <!-- Campo de placa PRIMERO -->
-            <div class="form-grid">
-                <div class="field-group-full">
-                    <label>PLACA * (OBLIGATORIA)</label>
-                    <input type="text" id="placa" class="plate-input" placeholder="Ej: ABC123" maxlength="10" autocomplete="off">
-                    <div id="placaError" class="error-message" style="display: none;">
-                        <i class="fas fa-exclamation-circle"></i> <span id="placaErrorText"></span>
-                    </div>
-                    <div style="font-size: 0.65rem; color: #6c757d; margin-top: 4px;">Se formatea automáticamente: ABC-123</div>
-                </div>
-
-                <div class="field-group">
-                    <label>NOMBRE DEL DUEÑO</label>
-                    <input type="text" id="nombre" placeholder="Ej: María González">
-                </div>
-
-                <div class="field-group">
-                    <label>TELÉFONO</label>
-                    <input type="tel" id="telefono" placeholder="Ej: 555-1234">
-                </div>
-
-                <div class="field-group">
-                    <label>IDENTIFICACIÓN</label>
-                    <input type="text" id="identificacion" placeholder="Cédula / DNI">
-                </div>
-
-                <div class="field-group">
-                    <label>CORREO ELECTRÓNICO</label>
-                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
-                </div>
-
-                <div class="field-group">
-                    <label>COLOR DEL VEHÍCULO</label>
-                    <input type="text" id="colorVehiculo" placeholder="Ej: Rojo, Azul, Plata">
-                </div>
+            <div class="field-group">
+                <label>Nombre completo *</label>
+                <input type="text" id="nombre" placeholder="Ej: María González">
             </div>
 
-            <div class="card-title" style="margin-top: 8px;">ESTUDIANTES</div>
+            <div class="field-group">
+                <label>Teléfono</label>
+                <input type="tel" id="telefono" placeholder="Ej: 555-1234">
+            </div>
+
+            <div class="field-group">
+                <label>Identificación</label>
+                <input type="text" id="identificacion" placeholder="Cédula / DNI">
+            </div>
+
+            <div class="field-group">
+                <label>Correo electrónico</label>
+                <input type="email" id="correo" placeholder="correo@ejemplo.com">
+            </div>
+        </div>
+
+        <div class="form-section">
+            <div class="form-section-title">ESTUDIANTES</div>
             <div class="dynamic-list">
                 <div id="listaEstudiantes"></div>
                 <button type="button" class="btn-agregar" id="agregarEstudianteBtn">
                     <i class="fas fa-plus-circle"></i> Agregar estudiante
                 </button>
             </div>
+        </div>
 
-            <div class="card-title" style="margin-top: 24px;">Vehículos adicionales (opcional)</div>
+        <div class="form-section">
+            <div class="form-section-title">VEHÍCULOS</div>
             <div class="dynamic-list">
-                <div id="listaVehiculosAdicionales"></div>
+                <div id="listaVehiculos"></div>
                 <button type="button" class="btn-agregar" id="agregarVehiculoBtn">
-                    <i class="fas fa-plus-circle"></i> Agregar otro vehículo
+                    <i class="fas fa-plus-circle"></i> Agregar vehículo
                 </button>
             </div>
+        </div>
 
-            <div class="button-group">
-                <button class="btn btn-primary" id="guardarBtn"><i class="fas fa-save"></i> Guardar</button>
-                <button class="btn btn-outline" id="cancelarBtn"><i class="fas fa-times"></i> Cancelar</button>
-            </div>
+        <div class="button-group">
+            <button class="btn btn-primary" id="guardarBtn"><i class="fas fa-save"></i> Guardar</button>
+            <button class="btn btn-outline" id="cancelarBtn"><i class="fas fa-times"></i> Cancelar</button>
         </div>
     </div>
 
-    <!-- Panel Buscar -->
     <div id="tab-buscar" class="tab-panel active">
-        <div class="card">
-            <div class="search-section">
-                <div class="search-label">BUSCAR POR NOMBRE, PLACA O ESTUDIANTE</div>
-                <div class="search-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="buscarInput" placeholder="Buscar ahora...">
-                </div>
+        <div class="search-section">
+            <div class="search-label">BUSCAR POR NOMBRE, PLACA O ESTUDIANTE</div>
+            <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input type="text" id="buscarInput" placeholder="Buscar ahora...">
             </div>
-
-            <div id="listaContainer">
-                <div class="empty-result">
-                    <i class="fas fa-info-circle"></i>
-                    <div>Cargando datos...</div>
-                </div>
-            </div>
-            
-            <button id="refreshBtn" class="btn refresh-btn">
-                <i class="fas fa-sync-alt"></i> Sincronizar con Google Sheets
-            </button>
         </div>
+
+        <div id="listaContainer">
+            <div class="empty-result">
+                <i class="fas fa-info-circle"></i>
+                <div>Cargando datos...</div>
+            </div>
+        </div>
+        
+        <button id="refreshBtn" class="btn refresh-btn">
+            <i class="fas fa-sync-alt"></i> Sincronizar
+        </button>
     </div>
 
     <footer>
-        Gestor Vehicular · Datos sincronizados desde Google Sheets
+        Datos sincronizados desde Google Sheets
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -610,30 +586,26 @@
     let owners = [];
     let filtroActual = "";
     let estudiantesTemp = [];
-    let vehiculosAdicionalesTemp = [];
-    let timeoutValidacion;
+    let vehiculosTemp = [];
 
     // Elementos DOM
     const listaContainer = document.getElementById("listaContainer");
     const buscarInput = document.getElementById("buscarInput");
+    const globalStatsSpan = document.getElementById("globalStats");
     const syncStatus = document.getElementById("syncStatus");
     const refreshBtn = document.getElementById("refreshBtn");
     const editId = document.getElementById("editId");
-    const placa = document.getElementById("placa");
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const identificacion = document.getElementById("identificacion");
     const correo = document.getElementById("correo");
-    const colorVehiculo = document.getElementById("colorVehiculo");
     const guardarBtn = document.getElementById("guardarBtn");
     const cancelarBtn = document.getElementById("cancelarBtn");
     const loadingToast = document.getElementById("loadingToast");
     const listaEstudiantes = document.getElementById("listaEstudiantes");
-    const listaVehiculosAdicionales = document.getElementById("listaVehiculosAdicionales");
+    const listaVehiculos = document.getElementById("listaVehiculos");
     const agregarEstudianteBtn = document.getElementById("agregarEstudianteBtn");
     const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
-    const placaError = document.getElementById("placaError");
-    const placaErrorText = document.getElementById("placaErrorText");
 
     function showLoading(show) {
         loadingToast.style.display = show ? "flex" : "none";
@@ -647,51 +619,6 @@
         }
         return limpio;
     }
-
-    // Validar placa duplicada en tiempo real
-    function verificarPlacaDuplicada(placaValue, idExcluir = null) {
-        if (!placaValue) return false;
-        return owners.some(owner => {
-            if (idExcluir && owner.id === idExcluir) return false;
-            // Verificar en vehículo principal
-            if (owner.placa === placaValue) return true;
-            // Verificar en vehículos adicionales
-            if (owner.vehiculos && owner.vehiculos.some(v => v.placa === placaValue)) return true;
-            return false;
-        });
-    }
-
-    // Formateo y validación de placa en tiempo real
-    placa.addEventListener("input", function(e) {
-        let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-        if (raw.length > 3) {
-            this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
-        } else {
-            this.value = raw;
-        }
-        
-        placaError.style.display = "none";
-        
-        clearTimeout(timeoutValidacion);
-        const placaValue = this.value.trim();
-        const idActual = editId.value;
-        
-        if (placaValue && placaValue.length >= 5) {
-            timeoutValidacion = setTimeout(() => {
-                const esDuplicada = verificarPlacaDuplicada(placaValue, idActual);
-                if (esDuplicada) {
-                    placaErrorText.innerHTML = `La placa ${placaValue} ya está registrada`;
-                    placaError.style.display = "flex";
-                    guardarBtn.disabled = true;
-                } else {
-                    placaError.style.display = "none";
-                    guardarBtn.disabled = false;
-                }
-            }, 300);
-        } else {
-            guardarBtn.disabled = false;
-        }
-    });
 
     function parseCSV(csvText) {
         const lines = csvText.split(/\r?\n/);
@@ -737,8 +664,6 @@
                     telefono: values[2] ? values[2].replace(/^"|"$/g, '') : "",
                     identificacion: values[3] ? values[3].replace(/^"|"$/g, '') : "",
                     correo: values[4] ? values[4].replace(/^"|"$/g, '') : "",
-                    placa: values[6] ? values[6].split(";")[0]?.split("|")[0] || "" : "",
-                    color: values[6] ? values[6].split(";")[0]?.split("|")[1] || "" : "",
                     estudiantes: estudiantes,
                     vehiculos: vehiculos,
                     actualizado: values[7] ? values[7].replace(/^"|"$/g, '') : new Date().toISOString()
@@ -802,7 +727,7 @@
         const toast = document.createElement('div');
         toast.style.cssText = `
             position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-            background: ${esError ? '#dc3545' : '#28a745'}; color: white;
+            background: ${esError ? '#ef4444' : '#10b981'}; color: white;
             padding: 10px 24px; border-radius: 40px; font-size: 0.8rem;
             z-index: 1000; animation: slideUp 0.3s ease;
         `;
@@ -813,16 +738,16 @@
 
     function renderizarListaEstudiantes() {
         if (estudiantesTemp.length === 0) {
-            listaEstudiantes.innerHTML = '<div style="color:#adb5bd; padding:12px 0;">Sin estudiantes</div>';
+            listaEstudiantes.innerHTML = '<div style="color:#9ca3af; padding:12px 0;">Sin estudiantes</div>';
             return;
         }
         let html = '';
         estudiantesTemp.forEach((est, index) => {
             html += `<div class="list-item">
-                        <div><strong>${escapeHtml(est.nombre)}</strong> ${est.grado ? `<span style="color:#6c757d; margin-left:8px;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
+                        <div><strong>${escapeHtml(est.nombre)}</strong> ${est.grado ? `<span style="color:#6b7280; margin-left:8px;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
                         <div style="display:flex; gap:12px;">
-                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#adb5bd; cursor:pointer;"></i>
-                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#adb5bd; cursor:pointer;"></i>
+                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#9ca3af; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#9ca3af; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
@@ -831,7 +756,7 @@
         document.querySelectorAll('.edit-estudiante').forEach(icon => {
             icon.onclick = () => {
                 const idx = parseInt(icon.dataset.index);
-                const nuevoNombre = prompt("Nombre del estudiante:", estudiantesTemp[idx].nombre);
+                const nuevoNombre = prompt("Nombre:", estudiantesTemp[idx].nombre);
                 if (nuevoNombre?.trim()) {
                     estudiantesTemp[idx].nombre = nuevoNombre.trim();
                     estudiantesTemp[idx].grado = prompt("Grado:", estudiantesTemp[idx].grado || "") || "";
@@ -841,7 +766,7 @@
         });
         document.querySelectorAll('.delete-estudiante').forEach(icon => {
             icon.onclick = () => {
-                if (confirm("¿Eliminar este estudiante?")) {
+                if (confirm("¿Eliminar?")) {
                     estudiantesTemp.splice(parseInt(icon.dataset.index), 1);
                     renderizarListaEstudiantes();
                 }
@@ -849,45 +774,44 @@
         });
     }
 
-    function renderizarListaVehiculosAdicionales() {
-        if (vehiculosAdicionalesTemp.length === 0) {
-            listaVehiculosAdicionales.innerHTML = '<div style="color:#adb5bd; padding:12px 0;">Sin vehículos adicionales</div>';
+    function renderizarListaVehiculos() {
+        if (vehiculosTemp.length === 0) {
+            listaVehiculos.innerHTML = '<div style="color:#9ca3af; padding:12px 0;">Sin vehículos</div>';
             return;
         }
         let html = '';
-        vehiculosAdicionalesTemp.forEach((veh, index) => {
+        vehiculosTemp.forEach((veh, index) => {
             html += `<div class="list-item">
-                        <div><strong>${escapeHtml(veh.placa)}</strong> ${veh.color ? `<span style="color:#6c757d; margin-left:8px;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
+                        <div><strong>${escapeHtml(veh.placa)}</strong> ${veh.color ? `<span style="color:#6b7280; margin-left:8px;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
                         <div style="display:flex; gap:12px;">
-                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#adb5bd; cursor:pointer;"></i>
-                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#adb5bd; cursor:pointer;"></i>
+                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#9ca3af; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#9ca3af; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
-        listaVehiculosAdicionales.innerHTML = html;
+        listaVehiculos.innerHTML = html;
         
         document.querySelectorAll('.edit-vehiculo').forEach(icon => {
             icon.onclick = () => {
                 const idx = parseInt(icon.dataset.index);
-                const nuevaPlaca = prompt("Placa:", vehiculosAdicionalesTemp[idx].placa);
+                const nuevaPlaca = prompt("Placa:", vehiculosTemp[idx].placa);
                 if (nuevaPlaca?.trim()) {
                     const nuevaPlacaForm = formatearPlaca(nuevaPlaca.trim());
-                    const esDuplicada = verificarPlacaDuplicada(nuevaPlacaForm, editId.value);
-                    if (esDuplicada) {
-                        mostrarMensaje("Esta placa ya está registrada", true);
+                    if (vehiculosTemp.some((v, i) => i !== idx && v.placa === nuevaPlacaForm)) {
+                        mostrarMensaje("Placa duplicada", true);
                         return;
                     }
-                    vehiculosAdicionalesTemp[idx].placa = nuevaPlacaForm;
-                    vehiculosAdicionalesTemp[idx].color = prompt("Color:", vehiculosAdicionalesTemp[idx].color || "") || "";
-                    renderizarListaVehiculosAdicionales();
+                    vehiculosTemp[idx].placa = nuevaPlacaForm;
+                    vehiculosTemp[idx].color = prompt("Color:", vehiculosTemp[idx].color || "") || "";
+                    renderizarListaVehiculos();
                 }
             };
         });
         document.querySelectorAll('.delete-vehiculo').forEach(icon => {
             icon.onclick = () => {
-                if (confirm("¿Eliminar este vehículo?")) {
-                    vehiculosAdicionalesTemp.splice(parseInt(icon.dataset.index), 1);
-                    renderizarListaVehiculosAdicionales();
+                if (confirm("¿Eliminar?")) {
+                    vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
+                    renderizarListaVehiculos();
                 }
             };
         });
@@ -905,19 +829,18 @@
     }
 
     function agregarVehiculo() {
-        const nuevaPlaca = prompt("Placa del vehículo:");
-        if (nuevaPlaca?.trim()) {
-            const placaForm = formatearPlaca(nuevaPlaca.trim());
-            const esDuplicada = verificarPlacaDuplicada(placaForm, editId.value);
-            if (esDuplicada) {
-                mostrarMensaje("Esta placa ya está registrada", true);
+        const placa = prompt("Placa del vehículo:");
+        if (placa?.trim()) {
+            const placaForm = formatearPlaca(placa.trim());
+            if (vehiculosTemp.some(v => v.placa === placaForm)) {
+                mostrarMensaje("Placa duplicada", true);
                 return;
             }
-            vehiculosAdicionalesTemp.push({ 
+            vehiculosTemp.push({ 
                 placa: placaForm, 
                 color: prompt("Color:") || "" 
             });
-            renderizarListaVehiculosAdicionales();
+            renderizarListaVehiculos();
         }
     }
 
@@ -926,44 +849,30 @@
 
     function limpiarFormulario() {
         editId.value = "";
-        placa.value = "";
         nombre.value = "";
         telefono.value = "";
         identificacion.value = "";
         correo.value = "";
-        colorVehiculo.value = "";
         estudiantesTemp = [];
-        vehiculosAdicionalesTemp = [];
+        vehiculosTemp = [];
         renderizarListaEstudiantes();
-        renderizarListaVehiculosAdicionales();
-        placaError.style.display = "none";
-        guardarBtn.disabled = false;
+        renderizarListaVehiculos();
     }
 
     function guardarOwner() {
-        const placaValue = placa.value.trim();
-        if (!placaValue) { mostrarMensaje("La placa es obligatoria", true); return; }
+        const nombreValue = nombre.value.trim();
+        if (!nombreValue) { mostrarMensaje("Nombre obligatorio", true); return; }
+        if (vehiculosTemp.length === 0) { mostrarMensaje("Agregue un vehículo", true); return; }
         
         const idActual = editId.value;
-        
-        // Verificar duplicado final
-        if (verificarPlacaDuplicada(placaValue, idActual)) {
-            mostrarMensaje("Esta placa ya está registrada", true);
-            return;
-        }
-        
-        const vehiculos = [{ placa: placaValue, color: colorVehiculo.value.trim() || "" }, ...vehiculosAdicionalesTemp];
-        
         const nuevoOwner = {
             id: idActual || Date.now().toString(),
-            nombre: nombre.value.trim() || "",
+            nombre: nombreValue,
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
             correo: correo.value.trim() || "",
-            placa: placaValue,
-            color: colorVehiculo.value.trim() || "",
             estudiantes: estudiantesTemp,
-            vehiculos: vehiculos,
+            vehiculos: vehiculosTemp,
             actualizado: new Date().toISOString()
         };
         
@@ -971,11 +880,11 @@
             const index = owners.findIndex(o => o.id === idActual);
             if (index !== -1) {
                 owners[index] = nuevoOwner;
-                mostrarMensaje("Registro actualizado");
+                mostrarMensaje("Actualizado");
             }
         } else {
             owners.push(nuevoOwner);
-            mostrarMensaje("Registro guardado");
+            mostrarMensaje("Guardado");
         }
         
         guardarBackupLocal();
@@ -990,24 +899,20 @@
             guardarBackupLocal();
             actualizarEstadisticas();
             aplicarBusqueda();
-            mostrarMensaje("Registro eliminado");
+            mostrarMensaje("Eliminado");
         }
     }
 
     function editarOwner(owner) {
         editId.value = owner.id;
-        placa.value = owner.placa || "";
         nombre.value = owner.nombre || "";
         telefono.value = owner.telefono || "";
         identificacion.value = owner.identificacion || "";
         correo.value = owner.correo || "";
-        colorVehiculo.value = owner.color || "";
         estudiantesTemp = owner.estudiantes ? [...owner.estudiantes] : [];
-        vehiculosAdicionalesTemp = owner.vehiculos ? owner.vehiculos.slice(1) : [];
+        vehiculosTemp = owner.vehiculos ? [...owner.vehiculos] : [];
         renderizarListaEstudiantes();
-        renderizarListaVehiculosAdicionales();
-        placaError.style.display = "none";
-        guardarBtn.disabled = false;
+        renderizarListaVehiculos();
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
 
@@ -1019,7 +924,6 @@
                 owner.nombre?.toLowerCase().includes(termino) ||
                 owner.telefono?.toLowerCase().includes(termino) ||
                 owner.identificacion?.toLowerCase().includes(termino) ||
-                owner.placa?.toLowerCase().includes(termino) ||
                 owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
                 owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
             );
@@ -1035,16 +939,14 @@
         
         let html = "";
         filtrados.forEach(owner => {
-            const todosVehiculos = owner.vehiculos || (owner.placa ? [{ placa: owner.placa, color: owner.color }] : []);
-            
             html += `
             <div class="result-card">
-                <div class="result-name">${resaltarTexto(owner.nombre || "Sin nombre", termino)}</div>
+                <div class="result-name">${resaltarTexto(owner.nombre, termino)}</div>
                 <div class="result-details">`;
             
             if (owner.identificacion) {
                 html += `<div class="detail-row">
-                            <div class="detail-label">CÉDULA</div>
+                            <div class="detail-label">IDENTIFICACIÓN</div>
                             <div class="detail-value">${resaltarTexto(owner.identificacion, termino)}</div>
                         </div>`;
             }
@@ -1072,11 +974,11 @@
                         </div>`;
             }
             
-            if (todosVehiculos && todosVehiculos.length > 0) {
+            if (owner.vehiculos && owner.vehiculos.length > 0) {
                 html += `<div class="sub-section">
                             <div class="sub-title">VEHÍCULOS</div>
                             <div class="badge-list">
-                                ${todosVehiculos.map(veh => `<span class="badge"><i class="fas fa-car"></i> ${resaltarTexto(veh.placa, termino)}${veh.color ? ` · ${escapeHtml(veh.color)}` : ''}</span>`).join('')}
+                                ${owner.vehiculos.map(veh => `<span class="badge"><i class="fas fa-car"></i> ${resaltarTexto(veh.placa, termino)}${veh.color ? ` · ${escapeHtml(veh.color)}` : ''}</span>`).join('')}
                             </div>
                         </div>`;
             }
@@ -1086,7 +988,7 @@
                     <button class="action-link edit" onclick="window.editarOwnerDesdeGlobal('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
                         <i class="fas fa-edit"></i> Editar
                     </button>
-                    <button class="action-link delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre || owner.placa)}')">
+                    <button class="action-link delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')">
                         <i class="fas fa-trash"></i> Eliminar
                     </button>
                 </div>
@@ -1111,8 +1013,8 @@
 
     function actualizarEstadisticas() {
         const totalOwners = owners.length;
-        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 1), 0);
-        document.getElementById("globalStats").innerHTML = `${totalOwners} dueños · ${totalVehiculos} vehículos`;
+        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0);
+        globalStatsSpan.innerHTML = `${totalOwners} dueños · ${totalVehiculos} vehículos`;
     }
 
     function escapeHtml(str) {
