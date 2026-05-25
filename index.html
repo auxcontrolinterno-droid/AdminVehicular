@@ -14,103 +14,124 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ============================================
-           PALETA 1: AZUL PROFESIONAL - ALTO CONTRASTE
-           ============================================ */
         body {
-            background: #eef2f6;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
             min-height: 100vh;
             padding: 32px 24px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
         }
 
-        /* Header */
+        /* Header Premium */
         .header {
             margin-bottom: 48px;
+            text-align: center;
         }
 
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 600;
-            color: #0a2540;
-            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
             margin-bottom: 8px;
         }
 
         .header p {
             font-size: 0.9rem;
-            color: #4a6a85;
+            color: #64748b;
         }
 
-        .stats {
-            background: #ffffff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: #0a2540;
-            display: inline-block;
-            margin-top: 12px;
-            border: 1px solid #d0dce8;
+        .stats-card {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 8px 20px;
+            border-radius: 40px;
+            margin-top: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
 
-        /* Estado sincronización */
+        .stats-card i {
+            color: #3b82f6;
+        }
+
+        .stats-card span {
+            font-weight: 600;
+            color: #1e293b;
+        }
+
         .sync-status {
-            font-size: 0.75rem;
-            color: #4a6a85;
-            margin-bottom: 32px;
-            padding: 8px 0;
-            border-bottom: 1px solid #d0dce8;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 0.8rem;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
         }
 
         .sync-status.success {
-            color: #2e7d32;
+            background: #f0fdf4;
+            color: #16a34a;
+            border-color: #bbf7d0;
         }
 
         .sync-status.error {
-            color: #c62828;
+            background: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
         }
 
         .sync-status.loading {
-            color: #1a5f7a;
+            background: #eff6ff;
+            color: #3b82f6;
+            border-color: #bfdbfe;
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
-            gap: 32px;
+            gap: 8px;
             margin-bottom: 32px;
-            border-bottom: 1px solid #d0dce8;
+            background: white;
+            padding: 6px;
+            border-radius: 60px;
+            border: 1px solid #e2e8f0;
         }
 
         .tab-btn {
-            background: none;
+            flex: 1;
+            background: transparent;
             border: none;
-            padding: 10px 0;
+            padding: 12px 20px;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
-            color: #6a8aaa;
+            color: #64748b;
             transition: all 0.2s;
-            position: relative;
+            border-radius: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
         .tab-btn.active {
-            color: #0a2540;
-        }
-
-        .tab-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #0a2540;
+            background: #1e293b;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .tab-panel {
@@ -123,21 +144,37 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Formulario */
+        .form-card {
+            background: white;
+            border-radius: 24px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
         .form-section {
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .form-section-title {
-            font-size: 0.7rem;
+            font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #4a6a85;
-            margin-bottom: 16px;
+            font-weight: 600;
+            color: #64748b;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-section-title i {
+            color: #3b82f6;
         }
 
         .field-group {
@@ -145,39 +182,128 @@
         }
 
         label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #4a6a85;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #475569;
             display: block;
             margin-bottom: 8px;
         }
 
-        input {
-            width: 100%;
-            padding: 12px 0;
-            border: none;
-            border-bottom: 1px solid #d0dce8;
-            font-size: 1rem;
-            background: transparent;
-            transition: all 0.2s;
-            color: #1a202c;
+        label .optional {
+            font-weight: normal;
+            color: #94a3b8;
         }
 
-        input::placeholder {
-            color: #a8bbd0;
+        label .required {
+            color: #ef4444;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            background: #fafbfc;
+            transition: all 0.2s;
+            color: #1e293b;
         }
 
         input:focus {
             outline: none;
-            border-bottom-color: #1a5f7a;
+            border-color: #3b82f6;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
         }
 
-        /* Botones */
-        .btn {
-            padding: 12px 24px;
-            border-radius: 30px;
+        .dynamic-list {
+            margin: 8px 0;
+        }
+
+        .list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            background: #f8fafc;
+            border-radius: 14px;
+            margin-bottom: 8px;
+        }
+
+        .list-item-info strong {
+            font-size: 0.9rem;
+            color: #1e293b;
+        }
+
+        .list-item-info span {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-left: 8px;
+        }
+
+        .list-item-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .list-item-actions i {
+            font-size: 0.85rem;
+            cursor: pointer;
+            color: #94a3b8;
+            padding: 4px;
+        }
+
+        .list-item-actions i:hover {
+            color: #3b82f6;
+        }
+
+        .delete-item:hover {
+            color: #ef4444 !important;
+        }
+
+        .inline-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .inline-input {
+            flex: 2;
+            padding: 12px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 14px;
+            font-size: 0.85rem;
+            background: #fafbfc;
+        }
+
+        .inline-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+        }
+
+        .inline-btn {
+            background: #f1f5f9;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-size: 0.8rem;
             font-weight: 500;
+            color: #475569;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .inline-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border-radius: 16px;
+            font-weight: 600;
             font-size: 0.85rem;
             border: none;
             cursor: pointer;
@@ -189,39 +315,48 @@
         }
 
         .btn-primary {
-            background: #0a2540;
+            background: #1e293b;
             color: white;
+            flex: 1;
         }
 
-        .btn-primary:active {
-            transform: scale(0.97);
-            background: #041a2e;
+        .btn-primary:hover {
+            background: #0f172a;
         }
 
         .btn-outline {
             background: transparent;
-            border: 1px solid #d0dce8;
-            color: #4a6a85;
+            border: 1.5px solid #e2e8f0;
+            color: #475569;
+            flex: 1;
+        }
+
+        .btn-outline:hover {
+            background: #f8fafc;
         }
 
         .button-group {
             display: flex;
             gap: 12px;
-            margin-top: 32px;
+            margin-top: 28px;
         }
 
-        /* Buscador */
-        .search-section {
-            margin-bottom: 32px;
+        .search-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
         }
 
         .search-label {
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #4a6a85;
+            font-weight: 600;
+            color: #64748b;
             margin-bottom: 12px;
-            display: block;
         }
 
         .search-wrapper {
@@ -230,62 +365,58 @@
 
         .search-wrapper i {
             position: absolute;
-            left: 0;
+            left: 14px;
             top: 50%;
             transform: translateY(-50%);
-            color: #a8bbd0;
-            font-size: 0.9rem;
+            color: #94a3b8;
         }
 
         .search-wrapper input {
-            padding: 14px 0 14px 28px;
-            border: none;
-            border-bottom: 1px solid #d0dce8;
+            padding: 14px 14px 14px 42px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 16px;
             width: 100%;
-            background: transparent;
-            font-size: 1rem;
+            background: #fafbfc;
+            font-size: 0.9rem;
         }
 
         .search-wrapper input:focus {
-            border-bottom-color: #1a5f7a;
+            border-color: #3b82f6;
         }
 
-        /* TARJETA DE RESULTADO - UNA POR DUEÑO */
         .result-card {
             background: white;
             border-radius: 20px;
             padding: 24px;
-            margin-bottom: 20px;
-            border: 1px solid #d0dce8;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
             transition: all 0.2s;
         }
 
         .result-card:hover {
-            border-color: #a8bbd0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
 
-        /* Header del dueño */
         .owner-header {
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #e0e8f0;
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
             gap: 12px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 2px solid #f1f5f9;
         }
 
         .owner-name {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #0a2540;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1e293b;
         }
 
         .owner-id {
             font-size: 0.7rem;
-            color: #6a8aaa;
+            color: #64748b;
             margin-top: 4px;
         }
 
@@ -295,21 +426,23 @@
         }
 
         .badge-count {
-            background: #e8edf2;
+            background: #f1f5f9;
             padding: 4px 12px;
-            border-radius: 20px;
+            border-radius: 30px;
             font-size: 0.7rem;
-            color: #0a2540;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        /* Datos de contacto */
         .contact-grid {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             margin-bottom: 20px;
             padding-bottom: 16px;
-            border-bottom: 1px solid #e0e8f0;
+            border-bottom: 1px solid #f1f5f9;
         }
 
         .contact-item {
@@ -321,18 +454,17 @@
             font-size: 0.65rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            color: #6a8aaa;
+            color: #64748b;
             margin-bottom: 4px;
         }
 
         .contact-value {
             font-size: 0.9rem;
-            color: #1a202c;
+            color: #1e293b;
             font-weight: 500;
         }
 
-        /* Sección de estudiantes */
-        .students-section {
+        .students-section, .vehicles-section {
             margin-bottom: 20px;
         }
 
@@ -340,7 +472,7 @@
             font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #6a8aaa;
+            color: #64748b;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
@@ -353,122 +485,67 @@
             gap: 10px;
         }
 
-        .item-tag {
-            background: #e8edf2;
-            padding: 8px 16px;
+        .item-tag, .vehicle-tag {
+            background: #f1f5f9;
+            padding: 6px 14px;
             border-radius: 30px;
-            font-size: 0.85rem;
-            color: #0a2540;
+            font-size: 0.8rem;
+            color: #1e293b;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .item-tag i {
-            font-size: 0.75rem;
-            color: #1a5f7a;
-        }
-
-        /* Sección de vehículos */
-        .vehicles-section {
-            margin-bottom: 20px;
-        }
-
-        .vehicle-tag {
-            background: #e8edf2;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.85rem;
-            color: #0a2540;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .vehicle-tag i {
-            color: #1a5f7a;
-        }
-
-        /* Botones de acción */
         .card-actions {
             display: flex;
-            gap: 20px;
+            gap: 16px;
+            margin-top: 20px;
             padding-top: 16px;
-            border-top: 1px solid #e0e8f0;
+            border-top: 1px solid #f1f5f9;
         }
 
         .action-btn {
             background: none;
             border: none;
             font-size: 0.8rem;
-            color: #6a8aaa;
+            font-weight: 500;
+            color: #64748b;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 6px;
             padding: 6px 12px;
-            border-radius: 20px;
-            transition: all 0.2s;
+            border-radius: 30px;
         }
 
         .action-btn.edit:hover {
-            background: #e0e8f0;
-            color: #1a5f7a;
+            background: #eff6ff;
+            color: #3b82f6;
         }
 
         .action-btn.delete:hover {
-            background: #fee2e2;
-            color: #c62828;
-        }
-
-        /* Listas dinámicas del formulario */
-        .dynamic-list {
-            margin: 8px 0;
-        }
-
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #e0e8f0;
-        }
-
-        .btn-agregar {
-            background: none;
-            border: none;
-            padding: 10px 0;
-            font-size: 0.8rem;
-            color: #6a8aaa;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-top: 8px;
-            transition: color 0.2s;
-        }
-
-        .btn-agregar:hover {
-            color: #1a5f7a;
+            background: #fef2f2;
+            color: #ef4444;
         }
 
         .empty-result {
             text-align: center;
             padding: 60px 20px;
-            color: #6a8aaa;
+            color: #94a3b8;
         }
 
         .highlight {
-            background: #fff3cd;
-            padding: 2px 6px;
-            border-radius: 4px;
+            background: #fef08a;
+            padding: 2px 4px;
+            border-radius: 6px;
         }
 
         .refresh-btn {
-            background: transparent;
-            border: 1px solid #d0dce8;
-            margin-top: 24px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            margin-top: 20px;
             width: auto;
+            padding: 12px 24px;
         }
 
         #loadingToast {
@@ -476,10 +553,10 @@
             bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: #0a2540;
+            background: #1e293b;
             color: white;
-            padding: 10px 24px;
-            border-radius: 40px;
+            padding: 12px 28px;
+            border-radius: 60px;
             font-size: 0.8rem;
             display: none;
             z-index: 1000;
@@ -488,20 +565,36 @@
         footer {
             text-align: center;
             font-size: 0.7rem;
-            color: #6a8aaa;
+            color: #94a3b8;
             padding: 32px 0 16px;
-            border-top: 1px solid #d0dce8;
-            margin-top: 16px;
         }
 
         #listaContainer {
-            max-height: 65vh;
+            max-height: 60vh;
             overflow-y: auto;
+            padding-right: 4px;
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 640px) {
             body {
-                padding: 24px 20px;
+                padding: 20px 16px;
+            }
+            .tabs {
+                flex-direction: column;
+                border-radius: 20px;
+                background: transparent;
+                padding: 0;
+                gap: 8px;
+            }
+            .tab-btn {
+                background: white;
+                border: 1px solid #e2e8f0;
+            }
+            .tab-btn.active {
+                background: #1e293b;
+            }
+            .inline-form {
+                flex-direction: column;
             }
             .owner-header {
                 flex-direction: column;
@@ -518,76 +611,90 @@
     <div class="header">
         <h1>AutoRegistro</h1>
         <p>Gestión de vehículos y estudiantes</p>
-        <div class="stats" id="globalStats">Cargando...</div>
+        <div class="stats-card">
+            <i class="fas fa-car"></i>
+            <span id="globalStats">Cargando...</span>
+        </div>
     </div>
 
     <div id="syncStatus" class="sync-status loading">
-        <i class="fas fa-spinner fa-pulse"></i> Cargando datos...
+        <i class="fas fa-sync-alt fa-spin"></i> Sincronizando...
     </div>
 
     <div class="tabs">
-        <button class="tab-btn" data-tab="registrar">Registrar</button>
-        <button class="tab-btn active" data-tab="buscar">Buscar</button>
+        <button class="tab-btn" data-tab="registrar">
+            <i class="fas fa-plus-circle"></i> Registrar
+        </button>
+        <button class="tab-btn active" data-tab="buscar">
+            <i class="fas fa-search"></i> Buscar
+        </button>
     </div>
 
     <div id="tab-registrar" class="tab-panel">
-        <div class="form-section">
-            <div class="form-section-title">DATOS DEL DUEÑO</div>
+        <div class="form-card">
             <input type="hidden" id="editId" value="">
             
-            <div class="field-group">
-                <label>Nombre completo *</label>
-                <input type="text" id="nombre" placeholder="Ej: María González">
+            <div class="form-section">
+                <div class="form-section-title"><i class="fas fa-user"></i> DATOS DEL DUEÑO</div>
+                <div class="field-group">
+                    <label>Nombre completo <span class="required">*</span></label>
+                    <input type="text" id="nombre" placeholder="Ej: María González">
+                </div>
+                <div class="field-group">
+                    <label>Teléfono</label>
+                    <input type="tel" id="telefono" placeholder="Ej: 555-1234">
+                </div>
+                <div class="field-group">
+                    <label>Identificación</label>
+                    <input type="text" id="identificacion" placeholder="Cédula / DNI">
+                </div>
+                <div class="field-group">
+                    <label>Correo electrónico</label>
+                    <input type="email" id="correo" placeholder="correo@ejemplo.com">
+                </div>
             </div>
 
-            <div class="field-group">
-                <label>Teléfono</label>
-                <input type="tel" id="telefono" placeholder="Ej: 555-1234">
+            <div class="form-section">
+                <div class="form-section-title"><i class="fas fa-child"></i> ESTUDIANTES</div>
+                <div class="dynamic-list">
+                    <div id="listaEstudiantes"></div>
+                </div>
+                <div class="inline-form">
+                    <input type="text" id="nuevoEstudianteNombre" class="inline-input" placeholder="Nombre del estudiante">
+                    <input type="text" id="nuevoEstudianteGrado" class="inline-input" placeholder="Grado">
+                    <button type="button" id="agregarEstudianteBtn" class="inline-btn">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                </div>
             </div>
 
-            <div class="field-group">
-                <label>Identificación</label>
-                <input type="text" id="identificacion" placeholder="Cédula / DNI">
+            <div class="form-section">
+                <div class="form-section-title"><i class="fas fa-car"></i> VEHÍCULOS</div>
+                <div class="dynamic-list">
+                    <div id="listaVehiculos"></div>
+                </div>
+                <div class="inline-form">
+                    <input type="text" id="nuevoVehiculoPlaca" class="inline-input" placeholder="Placa (ej: ABC-123)">
+                    <input type="text" id="nuevoVehiculoColor" class="inline-input" placeholder="Color">
+                    <button type="button" id="agregarVehiculoBtn" class="inline-btn">
+                        <i class="fas fa-plus"></i> Agregar
+                    </button>
+                </div>
             </div>
 
-            <div class="field-group">
-                <label>Correo electrónico</label>
-                <input type="email" id="correo" placeholder="correo@ejemplo.com">
+            <div class="button-group">
+                <button class="btn btn-primary" id="guardarBtn"><i class="fas fa-check"></i> Guardar</button>
+                <button class="btn btn-outline" id="cancelarBtn"><i class="fas fa-times"></i> Cancelar</button>
             </div>
-        </div>
-
-        <div class="form-section">
-            <div class="form-section-title">ESTUDIANTES</div>
-            <div class="dynamic-list">
-                <div id="listaEstudiantes"></div>
-                <button type="button" class="btn-agregar" id="agregarEstudianteBtn">
-                    <i class="fas fa-plus-circle"></i> Agregar estudiante
-                </button>
-            </div>
-        </div>
-
-        <div class="form-section">
-            <div class="form-section-title">VEHÍCULOS</div>
-            <div class="dynamic-list">
-                <div id="listaVehiculos"></div>
-                <button type="button" class="btn-agregar" id="agregarVehiculoBtn">
-                    <i class="fas fa-plus-circle"></i> Agregar vehículo
-                </button>
-            </div>
-        </div>
-
-        <div class="button-group">
-            <button class="btn btn-primary" id="guardarBtn"><i class="fas fa-save"></i> Guardar</button>
-            <button class="btn btn-outline" id="cancelarBtn"><i class="fas fa-times"></i> Cancelar</button>
         </div>
     </div>
 
     <div id="tab-buscar" class="tab-panel active">
-        <div class="search-section">
-            <div class="search-label">BUSCAR POR NOMBRE, PLACA O ESTUDIANTE</div>
+        <div class="search-card">
+            <div class="search-label">BUSCAR</div>
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>
-                <input type="text" id="buscarInput" placeholder="Buscar ahora...">
+                <input type="text" id="buscarInput" placeholder="Buscar por nombre, placa o estudiante...">
             </div>
         </div>
 
@@ -603,20 +710,13 @@
         </button>
     </div>
 
-    <footer>
-        Datos sincronizados desde Google Sheets
-    </footer>
+    <footer>Sistema de gestión vehicular</footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
 <script>
-    // ============================================
-    // URL DE GOOGLE SHEETS
-    // ============================================
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     
-    // ============================================
-
     let owners = [];
     let filtroActual = "";
     let estudiantesTemp = [];
@@ -638,6 +738,10 @@
     const loadingToast = document.getElementById("loadingToast");
     const listaEstudiantes = document.getElementById("listaEstudiantes");
     const listaVehiculos = document.getElementById("listaVehiculos");
+    const nuevoEstudianteNombre = document.getElementById("nuevoEstudianteNombre");
+    const nuevoEstudianteGrado = document.getElementById("nuevoEstudianteGrado");
+    const nuevoVehiculoPlaca = document.getElementById("nuevoVehiculoPlaca");
+    const nuevoVehiculoColor = document.getElementById("nuevoVehiculoColor");
     const agregarEstudianteBtn = document.getElementById("agregarEstudianteBtn");
     const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
 
@@ -682,8 +786,8 @@
             if (values.length >= 3) {
                 const estudiantesRaw = values[5] || "";
                 const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
-                    const [nombre, grado] = s.split("|");
-                    return { nombre: nombre || "", grado: grado || "" };
+                    const [nombreEst, grado] = s.split("|");
+                    return { nombre: nombreEst || "", grado: grado || "" };
                 });
                 
                 const vehiculosRaw = values[6] || "";
@@ -704,14 +808,13 @@
                 });
             }
         }
-        
         return data;
     }
 
     async function cargarDesdeSheets() {
         showLoading(true);
         syncStatus.className = "sync-status loading";
-        syncStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Cargando datos...`;
+        syncStatus.innerHTML = `<i class="fas fa-sync-alt fa-spin"></i> Cargando datos...`;
         
         try {
             const response = await fetch(CSV_URL);
@@ -761,7 +864,7 @@
         const toast = document.createElement('div');
         toast.style.cssText = `
             position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-            background: ${esError ? '#c62828' : '#2e7d32'}; color: white;
+            background: ${esError ? '#dc2626' : '#10b981'}; color: white;
             padding: 10px 24px; border-radius: 40px; font-size: 0.8rem;
             z-index: 1000; animation: slideUp 0.3s ease;
         `;
@@ -772,16 +875,19 @@
 
     function renderizarListaEstudiantes() {
         if (estudiantesTemp.length === 0) {
-            listaEstudiantes.innerHTML = '<div style="color:#a8bbd0; padding:12px 0;">Sin estudiantes</div>';
+            listaEstudiantes.innerHTML = '<div style="color:#94a3b8; padding:12px 0; text-align:center;">No hay estudiantes</div>';
             return;
         }
         let html = '';
         estudiantesTemp.forEach((est, index) => {
             html += `<div class="list-item">
-                        <div><strong>${escapeHtml(est.nombre)}</strong> ${est.grado ? `<span style="color:#6a8aaa; margin-left:8px;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
-                        <div style="display:flex; gap:12px;">
-                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#6a8aaa; cursor:pointer;"></i>
-                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#6a8aaa; cursor:pointer;"></i>
+                        <div class="list-item-info">
+                            <strong>${escapeHtml(est.nombre)}</strong>
+                            ${est.grado ? `<span>📚 ${escapeHtml(est.grado)}</span>` : ''}
+                        </div>
+                        <div class="list-item-actions">
+                            <i class="fas fa-edit edit-estudiante" data-index="${index}"></i>
+                            <i class="fas fa-trash delete-estudiante delete-item" data-index="${index}"></i>
                         </div>
                     </div>`;
         });
@@ -790,17 +896,15 @@
         document.querySelectorAll('.edit-estudiante').forEach(icon => {
             icon.onclick = () => {
                 const idx = parseInt(icon.dataset.index);
-                const nuevoNombre = prompt("Nombre:", estudiantesTemp[idx].nombre);
-                if (nuevoNombre?.trim()) {
-                    estudiantesTemp[idx].nombre = nuevoNombre.trim();
-                    estudiantesTemp[idx].grado = prompt("Grado:", estudiantesTemp[idx].grado || "") || "";
-                    renderizarListaEstudiantes();
-                }
+                nuevoEstudianteNombre.value = estudiantesTemp[idx].nombre;
+                nuevoEstudianteGrado.value = estudiantesTemp[idx].grado || "";
+                estudiantesTemp.splice(idx, 1);
+                renderizarListaEstudiantes();
             };
         });
         document.querySelectorAll('.delete-estudiante').forEach(icon => {
             icon.onclick = () => {
-                if (confirm("¿Eliminar?")) {
+                if (confirm("¿Eliminar este estudiante?")) {
                     estudiantesTemp.splice(parseInt(icon.dataset.index), 1);
                     renderizarListaEstudiantes();
                 }
@@ -810,16 +914,19 @@
 
     function renderizarListaVehiculos() {
         if (vehiculosTemp.length === 0) {
-            listaVehiculos.innerHTML = '<div style="color:#a8bbd0; padding:12px 0;">Sin vehículos</div>';
+            listaVehiculos.innerHTML = '<div style="color:#94a3b8; padding:12px 0; text-align:center;">No hay vehículos</div>';
             return;
         }
         let html = '';
         vehiculosTemp.forEach((veh, index) => {
             html += `<div class="list-item">
-                        <div><strong>${escapeHtml(veh.placa)}</strong> ${veh.color ? `<span style="color:#6a8aaa; margin-left:8px;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
-                        <div style="display:flex; gap:12px;">
-                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#6a8aaa; cursor:pointer;"></i>
-                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#6a8aaa; cursor:pointer;"></i>
+                        <div class="list-item-info">
+                            <strong>${escapeHtml(veh.placa)}</strong>
+                            ${veh.color ? `<span>🎨 ${escapeHtml(veh.color)}</span>` : ''}
+                        </div>
+                        <div class="list-item-actions">
+                            <i class="fas fa-edit edit-vehiculo" data-index="${index}"></i>
+                            <i class="fas fa-trash delete-vehiculo delete-item" data-index="${index}"></i>
                         </div>
                     </div>`;
         });
@@ -828,22 +935,15 @@
         document.querySelectorAll('.edit-vehiculo').forEach(icon => {
             icon.onclick = () => {
                 const idx = parseInt(icon.dataset.index);
-                const nuevaPlaca = prompt("Placa:", vehiculosTemp[idx].placa);
-                if (nuevaPlaca?.trim()) {
-                    const nuevaPlacaForm = formatearPlaca(nuevaPlaca.trim());
-                    if (vehiculosTemp.some((v, i) => i !== idx && v.placa === nuevaPlacaForm)) {
-                        mostrarMensaje("Placa duplicada", true);
-                        return;
-                    }
-                    vehiculosTemp[idx].placa = nuevaPlacaForm;
-                    vehiculosTemp[idx].color = prompt("Color:", vehiculosTemp[idx].color || "") || "";
-                    renderizarListaVehiculos();
-                }
+                nuevoVehiculoPlaca.value = vehiculosTemp[idx].placa;
+                nuevoVehiculoColor.value = vehiculosTemp[idx].color || "";
+                vehiculosTemp.splice(idx, 1);
+                renderizarListaVehiculos();
             };
         });
         document.querySelectorAll('.delete-vehiculo').forEach(icon => {
             icon.onclick = () => {
-                if (confirm("¿Eliminar?")) {
+                if (confirm("¿Eliminar este vehículo?")) {
                     vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
                     renderizarListaVehiculos();
                 }
@@ -852,30 +952,35 @@
     }
 
     function agregarEstudiante() {
-        const nombreEst = prompt("Nombre del estudiante:");
-        if (nombreEst?.trim()) {
-            estudiantesTemp.push({ 
-                nombre: nombreEst.trim(), 
-                grado: prompt("Grado:") || "" 
-            });
-            renderizarListaEstudiantes();
+        const nombreEst = nuevoEstudianteNombre.value.trim();
+        if (!nombreEst) {
+            mostrarMensaje("Ingrese el nombre del estudiante", true);
+            return;
         }
+        estudiantesTemp.push({ nombre: nombreEst, grado: nuevoEstudianteGrado.value.trim() });
+        renderizarListaEstudiantes();
+        nuevoEstudianteNombre.value = "";
+        nuevoEstudianteGrado.value = "";
     }
 
     function agregarVehiculo() {
-        const placa = prompt("Placa del vehículo:");
-        if (placa?.trim()) {
-            const placaForm = formatearPlaca(placa.trim());
-            if (vehiculosTemp.some(v => v.placa === placaForm)) {
-                mostrarMensaje("Placa duplicada", true);
-                return;
-            }
-            vehiculosTemp.push({ 
-                placa: placaForm, 
-                color: prompt("Color:") || "" 
-            });
-            renderizarListaVehiculos();
+        let placa = nuevoVehiculoPlaca.value.trim();
+        if (!placa) {
+            mostrarMensaje("Ingrese la placa del vehículo", true);
+            return;
         }
+        const placaForm = formatearPlaca(placa);
+        const color = nuevoVehiculoColor.value.trim();
+        
+        if (vehiculosTemp.some(v => v.placa === placaForm)) {
+            mostrarMensaje("Esta placa ya está agregada", true);
+            return;
+        }
+        
+        vehiculosTemp.push({ placa: placaForm, color: color });
+        renderizarListaVehiculos();
+        nuevoVehiculoPlaca.value = "";
+        nuevoVehiculoColor.value = "";
     }
 
     agregarEstudianteBtn.onclick = agregarEstudiante;
@@ -891,12 +996,16 @@
         vehiculosTemp = [];
         renderizarListaEstudiantes();
         renderizarListaVehiculos();
+        nuevoEstudianteNombre.value = "";
+        nuevoEstudianteGrado.value = "";
+        nuevoVehiculoPlaca.value = "";
+        nuevoVehiculoColor.value = "";
     }
 
     function guardarOwner() {
         const nombreValue = nombre.value.trim();
-        if (!nombreValue) { mostrarMensaje("Nombre obligatorio", true); return; }
-        if (vehiculosTemp.length === 0) { mostrarMensaje("Agregue un vehículo", true); return; }
+        if (!nombreValue) { mostrarMensaje("El nombre es obligatorio", true); return; }
+        if (vehiculosTemp.length === 0) { mostrarMensaje("Agregue al menos un vehículo", true); return; }
         
         const idActual = editId.value;
         const nuevoOwner = {
@@ -914,11 +1023,11 @@
             const index = owners.findIndex(o => o.id === idActual);
             if (index !== -1) {
                 owners[index] = nuevoOwner;
-                mostrarMensaje("Actualizado");
+                mostrarMensaje("Dueño actualizado");
             }
         } else {
             owners.push(nuevoOwner);
-            mostrarMensaje("Guardado");
+            mostrarMensaje("Dueño guardado");
         }
         
         guardarBackupLocal();
@@ -933,7 +1042,7 @@
             guardarBackupLocal();
             actualizarEstadisticas();
             aplicarBusqueda();
-            mostrarMensaje("Eliminado");
+            mostrarMensaje("Dueño eliminado");
         }
     }
 
@@ -989,7 +1098,6 @@
                     </div>
                 </div>`;
             
-            // Datos de contacto
             if (owner.telefono || owner.correo) {
                 html += `<div class="contact-grid">`;
                 if (owner.telefono) {
@@ -1007,7 +1115,6 @@
                 html += `</div>`;
             }
             
-            // Estudiantes
             if (owner.estudiantes && owner.estudiantes.length > 0) {
                 html += `<div class="students-section">
                             <div class="section-header"><i class="fas fa-child"></i> ESTUDIANTES</div>
@@ -1017,7 +1124,6 @@
                         </div>`;
             }
             
-            // Vehículos
             if (owner.vehiculos && owner.vehiculos.length > 0) {
                 html += `<div class="vehicles-section">
                             <div class="section-header"><i class="fas fa-car"></i> VEHÍCULOS</div>
@@ -1027,12 +1133,11 @@
                         </div>`;
             }
             
-            // Botones de acción
             html += `<div class="card-actions">
-                        <button class="action-btn edit" onclick="window.editarOwnerDesdeGlobal('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
+                        <button class="action-btn edit" onclick="window.editarOwner('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="action-btn delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')">
+                        <button class="action-btn delete" onclick="window.eliminarOwner('${owner.id}', '${escapeHtml(owner.nombre)}')">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </div>
@@ -1041,11 +1146,11 @@
         listaContainer.innerHTML = html;
     }
 
-    window.editarOwnerDesdeGlobal = function(id, owner) {
+    window.editarOwner = function(id, owner) {
         editarOwner(owner);
     };
     
-    window.eliminarOwnerDesdeGlobal = function(id, nombre) {
+    window.eliminarOwner = function(id, nombre) {
         eliminarOwner(id, nombre);
     };
 
@@ -1066,7 +1171,7 @@
         return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    // Pestañas
+    // Tabs
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
     tabBtns.forEach(btn => {
@@ -1079,13 +1184,11 @@
         });
     });
 
-    // Eventos
     guardarBtn.onclick = guardarOwner;
     cancelarBtn.onclick = limpiarFormulario;
     buscarInput.oninput = () => aplicarBusqueda();
     refreshBtn.onclick = () => cargarDesdeSheets();
 
-    // Inicializar
     cargarDesdeSheets();
     cargarBackupLocal();
 </script>
