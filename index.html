@@ -26,7 +26,6 @@
             margin: 0 auto;
         }
 
-        /* Header */
         .header {
             margin-bottom: 40px;
             text-align: center;
@@ -101,7 +100,6 @@
             border-color: #bfdbfe;
         }
 
-        /* Tabs */
         .tabs {
             display: flex;
             gap: 8px;
@@ -149,7 +147,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Formulario */
         .form-card {
             background: white;
             border-radius: 24px;
@@ -218,7 +215,6 @@
             box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
         }
 
-        /* Listas dinámicas */
         .dynamic-list {
             margin: 8px 0;
         }
@@ -344,7 +340,6 @@
             margin-top: 28px;
         }
 
-        /* Buscador */
         .search-card {
             background: white;
             border-radius: 24px;
@@ -388,7 +383,7 @@
             border-color: #3b82f6;
         }
 
-        /* Resultados */
+        /* Tarjeta de resultado CORREGIDA */
         .result-card {
             background: white;
             border-radius: 20px;
@@ -402,13 +397,14 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
 
+        /* Header con placa y color */
         .result-header {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             padding-bottom: 12px;
             border-bottom: 2px solid #f1f5f9;
         }
@@ -419,13 +415,13 @@
             color: #1e293b;
             font-family: monospace;
             background: #f1f5f9;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 40px;
         }
 
         .vehicle-color {
             background: #f1f5f9;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 40px;
             font-size: 0.75rem;
             color: #475569;
@@ -434,33 +430,45 @@
             gap: 6px;
         }
 
-        .owner-section {
-            background: #f8fafc;
+        /* Sección DUEÑO */
+        .owner-card {
+            background: #f0fdf4;
             border-radius: 16px;
             padding: 16px;
             margin: 12px 0;
+            border-left: 3px solid #22c55e;
         }
 
-        .owner-name {
+        .owner-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
             font-weight: 600;
-            color: #1e293b;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 1rem;
-        }
-
-        .owner-detail {
-            font-size: 0.8rem;
-            color: #64748b;
-            margin-top: 4px;
+            color: #16a34a;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
         }
 
-        .students-section {
+        .owner-name {
+            font-weight: 700;
+            color: #1e293b;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+
+        .owner-detail {
+            font-size: 0.8rem;
+            color: #475569;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* Sección ESTUDIANTES A CARGO */
+        .students-card {
             background: #fefce8;
             border-radius: 16px;
             padding: 16px;
@@ -485,11 +493,11 @@
             gap: 10px;
         }
 
-        .student-tag {
+        .student-item {
             background: white;
-            padding: 8px 14px;
+            padding: 10px 16px;
             border-radius: 30px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: #1e293b;
             display: inline-flex;
             align-items: center;
@@ -497,14 +505,19 @@
             border: 1px solid #fef08a;
         }
 
-        .student-tag i {
+        .student-item i {
             color: #eab308;
+        }
+
+        .student-grado {
+            font-size: 0.7rem;
+            color: #78716c;
         }
 
         .card-actions {
             display: flex;
             gap: 16px;
-            margin-top: 16px;
+            margin-top: 20px;
             padding-top: 16px;
             border-top: 1px solid #f1f5f9;
         }
@@ -608,7 +621,7 @@
 <div class="container">
     <div class="header">
         <h1>AutoRegistro</h1>
-        <p>Gestión de vehículos y estudiantes</p>
+        <p>Gestión de vehículos</p>
         <div class="stats-card">
             <i class="fas fa-car"></i>
             <span id="globalStats">Cargando...</span>
@@ -628,15 +641,12 @@
         </button>
     </div>
 
-    <!-- Panel Registrar -->
     <div id="tab-registrar" class="tab-panel">
         <div class="form-card">
             <input type="hidden" id="editId" value="">
             
             <div class="form-section">
-                <div class="form-section-title">
-                    <i class="fas fa-car"></i> DATOS DEL VEHÍCULO
-                </div>
+                <div class="form-section-title"><i class="fas fa-car"></i> VEHÍCULO</div>
                 <div class="field-group">
                     <label>Placa <span class="required">*</span></label>
                     <input type="text" id="placa" placeholder="Ej: ABC-123">
@@ -648,16 +658,14 @@
             </div>
 
             <div class="form-section">
-                <div class="form-section-title">
-                    <i class="fas fa-user"></i> DATOS DEL DUEÑO
-                </div>
+                <div class="form-section-title"><i class="fas fa-user"></i> DUEÑO</div>
                 <div class="field-group">
-                    <label>Nombre completo</label>
-                    <input type="text" id="nombre" placeholder="Ej: María González">
+                    <label>Nombre</label>
+                    <input type="text" id="nombre" placeholder="Nombre del dueño">
                 </div>
                 <div class="field-group">
                     <label>Teléfono</label>
-                    <input type="tel" id="telefono" placeholder="Ej: 555-1234">
+                    <input type="tel" id="telefono" placeholder="Teléfono">
                 </div>
                 <div class="field-group">
                     <label>Identificación</label>
@@ -670,9 +678,7 @@
             </div>
 
             <div class="form-section">
-                <div class="form-section-title">
-                    <i class="fas fa-child"></i> ESTUDIANTES A CARGO
-                </div>
+                <div class="form-section-title"><i class="fas fa-child"></i> ESTUDIANTES A CARGO</div>
                 <div class="dynamic-list">
                     <div id="listaEstudiantes"></div>
                 </div>
@@ -692,7 +698,6 @@
         </div>
     </div>
 
-    <!-- Panel Buscar -->
     <div id="tab-buscar" class="tab-panel active">
         <div class="search-card">
             <div class="search-label">BUSCAR</div>
@@ -714,9 +719,7 @@
         </button>
     </div>
 
-    <footer>
-        Sistema de gestión vehicular
-    </footer>
+    <footer>Sistema de gestión vehicular</footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
@@ -727,7 +730,6 @@
     let filtroActual = "";
     let estudiantesTemp = [];
 
-    // Elementos
     const listaContainer = document.getElementById("listaContainer");
     const buscarInput = document.getElementById("buscarInput");
     const globalStatsSpan = document.getElementById("globalStats");
@@ -1034,28 +1036,41 @@
         
         let html = "";
         filtrados.forEach(vehiculo => {
+            const tieneDueño = vehiculo.nombre || vehiculo.telefono || vehiculo.identificacion || vehiculo.correo;
+            const tieneEstudiantes = vehiculo.estudiantes && vehiculo.estudiantes.length > 0;
+            
             html += `
             <div class="result-card">
                 <div class="result-header">
-                    <span class="vehicle-placa">${resaltarTexto(vehiculo.placa, termino)}</span>
+                    <span class="vehicle-placa"><i class="fas fa-car"></i> ${resaltarTexto(vehiculo.placa, termino)}</span>
                     ${vehiculo.color ? `<span class="vehicle-color"><i class="fas fa-palette"></i> ${resaltarTexto(vehiculo.color, termino)}</span>` : ''}
                 </div>`;
             
-            if (vehiculo.nombre || vehiculo.telefono || vehiculo.identificacion || vehiculo.correo) {
-                html += `<div class="owner-section">
-                            <div class="owner-name"><i class="fas fa-user"></i> ${vehiculo.nombre ? resaltarTexto(vehiculo.nombre, termino) : 'Dueño no registrado'}</div>`;
-                if (vehiculo.telefono) html += `<div class="owner-detail"><i class="fas fa-phone"></i> ${resaltarTexto(vehiculo.telefono, termino)}</div>`;
+            if (tieneDueño) {
+                html += `<div class="owner-card">
+                            <div class="owner-title"><i class="fas fa-user-check"></i> DUEÑO</div>
+                            <div class="owner-name">${vehiculo.nombre ? resaltarTexto(vehiculo.nombre, termino) : 'Nombre no registrado'}</div>`;
+                if (vehiculo.telefono) html += `<div class="owner-detail"><i class="fas fa-phone-alt"></i> ${resaltarTexto(vehiculo.telefono, termino)}</div>`;
                 if (vehiculo.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ${resaltarTexto(vehiculo.identificacion, termino)}</div>`;
                 if (vehiculo.correo) html += `<div class="owner-detail"><i class="fas fa-envelope"></i> ${escapeHtml(vehiculo.correo)}</div>`;
                 html += `</div>`;
+            } else {
+                html += `<div class="owner-card" style="background:#fef2f2; border-left-color:#ef4444;">
+                            <div class="owner-title" style="color:#ef4444;"><i class="fas fa-exclamation-triangle"></i> DUEÑO</div>
+                            <div class="owner-name">No registrado</div>
+                        </div>`;
             }
             
-            if (vehiculo.estudiantes && vehiculo.estudiantes.length > 0) {
-                html += `<div class="students-section">
+            if (tieneEstudiantes) {
+                html += `<div class="students-card">
                             <div class="students-title"><i class="fas fa-child"></i> ESTUDIANTES A CARGO</div>
                             <div class="students-list">`;
                 vehiculo.estudiantes.forEach(est => {
-                    html += `<span class="student-tag"><i class="fas fa-user-graduate"></i> ${resaltarTexto(est.nombre, termino)}${est.grado ? ` · ${escapeHtml(est.grado)}` : ''}</span>`;
+                    html += `<div class="student-item">
+                                <i class="fas fa-user-graduate"></i>
+                                <strong>${resaltarTexto(est.nombre, termino)}</strong>
+                                ${est.grado ? `<span class="student-grado">· ${escapeHtml(est.grado)}</span>` : ''}
+                            </div>`;
                 });
                 html += `</div></div>`;
             }
@@ -1097,7 +1112,6 @@
         return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    // Tabs
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
     tabBtns.forEach(btn => {
