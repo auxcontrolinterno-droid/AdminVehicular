@@ -188,6 +188,15 @@
             margin-bottom: 8px;
         }
 
+        label .optional {
+            font-weight: normal;
+            color: #94a3b8;
+        }
+
+        label .required {
+            color: #ef4444;
+        }
+
         input {
             width: 100%;
             padding: 14px 16px;
@@ -593,7 +602,7 @@
 <div class="container">
     <div class="header">
         <h1>AutoRegistro</h1>
-        <p>Gestión de vehículos y estudiantes</p>
+        <p>Gestión de vehículos - Solo la placa es obligatoria</p>
         <div class="stats-card">
             <i class="fas fa-car"></i>
             <span id="globalStats">Cargando...</span>
@@ -618,9 +627,17 @@
             <input type="hidden" id="editId" value="">
             
             <div class="form-section">
-                <div class="form-section-title"><i class="fas fa-user"></i> DATOS DEL DUEÑO</div>
+                <div class="form-section-title"><i class="fas fa-car"></i> DATOS DEL VEHÍCULO</div>
                 <div class="field-group">
-                    <label>Nombre completo <span class="required">*</span></label>
+                    <label>Placa <span class="required">*</span></label>
+                    <input type="text" id="placa" placeholder="Ej: ABC-123">
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="form-section-title"><i class="fas fa-user"></i> DATOS DEL DUEÑO <span class="optional">(opcional)</span></div>
+                <div class="field-group">
+                    <label>Nombre completo</label>
                     <input type="text" id="nombre" placeholder="Ej: María González">
                 </div>
                 <div class="field-group">
@@ -638,7 +655,7 @@
             </div>
 
             <div class="form-section">
-                <div class="form-section-title"><i class="fas fa-child"></i> ESTUDIANTES</div>
+                <div class="form-section-title"><i class="fas fa-child"></i> ESTUDIANTES <span class="optional">(opcional)</span></div>
                 <div class="dynamic-list">
                     <div id="listaEstudiantes"></div>
                 </div>
@@ -646,20 +663,6 @@
                     <input type="text" id="nuevoEstudianteNombre" class="inline-input" placeholder="Nombre del estudiante">
                     <input type="text" id="nuevoEstudianteGrado" class="inline-input" placeholder="Grado">
                     <button type="button" id="agregarEstudianteBtn" class="inline-btn">
-                        <i class="fas fa-plus"></i> Agregar
-                    </button>
-                </div>
-            </div>
-
-            <div class="form-section">
-                <div class="form-section-title"><i class="fas fa-car"></i> VEHÍCULOS</div>
-                <div class="dynamic-list">
-                    <div id="listaVehiculos"></div>
-                </div>
-                <div class="inline-form">
-                    <input type="text" id="nuevoVehiculoPlaca" class="inline-input" placeholder="Placa (ej: ABC-123)">
-                    <input type="text" id="nuevoVehiculoColor" class="inline-input" placeholder="Color">
-                    <button type="button" id="agregarVehiculoBtn" class="inline-btn">
                         <i class="fas fa-plus"></i> Agregar
                     </button>
                 </div>
@@ -677,7 +680,7 @@
             <div class="search-label">BUSCAR</div>
             <div class="search-wrapper">
                 <i class="fas fa-search"></i>
-                <input type="text" id="buscarInput" placeholder="Buscar por nombre, placa o estudiante...">
+                <input type="text" id="buscarInput" placeholder="Buscar por placa, nombre o estudiante...">
             </div>
         </div>
 
@@ -693,7 +696,7 @@
         </button>
     </div>
 
-    <footer>Sistema de gestión vehicular</footer>
+    <footer>Sistema de gestión vehicular - Solo la placa es obligatoria</footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
@@ -703,7 +706,6 @@
     let owners = [];
     let filtroActual = "";
     let estudiantesTemp = [];
-    let vehiculosTemp = [];
 
     // Elementos DOM
     const listaContainer = document.getElementById("listaContainer");
@@ -712,6 +714,7 @@
     const syncStatus = document.getElementById("syncStatus");
     const refreshBtn = document.getElementById("refreshBtn");
     const editId = document.getElementById("editId");
+    const placa = document.getElementById("placa");
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const identificacion = document.getElementById("identificacion");
@@ -720,13 +723,9 @@
     const cancelarBtn = document.getElementById("cancelarBtn");
     const loadingToast = document.getElementById("loadingToast");
     const listaEstudiantes = document.getElementById("listaEstudiantes");
-    const listaVehiculos = document.getElementById("listaVehiculos");
     const nuevoEstudianteNombre = document.getElementById("nuevoEstudianteNombre");
     const nuevoEstudianteGrado = document.getElementById("nuevoEstudianteGrado");
-    const nuevoVehiculoPlaca = document.getElementById("nuevoVehiculoPlaca");
-    const nuevoVehiculoColor = document.getElementById("nuevoVehiculoColor");
     const agregarEstudianteBtn = document.getElementById("agregarEstudianteBtn");
-    const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
 
     function showLoading(show) {
         loadingToast.style.display = show ? "flex" : "none";
@@ -740,6 +739,15 @@
         }
         return limpio;
     }
+
+    placa.addEventListener("input", function(e) {
+        let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
+        if (raw.length > 3) {
+            this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
+        } else {
+            this.value = raw;
+        }
+    });
 
     function parseCSV(csvText) {
         const lines = csvText.split(/\r?\n/);
@@ -766,27 +774,21 @@
             }
             values.push(currentValue);
             
-            if (values.length >= 3) {
-                const estudiantesRaw = values[5] || "";
+            if (values.length >= 2) {
+                const estudiantesRaw = values[6] || "";
                 const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
                     const [nombreEst, grado] = s.split("|");
                     return { nombre: nombreEst || "", grado: grado || "" };
                 });
                 
-                const vehiculosRaw = values[6] || "";
-                const vehiculos = vehiculosRaw.split(";").filter(s => s.trim()).map(s => {
-                    const [placa, color] = s.split("|");
-                    return { placa: placa || "", color: color || "" };
-                });
-                
                 data.push({
                     id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(),
-                    nombre: values[1] ? values[1].replace(/^"|"$/g, '') : "",
-                    telefono: values[2] ? values[2].replace(/^"|"$/g, '') : "",
-                    identificacion: values[3] ? values[3].replace(/^"|"$/g, '') : "",
-                    correo: values[4] ? values[4].replace(/^"|"$/g, '') : "",
+                    placa: values[1] ? values[1].replace(/^"|"$/g, '') : "",
+                    nombre: values[2] ? values[2].replace(/^"|"$/g, '') : "",
+                    telefono: values[3] ? values[3].replace(/^"|"$/g, '') : "",
+                    identificacion: values[4] ? values[4].replace(/^"|"$/g, '') : "",
+                    correo: values[5] ? values[5].replace(/^"|"$/g, '') : "",
                     estudiantes: estudiantes,
-                    vehiculos: vehiculos,
                     actualizado: values[7] ? values[7].replace(/^"|"$/g, '') : new Date().toISOString()
                 });
             }
@@ -891,41 +893,6 @@
         }
     }
 
-    function renderizarListaVehiculos() {
-        if (vehiculosTemp.length === 0) {
-            listaVehiculos.innerHTML = '<div style="color:#94a3b8; padding:12px 0; text-align:center;">No hay vehículos</div>';
-            return;
-        }
-        let html = '';
-        vehiculosTemp.forEach((veh, index) => {
-            html += `<div class="list-item">
-                        <div class="list-item-info">
-                            <strong>${escapeHtml(veh.placa)}</strong>
-                            ${veh.color ? `<span>🎨 ${escapeHtml(veh.color)}</span>` : ''}
-                        </div>
-                        <div class="list-item-actions">
-                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" onclick="editarVehiculoForm(${index})"></i>
-                            <i class="fas fa-trash delete-vehiculo delete-item" data-index="${index}" onclick="eliminarVehiculoForm(${index})"></i>
-                        </div>
-                    </div>`;
-        });
-        listaVehiculos.innerHTML = html;
-    }
-
-    function editarVehiculoForm(index) {
-        nuevoVehiculoPlaca.value = vehiculosTemp[index].placa;
-        nuevoVehiculoColor.value = vehiculosTemp[index].color || "";
-        vehiculosTemp.splice(index, 1);
-        renderizarListaVehiculos();
-    }
-
-    function eliminarVehiculoForm(index) {
-        if (confirm("¿Eliminar este vehículo?")) {
-            vehiculosTemp.splice(index, 1);
-            renderizarListaVehiculos();
-        }
-    }
-
     function agregarEstudiante() {
         const nombreEst = nuevoEstudianteNombre.value.trim();
         if (!nombreEst) {
@@ -938,59 +905,44 @@
         nuevoEstudianteGrado.value = "";
     }
 
-    function agregarVehiculo() {
-        let placa = nuevoVehiculoPlaca.value.trim();
-        if (!placa) {
-            mostrarMensaje("Ingrese la placa del vehículo", true);
-            return;
-        }
-        const placaForm = formatearPlaca(placa);
-        const color = nuevoVehiculoColor.value.trim();
-        
-        if (vehiculosTemp.some(v => v.placa === placaForm)) {
-            mostrarMensaje("Esta placa ya está agregada", true);
-            return;
-        }
-        
-        vehiculosTemp.push({ placa: placaForm, color: color });
-        renderizarListaVehiculos();
-        nuevoVehiculoPlaca.value = "";
-        nuevoVehiculoColor.value = "";
-    }
-
     agregarEstudianteBtn.onclick = agregarEstudiante;
-    agregarVehiculoBtn.onclick = agregarVehiculo;
 
     function limpiarFormulario() {
         editId.value = "";
+        placa.value = "";
         nombre.value = "";
         telefono.value = "";
         identificacion.value = "";
         correo.value = "";
         estudiantesTemp = [];
-        vehiculosTemp = [];
         renderizarListaEstudiantes();
-        renderizarListaVehiculos();
         nuevoEstudianteNombre.value = "";
         nuevoEstudianteGrado.value = "";
-        nuevoVehiculoPlaca.value = "";
-        nuevoVehiculoColor.value = "";
     }
 
     function guardarOwner() {
-        const nombreValue = nombre.value.trim();
-        if (!nombreValue) { mostrarMensaje("El nombre es obligatorio", true); return; }
-        if (vehiculosTemp.length === 0) { mostrarMensaje("Agregue al menos un vehículo", true); return; }
-        
+        let placaValue = placa.value.trim();
+        if (!placaValue) {
+            mostrarMensaje("La placa es obligatoria", true);
+            return;
+        }
+        placaValue = formatearPlaca(placaValue);
         const idActual = editId.value;
+        
+        // Verificar duplicado al crear nuevo
+        if (!idActual && owners.some(v => v.placa === placaValue)) {
+            mostrarMensaje(`La placa ${placaValue} ya está registrada`, true);
+            return;
+        }
+        
         const nuevoOwner = {
             id: idActual || Date.now().toString(),
-            nombre: nombreValue,
+            placa: placaValue,
+            nombre: nombre.value.trim() || "",
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
             correo: correo.value.trim() || "",
             estudiantes: estudiantesTemp,
-            vehiculos: vehiculosTemp,
             actualizado: new Date().toISOString()
         };
         
@@ -998,11 +950,14 @@
             const index = owners.findIndex(o => o.id === idActual);
             if (index !== -1) {
                 owners[index] = nuevoOwner;
-                mostrarMensaje("Dueño actualizado");
+                mostrarMensaje("Registro actualizado");
+            } else {
+                mostrarMensaje("Error: No se encontró el registro", true);
+                return;
             }
         } else {
             owners.push(nuevoOwner);
-            mostrarMensaje("Dueño guardado");
+            mostrarMensaje("Registro guardado");
         }
         
         guardarBackupLocal();
@@ -1011,26 +966,25 @@
         aplicarBusqueda();
     }
 
-    function eliminarOwner(id, nombreOwner) {
-        if (confirm(`¿Eliminar a "${nombreOwner}"?`)) {
+    function eliminarOwner(id, placaVehiculo) {
+        if (confirm(`¿Eliminar el vehículo con placa ${placaVehiculo}?`)) {
             owners = owners.filter(o => o.id !== id);
             guardarBackupLocal();
             actualizarEstadisticas();
             aplicarBusqueda();
-            mostrarMensaje("Dueño eliminado");
+            mostrarMensaje("Registro eliminado");
         }
     }
 
     function editarOwner(owner) {
         editId.value = owner.id;
+        placa.value = owner.placa;
         nombre.value = owner.nombre || "";
         telefono.value = owner.telefono || "";
         identificacion.value = owner.identificacion || "";
         correo.value = owner.correo || "";
         estudiantesTemp = owner.estudiantes ? [...owner.estudiantes] : [];
-        vehiculosTemp = owner.vehiculos ? [...owner.vehiculos] : [];
         renderizarListaEstudiantes();
-        renderizarListaVehiculos();
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
 
@@ -1038,12 +992,12 @@
         const termino = buscarInput.value.trim().toLowerCase();
         let filtrados = [...owners];
         if (termino) {
-            filtrados = owners.filter(owner => 
-                owner.nombre?.toLowerCase().includes(termino) ||
-                owner.telefono?.toLowerCase().includes(termino) ||
-                owner.identificacion?.toLowerCase().includes(termino) ||
-                owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
-                owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
+            filtrados = owners.filter(o => 
+                o.placa?.toLowerCase().includes(termino) ||
+                o.nombre?.toLowerCase().includes(termino) ||
+                o.telefono?.toLowerCase().includes(termino) ||
+                o.identificacion?.toLowerCase().includes(termino) ||
+                o.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
             );
         }
         renderizarResultados(filtrados, termino);
@@ -1058,27 +1012,31 @@
         let html = "";
         filtrados.forEach(owner => {
             const totalEstudiantes = owner.estudiantes?.length || 0;
-            const totalVehiculos = owner.vehiculos?.length || 0;
             
             html += `
             <div class="result-card">
                 <div class="owner-header">
                     <div>
-                        <div class="owner-name">${resaltarTexto(owner.nombre, termino)}</div>
-                        ${owner.identificacion ? `<div class="owner-id">ID: ${escapeHtml(owner.identificacion)}</div>` : ''}
+                        <div class="owner-name">🚗 ${resaltarTexto(owner.placa, termino)}</div>
+                        ${owner.nombre ? `<div class="owner-id">👤 ${resaltarTexto(owner.nombre, termino)}</div>` : '<div class="owner-id">⚠️ Dueño no registrado</div>'}
                     </div>
                     <div class="owner-badges">
-                        ${totalVehiculos > 0 ? `<span class="badge-count"><i class="fas fa-car"></i> ${totalVehiculos}</span>` : ''}
                         ${totalEstudiantes > 0 ? `<span class="badge-count"><i class="fas fa-child"></i> ${totalEstudiantes}</span>` : ''}
                     </div>
                 </div>`;
             
-            if (owner.telefono || owner.correo) {
+            if (owner.telefono || owner.identificacion || owner.correo) {
                 html += `<div class="contact-grid">`;
                 if (owner.telefono) {
                     html += `<div class="contact-item">
                                 <div class="contact-label">TELÉFONO</div>
                                 <div class="contact-value">${resaltarTexto(owner.telefono, termino)}</div>
+                            </div>`;
+                }
+                if (owner.identificacion) {
+                    html += `<div class="contact-item">
+                                <div class="contact-label">IDENTIFICACIÓN</div>
+                                <div class="contact-value">${resaltarTexto(owner.identificacion, termino)}</div>
                             </div>`;
                 }
                 if (owner.correo) {
@@ -1099,16 +1057,6 @@
                         </div>`;
             }
             
-            if (owner.vehiculos && owner.vehiculos.length > 0) {
-                html += `<div class="vehicles-section">
-                            <div class="section-header"><i class="fas fa-car"></i> VEHÍCULOS</div>
-                            <div class="items-list">
-                                ${owner.vehiculos.map(veh => `<span class="vehicle-tag"><i class="fas fa-car"></i> ${resaltarTexto(veh.placa, termino)}${veh.color ? ` · ${escapeHtml(veh.color)}` : ''}</span>`).join('')}
-                            </div>
-                        </div>`;
-            }
-            
-            // Crear botones con IDs únicos y funciones onclick directas
             const btnEditId = "btnEdit_" + owner.id.replace(/[^a-zA-Z0-9]/g, '_');
             const btnDeleteId = "btnDelete_" + owner.id.replace(/[^a-zA-Z0-9]/g, '_');
             
@@ -1122,12 +1070,11 @@
                     </div>
             </div>`;
             
-            // Agregar los eventos después de insertar el HTML
             setTimeout(() => {
                 const btnEdit = document.getElementById(btnEditId);
                 const btnDelete = document.getElementById(btnDeleteId);
                 if (btnEdit) btnEdit.onclick = () => editarOwner(owner);
-                if (btnDelete) btnDelete.onclick = () => eliminarOwner(owner.id, owner.nombre);
+                if (btnDelete) btnDelete.onclick = () => eliminarOwner(owner.id, owner.placa);
             }, 0);
         });
         listaContainer.innerHTML = html;
@@ -1140,9 +1087,8 @@
     }
 
     function actualizarEstadisticas() {
-        const totalOwners = owners.length;
-        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0);
-        globalStatsSpan.innerHTML = `${totalOwners} dueños · ${totalVehiculos} vehículos`;
+        const total = owners.length;
+        globalStatsSpan.innerHTML = `${total} vehículo${total !== 1 ? 's' : ''}`;
     }
 
     function escapeHtml(str) {
