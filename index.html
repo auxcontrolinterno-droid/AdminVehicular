@@ -997,6 +997,7 @@
         }
     }
 
+    // Función de edición - CORREGIDA
     function editarVehiculo(vehiculo) {
         console.log("Editando vehículo:", vehiculo);
         editId.value = vehiculo.id;
@@ -1009,7 +1010,8 @@
         estudiantesTemp = vehiculo.estudiantes ? [...vehiculo.estudiantes] : [];
         renderizarListaEstudiantes();
         // Cambiar a la pestaña de registrar
-        document.querySelector('.tab-btn[data-tab="registrar"]').click();
+        const registrarTab = document.querySelector('.tab-btn[data-tab="registrar"]');
+        if (registrarTab) registrarTab.click();
     }
 
     function aplicarBusqueda() {
@@ -1076,7 +1078,7 @@
             }
             
             html += `<div class="card-actions">
-                        <button class="action-btn edit" onclick="window.editarVehiculo('${vehiculo.id}', ${JSON.stringify(vehiculo).replace(/"/g, '&quot;')})">
+                        <button class="action-btn edit" onclick="window.editarVehiculo(${JSON.stringify(vehiculo.id).replace(/"/g, '&quot;')}, ${JSON.stringify(vehiculo).replace(/"/g, '&quot;')})">
                             <i class="fas fa-edit"></i> Editar
                         </button>
                         <button class="action-btn delete" onclick="window.eliminarVehiculo('${vehiculo.id}', '${escapeHtml(vehiculo.placa)}')">
@@ -1088,7 +1090,7 @@
         listaContainer.innerHTML = html;
     }
 
-    // Exponer funciones globalmente
+    // Funciones globales - CORREGIDAS (sin recursión)
     window.editarVehiculo = function(id, vehiculo) {
         editarVehiculo(vehiculo);
     };
