@@ -1023,9 +1023,6 @@
             if (index !== -1) {
                 owners[index] = nuevoOwner;
                 mostrarMensaje("Dueño actualizado");
-            } else {
-                mostrarMensaje("Error: No se encontró el dueño", true);
-                return;
             }
         } else {
             owners.push(nuevoOwner);
@@ -1148,7 +1145,6 @@
         listaContainer.innerHTML = html;
     }
 
-    // Funciones globales EXPUESTAS correctamente
     window.editarOwner = function(id, owner) {
         editarOwner(owner);
     };
