@@ -131,7 +131,6 @@
         input { width: 100%; padding: 14px 0; border: none; border-bottom: 2px solid #e0e8f0; font-size: 1rem; background: transparent; transition: all 0.2s; color: #1a202c; }
         input:focus { outline: none; border-bottom-color: #1a5f7a; }
 
-        /* Lista de vehículos en el dueño */
         .vehicles-list {
             background: #f8fafc;
             border-radius: 16px;
@@ -157,38 +156,6 @@
         .vehicle-actions i { cursor: pointer; color: #a8bbd0; transition: color 0.2s; }
         .vehicle-actions i:hover { color: #1a5f7a; }
         .delete-vehicle:hover { color: #c62828 !important; }
-
-        .add-btn {
-            background: none;
-            border: 2px dashed #c0d0dc;
-            border-radius: 40px;
-            padding: 10px 16px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #8ba0b0;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 12px;
-            transition: all 0.2s;
-        }
-        .add-btn:hover { border-color: #1a5f7a; color: #1a5f7a; background: #f0f4f8; }
-
-        .dynamic-list { margin: 8px 0; }
-        .list-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .list-item-info strong { font-size: 0.9rem; color: #0a2540; }
-        .list-item-info span { font-size: 0.75rem; color: #8ba0b0; margin-left: 8px; }
-        .list-item-actions { display: flex; gap: 12px; }
-        .list-item-actions i { font-size: 0.9rem; cursor: pointer; color: #a8bbd0; transition: color 0.2s; }
-        .list-item-actions i:hover { color: #1a5f7a; }
-        .delete-item:hover { color: #c62828 !important; }
 
         .inline-form {
             display: flex;
@@ -240,13 +207,99 @@
         .btn-outline { background: transparent; border: 2px solid #e0e8f0; color: #5a6e7c; }
         .button-group { display: flex; gap: 12px; margin-top: 28px; }
 
-        .search-section { margin-bottom: 28px; }
-        .search-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #8ba0b0; margin-bottom: 12px; display: block; }
-        .search-wrapper { position: relative; }
-        .search-wrapper i { position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: #a8bbd0; font-size: 1rem; }
-        .search-wrapper input { padding: 14px 0 14px 32px; border: none; border-bottom: 2px solid #e0e8f0; width: 100%; background: transparent; font-size: 1rem; }
-        .search-wrapper input:focus { border-bottom-color: #1a5f7a; }
+        /* ========== BÚSQUEDA MEJORADA ========== */
+        .search-section {
+            margin-bottom: 28px;
+        }
 
+        .search-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8ba0b0;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-wrapper i {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a8bbd0;
+            font-size: 1rem;
+        }
+
+        .search-wrapper input {
+            padding: 14px 0 14px 32px;
+            border: none;
+            border-bottom: 2px solid #e0e8f0;
+            width: 100%;
+            background: transparent;
+            font-size: 1rem;
+        }
+
+        .search-wrapper input:focus {
+            border-bottom-color: #1a5f7a;
+        }
+
+        /* Filtros rápidos */
+        .quick-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e0e8f0;
+        }
+
+        .filter-chip {
+            background: #e8edf2;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #5a6e7c;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .filter-chip i {
+            font-size: 0.75rem;
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
+            color: white;
+        }
+
+        .filter-chip:hover:not(.active) {
+            background: #d0dce8;
+        }
+
+        .clear-filter {
+            background: none;
+            border: none;
+            color: #c62828;
+            cursor: pointer;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        /* Resultados */
         .result-card {
             background: white;
             border-radius: 20px;
@@ -350,6 +403,7 @@
             .inline-form { flex-direction: column; }
             .inline-btn { width: fit-content; }
             .owner-header { flex-direction: column; }
+            .quick-filters { justify-content: center; }
         }
     </style>
 </head>
@@ -396,7 +450,6 @@
                 <input type="email" id="correo" placeholder="correo@ejemplo.com">
             </div>
 
-            <!-- Vehículos del dueño (múltiples) -->
             <div class="card-title" style="margin-top: 24px;"><i class="fas fa-car"></i> Vehículos <span class="required">*</span></div>
             <div id="vehiculosList" class="vehicles-list"></div>
             <div class="inline-form" style="margin-top: 0;">
@@ -407,7 +460,6 @@
                 </button>
             </div>
 
-            <!-- Estudiantes -->
             <div class="card-title" style="margin-top: 24px;"><i class="fas fa-child"></i> Estudiantes <span class="optional">(opcional)</span></div>
             <div class="dynamic-list">
                 <div id="listaEstudiantes"></div>
@@ -433,11 +485,20 @@
             <div class="card-title"><i class="fas fa-search"></i> Buscar Registros</div>
             
             <div class="search-section">
-                <div class="search-label">BUSCAR POR NOMBRE, PLACA, TELÉFONO O ESTUDIANTE</div>
+                <div class="search-label">🔎 BÚSQUEDA RÁPIDA</div>
                 <div class="search-wrapper">
                     <i class="fas fa-search"></i>
-                    <input type="text" id="buscarInput" placeholder="Escribe para buscar...">
+                    <input type="text" id="buscarInput" placeholder="Buscar por placa, nombre, teléfono o estudiante...">
                 </div>
+            </div>
+
+            <!-- Filtros rápidos -->
+            <div class="quick-filters">
+                <button class="filter-chip" data-filter="placa"><i class="fas fa-car"></i> Buscar por placa</button>
+                <button class="filter-chip" data-filter="nombre"><i class="fas fa-user"></i> Buscar por nombre</button>
+                <button class="filter-chip" data-filter="telefono"><i class="fas fa-phone"></i> Buscar por teléfono</button>
+                <button class="filter-chip" data-filter="estudiante"><i class="fas fa-child"></i> Buscar por estudiante</button>
+                <button id="clearFilters" class="clear-filter"><i class="fas fa-times-circle"></i> Limpiar</button>
             </div>
 
             <div id="listaContainer">
@@ -454,21 +515,17 @@
     </div>
 
     <footer>
-        Datos sincronizados con Google Sheets · Columnas: id, nombre, telefono, identificacion, correo, estudiantes, vehiculos, fecha
+        Datos sincronizados con Google Sheets · Haz clic en "Buscar por placa" para filtrar rápidamente
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
 <script>
-    // ============================================
-    // URL DE GOOGLE SHEETS
-    // ============================================
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     
-    // ============================================
-
     let owners = [];
     let filtroActual = "";
+    let filtroActivo = "todos";
     let vehiculosTemp = [];
     let estudiantesTemp = [];
 
@@ -494,6 +551,8 @@
     const nuevaPlaca = document.getElementById("nuevaPlaca");
     const nuevoColor = document.getElementById("nuevoColor");
     const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
+    const clearFilters = document.getElementById("clearFilters");
+    const filterChips = document.querySelectorAll('.filter-chip');
 
     function showLoading(show) { loadingToast.style.display = show ? "flex" : "none"; }
 
@@ -508,6 +567,48 @@
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
         if (raw.length > 3) this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
         else this.value = raw;
+    });
+
+    // Filtros rápidos
+    filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const filterType = chip.dataset.filter;
+            filtroActivo = filterType;
+            
+            // Actualizar UI de filtros
+            filterChips.forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            
+            // Enfocar el input y mostrar placeholder específico
+            buscarInput.focus();
+            switch(filterType) {
+                case 'placa':
+                    buscarInput.placeholder = "🔍 Buscar por placa... ej: ABC-123";
+                    break;
+                case 'nombre':
+                    buscarInput.placeholder = "🔍 Buscar por nombre del dueño...";
+                    break;
+                case 'telefono':
+                    buscarInput.placeholder = "🔍 Buscar por teléfono...";
+                    break;
+                case 'estudiante':
+                    buscarInput.placeholder = "🔍 Buscar por nombre del estudiante...";
+                    break;
+            }
+            
+            // Si hay texto, aplicar búsqueda
+            if (buscarInput.value.trim()) {
+                aplicarBusqueda();
+            }
+        });
+    });
+
+    clearFilters.addEventListener('click', () => {
+        filtroActivo = "todos";
+        buscarInput.value = "";
+        buscarInput.placeholder = "Buscar por placa, nombre, teléfono o estudiante...";
+        filterChips.forEach(c => c.classList.remove('active'));
+        aplicarBusqueda();
     });
 
     function renderizarVehiculos() {
@@ -621,8 +722,6 @@
 
     agregarEstudianteBtn.onclick = agregarEstudiante;
 
-    // Parseo correcto según la estructura de tu Google Sheets:
-    // Columnas: id, nombre, telefono, identificacion, correo, estudiantes, vehiculos, fecha_actualizacion
     function parseCSV(csvText) {
         const lines = csvText.split(/\r?\n/);
         if (lines.length < 2) return [];
@@ -637,46 +736,24 @@
             
             for (let j = 0; j < lines[i].length; j++) {
                 const char = lines[i][j];
-                if (char === '"') {
-                    inQuote = !inQuote;
-                } else if (char === "," && !inQuote) {
-                    values.push(currentValue);
-                    currentValue = "";
-                } else {
-                    currentValue += char;
-                }
+                if (char === '"') inQuote = !inQuote;
+                else if (char === "," && !inQuote) { values.push(currentValue); currentValue = ""; }
+                else currentValue += char;
             }
             values.push(currentValue);
             
-            // values[0] = id
-            // values[1] = nombre
-            // values[2] = telefono
-            // values[3] = identificacion
-            // values[4] = correo
-            // values[5] = estudiantes (formato: "nombre|grado;nombre2|grado2")
-            // values[6] = vehiculos (formato: "placa|color;placa2|color2")
-            // values[7] = fecha_actualizacion
-            
             if (values.length >= 2) {
-                // Parsear estudiantes
                 const estudiantesRaw = values[5] || "";
                 const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
                     const [nombreEst, gradoEst] = s.split("|");
                     return { nombre: nombreEst || "", grado: gradoEst || "" };
                 });
                 
-                // Parsear vehículos
                 const vehiculosRaw = values[6] || "";
                 const vehiculos = vehiculosRaw.split(";").filter(s => s.trim()).map(s => {
                     const [placaVehiculo, colorVehiculo] = s.split("|");
                     return { placa: placaVehiculo || "", color: colorVehiculo || "" };
                 });
-                
-                // Si no hay vehículos parseados pero hay datos en valores antiguos, crear uno
-                let finalVehiculos = vehiculos;
-                if (finalVehiculos.length === 0 && values[1] && values[2]) {
-                    // Intento de compatibilidad con formato antiguo
-                }
                 
                 data.push({
                     id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(),
@@ -685,7 +762,7 @@
                     identificacion: values[3] ? values[3].replace(/^"|"$/g, '') : "",
                     correo: values[4] ? values[4].replace(/^"|"$/g, '') : "",
                     estudiantes: estudiantes,
-                    vehiculos: finalVehiculos,
+                    vehiculos: vehiculos,
                     actualizado: values[7] ? values[7].replace(/^"|"$/g, '') : new Date().toISOString()
                 });
             }
@@ -781,6 +858,7 @@
         if (idActual) {
             const index = owners.findIndex(o => o.id === idActual);
             if (index !== -1) owners[index] = nuevoOwner;
+            else owners.push(nuevoOwner);
         } else {
             owners.push(nuevoOwner);
         }
@@ -816,17 +894,28 @@
 
     function aplicarBusqueda() {
         const termino = buscarInput.value.trim().toLowerCase();
-        filtroActual = termino;
         let filtrados = [...owners];
+        
         if (termino) {
-            filtrados = owners.filter(o => 
-                o.nombre?.toLowerCase().includes(termino) ||
-                o.telefono?.toLowerCase().includes(termino) ||
-                o.identificacion?.toLowerCase().includes(termino) ||
-                o.correo?.toLowerCase().includes(termino) ||
-                o.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
-                o.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
-            );
+            filtrados = owners.filter(owner => {
+                switch(filtroActivo) {
+                    case 'placa':
+                        return owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino));
+                    case 'nombre':
+                        return owner.nombre?.toLowerCase().includes(termino);
+                    case 'telefono':
+                        return owner.telefono?.toLowerCase().includes(termino);
+                    case 'estudiante':
+                        return owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino));
+                    default:
+                        return owner.nombre?.toLowerCase().includes(termino) ||
+                               owner.telefono?.toLowerCase().includes(termino) ||
+                               owner.identificacion?.toLowerCase().includes(termino) ||
+                               owner.correo?.toLowerCase().includes(termino) ||
+                               owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
+                               owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino));
+                }
+            });
         }
         renderizarResultados(filtrados, termino);
     }
