@@ -188,15 +188,6 @@
             margin-bottom: 8px;
         }
 
-        label .optional {
-            font-weight: normal;
-            color: #94a3b8;
-        }
-
-        label .required {
-            color: #ef4444;
-        }
-
         input {
             width: 100%;
             padding: 14px 16px;
@@ -595,13 +586,6 @@
             .inline-form {
                 flex-direction: column;
             }
-            .owner-header {
-                flex-direction: column;
-            }
-            .contact-grid {
-                flex-direction: column;
-                gap: 12px;
-            }
         }
     </style>
 </head>
@@ -885,30 +869,26 @@
                             ${est.grado ? `<span>📚 ${escapeHtml(est.grado)}</span>` : ''}
                         </div>
                         <div class="list-item-actions">
-                            <i class="fas fa-edit edit-estudiante" data-index="${index}"></i>
-                            <i class="fas fa-trash delete-estudiante delete-item" data-index="${index}"></i>
+                            <i class="fas fa-edit edit-estudiante" data-index="${index}" onclick="editarEstudiante(${index})"></i>
+                            <i class="fas fa-trash delete-estudiante delete-item" data-index="${index}" onclick="eliminarEstudiante(${index})"></i>
                         </div>
                     </div>`;
         });
         listaEstudiantes.innerHTML = html;
-        
-        document.querySelectorAll('.edit-estudiante').forEach(icon => {
-            icon.onclick = () => {
-                const idx = parseInt(icon.dataset.index);
-                nuevoEstudianteNombre.value = estudiantesTemp[idx].nombre;
-                nuevoEstudianteGrado.value = estudiantesTemp[idx].grado || "";
-                estudiantesTemp.splice(idx, 1);
-                renderizarListaEstudiantes();
-            };
-        });
-        document.querySelectorAll('.delete-estudiante').forEach(icon => {
-            icon.onclick = () => {
-                if (confirm("¿Eliminar este estudiante?")) {
-                    estudiantesTemp.splice(parseInt(icon.dataset.index), 1);
-                    renderizarListaEstudiantes();
-                }
-            };
-        });
+    }
+
+    function editarEstudiante(index) {
+        nuevoEstudianteNombre.value = estudiantesTemp[index].nombre;
+        nuevoEstudianteGrado.value = estudiantesTemp[index].grado || "";
+        estudiantesTemp.splice(index, 1);
+        renderizarListaEstudiantes();
+    }
+
+    function eliminarEstudiante(index) {
+        if (confirm("¿Eliminar este estudiante?")) {
+            estudiantesTemp.splice(index, 1);
+            renderizarListaEstudiantes();
+        }
     }
 
     function renderizarListaVehiculos() {
@@ -924,30 +904,26 @@
                             ${veh.color ? `<span>🎨 ${escapeHtml(veh.color)}</span>` : ''}
                         </div>
                         <div class="list-item-actions">
-                            <i class="fas fa-edit edit-vehiculo" data-index="${index}"></i>
-                            <i class="fas fa-trash delete-vehiculo delete-item" data-index="${index}"></i>
+                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" onclick="editarVehiculoForm(${index})"></i>
+                            <i class="fas fa-trash delete-vehiculo delete-item" data-index="${index}" onclick="eliminarVehiculoForm(${index})"></i>
                         </div>
                     </div>`;
         });
         listaVehiculos.innerHTML = html;
-        
-        document.querySelectorAll('.edit-vehiculo').forEach(icon => {
-            icon.onclick = () => {
-                const idx = parseInt(icon.dataset.index);
-                nuevoVehiculoPlaca.value = vehiculosTemp[idx].placa;
-                nuevoVehiculoColor.value = vehiculosTemp[idx].color || "";
-                vehiculosTemp.splice(idx, 1);
-                renderizarListaVehiculos();
-            };
-        });
-        document.querySelectorAll('.delete-vehiculo').forEach(icon => {
-            icon.onclick = () => {
-                if (confirm("¿Eliminar este vehículo?")) {
-                    vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
-                    renderizarListaVehiculos();
-                }
-            };
-        });
+    }
+
+    function editarVehiculoForm(index) {
+        nuevoVehiculoPlaca.value = vehiculosTemp[index].placa;
+        nuevoVehiculoColor.value = vehiculosTemp[index].color || "";
+        vehiculosTemp.splice(index, 1);
+        renderizarListaVehiculos();
+    }
+
+    function eliminarVehiculoForm(index) {
+        if (confirm("¿Eliminar este vehículo?")) {
+            vehiculosTemp.splice(index, 1);
+            renderizarListaVehiculos();
+        }
     }
 
     function agregarEstudiante() {
@@ -1132,26 +1108,30 @@
                         </div>`;
             }
             
+            // Crear botones con IDs únicos y funciones onclick directas
+            const btnEditId = "btnEdit_" + owner.id.replace(/[^a-zA-Z0-9]/g, '_');
+            const btnDeleteId = "btnDelete_" + owner.id.replace(/[^a-zA-Z0-9]/g, '_');
+            
             html += `<div class="card-actions">
-                        <button class="action-btn edit" onclick="window.editarOwner('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
+                        <button id="${btnEditId}" class="action-btn edit">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="action-btn delete" onclick="window.eliminarOwner('${owner.id}', '${escapeHtml(owner.nombre)}')">
+                        <button id="${btnDeleteId}" class="action-btn delete">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </div>
             </div>`;
+            
+            // Agregar los eventos después de insertar el HTML
+            setTimeout(() => {
+                const btnEdit = document.getElementById(btnEditId);
+                const btnDelete = document.getElementById(btnDeleteId);
+                if (btnEdit) btnEdit.onclick = () => editarOwner(owner);
+                if (btnDelete) btnDelete.onclick = () => eliminarOwner(owner.id, owner.nombre);
+            }, 0);
         });
         listaContainer.innerHTML = html;
     }
-
-    window.editarOwner = function(id, owner) {
-        editarOwner(owner);
-    };
-    
-    window.eliminarOwner = function(id, nombre) {
-        eliminarOwner(id, nombre);
-    };
 
     function resaltarTexto(texto, busqueda) {
         if (!busqueda || !texto) return escapeHtml(texto);
