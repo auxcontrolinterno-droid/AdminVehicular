@@ -383,7 +383,6 @@
             border-color: #3b82f6;
         }
 
-        /* Tarjeta de resultado CORREGIDA */
         .result-card {
             background: white;
             border-radius: 20px;
@@ -397,7 +396,6 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
         }
 
-        /* Header con placa y color */
         .result-header {
             display: flex;
             justify-content: space-between;
@@ -430,7 +428,6 @@
             gap: 6px;
         }
 
-        /* Sección DUEÑO */
         .owner-card {
             background: #f0fdf4;
             border-radius: 16px;
@@ -467,7 +464,6 @@
             flex-wrap: wrap;
         }
 
-        /* Sección ESTUDIANTES A CARGO */
         .students-card {
             background: #fefce8;
             border-radius: 16px;
@@ -503,15 +499,6 @@
             align-items: center;
             gap: 8px;
             border: 1px solid #fef08a;
-        }
-
-        .student-item i {
-            color: #eab308;
-        }
-
-        .student-grado {
-            font-size: 0.7rem;
-            color: #78716c;
         }
 
         .card-actions {
@@ -730,18 +717,19 @@
     let filtroActual = "";
     let estudiantesTemp = [];
 
+    // Elementos DOM
     const listaContainer = document.getElementById("listaContainer");
     const buscarInput = document.getElementById("buscarInput");
     const globalStatsSpan = document.getElementById("globalStats");
     const syncStatus = document.getElementById("syncStatus");
     const refreshBtn = document.getElementById("refreshBtn");
     const editId = document.getElementById("editId");
-    const placa = document.getElementById("placa");
-    const color = document.getElementById("color");
-    const nombre = document.getElementById("nombre");
-    const telefono = document.getElementById("telefono");
-    const identificacion = document.getElementById("identificacion");
-    const correo = document.getElementById("correo");
+    const placaInput = document.getElementById("placa");
+    const colorInput = document.getElementById("color");
+    const nombreInput = document.getElementById("nombre");
+    const telefonoInput = document.getElementById("telefono");
+    const identificacionInput = document.getElementById("identificacion");
+    const correoInput = document.getElementById("correo");
     const guardarBtn = document.getElementById("guardarBtn");
     const cancelarBtn = document.getElementById("cancelarBtn");
     const loadingToast = document.getElementById("loadingToast");
@@ -763,7 +751,7 @@
         return limpio;
     }
 
-    placa.addEventListener("input", function(e) {
+    placaInput.addEventListener("input", function(e) {
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
         if (raw.length > 3) {
             this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
@@ -835,12 +823,14 @@
                 vehicles = datos;
                 syncStatus.className = "sync-status success";
                 syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${vehicles.length} vehículos cargados`;
+                console.log("Vehículos cargados:", vehicles.length);
             } else {
                 syncStatus.className = "sync-status error";
                 syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No hay datos`;
                 vehicles = [];
             }
         } catch (error) {
+            console.error("Error cargando:", error);
             syncStatus.className = "sync-status error";
             syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error: ${error.message}`;
             vehicles = [];
@@ -936,18 +926,18 @@
 
     function limpiarFormulario() {
         editId.value = "";
-        placa.value = "";
-        color.value = "";
-        nombre.value = "";
-        telefono.value = "";
-        identificacion.value = "";
-        correo.value = "";
+        placaInput.value = "";
+        colorInput.value = "";
+        nombreInput.value = "";
+        telefonoInput.value = "";
+        identificacionInput.value = "";
+        correoInput.value = "";
         estudiantesTemp = [];
         renderizarListaEstudiantes();
     }
 
-    function guardarVehiculo() {
-        let placaValue = placa.value.trim();
+    async function guardarVehiculo() {
+        let placaValue = placaInput.value.trim();
         if (!placaValue) {
             mostrarMensaje("La placa es obligatoria", true);
             return;
@@ -963,52 +953,62 @@
         const nuevoVehiculo = {
             id: idActual || Date.now().toString(),
             placa: placaValue,
-            color: color.value.trim() || "",
-            nombre: nombre.value.trim() || "",
-            telefono: telefono.value.trim() || "",
-            identificacion: identificacion.value.trim() || "",
-            correo: correo.value.trim() || "",
+            color: colorInput.value.trim() || "",
+            nombre: nombreInput.value.trim() || "",
+            telefono: telefonoInput.value.trim() || "",
+            identificacion: identificacionInput.value.trim() || "",
+            correo: correoInput.value.trim() || "",
             estudiantes: estudiantesTemp,
             actualizado: new Date().toISOString()
         };
         
-        if (idActual) {
-            const index = vehicles.findIndex(v => v.id === idActual);
-            if (index !== -1) {
-                vehicles[index] = nuevoVehiculo;
-                mostrarMensaje("Actualizado");
+        try {
+            if (idActual) {
+                const index = vehicles.findIndex(v => v.id === idActual);
+                if (index !== -1) {
+                    vehicles[index] = nuevoVehiculo;
+                    mostrarMensaje("Vehículo actualizado");
+                } else {
+                    mostrarMensaje("Error: No se encontró el vehículo", true);
+                    return;
+                }
+            } else {
+                vehicles.push(nuevoVehiculo);
+                mostrarMensaje("Vehículo guardado");
             }
-        } else {
-            vehicles.push(nuevoVehiculo);
-            mostrarMensaje("Guardado");
+            
+            guardarBackupLocal();
+            limpiarFormulario();
+            actualizarEstadisticas();
+            aplicarBusqueda();
+        } catch (error) {
+            console.error("Error guardando:", error);
+            mostrarMensaje("Error al guardar", true);
         }
-        
-        guardarBackupLocal();
-        limpiarFormulario();
-        actualizarEstadisticas();
-        aplicarBusqueda();
     }
 
     function eliminarVehiculo(id, placaVehiculo) {
-        if (confirm(`¿Eliminar vehículo ${placaVehiculo}?`)) {
+        if (confirm(`¿Eliminar el vehículo con placa ${placaVehiculo}?`)) {
             vehicles = vehicles.filter(v => v.id !== id);
             guardarBackupLocal();
             actualizarEstadisticas();
             aplicarBusqueda();
-            mostrarMensaje("Eliminado");
+            mostrarMensaje("Vehículo eliminado");
         }
     }
 
     function editarVehiculo(vehiculo) {
+        console.log("Editando vehículo:", vehiculo);
         editId.value = vehiculo.id;
-        placa.value = vehiculo.placa;
-        color.value = vehiculo.color || "";
-        nombre.value = vehiculo.nombre || "";
-        telefono.value = vehiculo.telefono || "";
-        identificacion.value = vehiculo.identificacion || "";
-        correo.value = vehiculo.correo || "";
+        placaInput.value = vehiculo.placa;
+        colorInput.value = vehiculo.color || "";
+        nombreInput.value = vehiculo.nombre || "";
+        telefonoInput.value = vehiculo.telefono || "";
+        identificacionInput.value = vehiculo.identificacion || "";
+        correoInput.value = vehiculo.correo || "";
         estudiantesTemp = vehiculo.estudiantes ? [...vehiculo.estudiantes] : [];
         renderizarListaEstudiantes();
+        // Cambiar a la pestaña de registrar
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
 
@@ -1069,7 +1069,7 @@
                     html += `<div class="student-item">
                                 <i class="fas fa-user-graduate"></i>
                                 <strong>${resaltarTexto(est.nombre, termino)}</strong>
-                                ${est.grado ? `<span class="student-grado">· ${escapeHtml(est.grado)}</span>` : ''}
+                                ${est.grado ? `<span style="margin-left:5px; color:#78716c;">· ${escapeHtml(est.grado)}</span>` : ''}
                             </div>`;
                 });
                 html += `</div></div>`;
@@ -1088,6 +1088,7 @@
         listaContainer.innerHTML = html;
     }
 
+    // Exponer funciones globalmente
     window.editarVehiculo = function(id, vehiculo) {
         editarVehiculo(vehiculo);
     };
@@ -1112,6 +1113,7 @@
         return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
+    // Tabs
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
     tabBtns.forEach(btn => {
