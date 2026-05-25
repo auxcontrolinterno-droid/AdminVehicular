@@ -381,6 +381,15 @@
         .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
         .refresh-btn { background: transparent; border: 2px solid #e0e8f0; margin-top: 20px; width: 100%; }
 
+        .format-hint {
+            font-size: 0.65rem;
+            color: #a8bbd0;
+            margin-top: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
         #loadingToast {
             position: fixed;
             bottom: 24px;
@@ -490,6 +499,9 @@
                     <i class="fas fa-search"></i>
                     <input type="text" id="buscarInput" placeholder="Buscar por placa, nombre, teléfono o estudiante...">
                 </div>
+                <div class="format-hint">
+                    <i class="fas fa-magic"></i> Puedes escribir la placa como "ABC123" y se buscará automáticamente como "ABC-123"
+                </div>
             </div>
 
             <!-- Filtros rápidos -->
@@ -515,7 +527,7 @@
     </div>
 
     <footer>
-        Datos sincronizados con Google Sheets · Haz clic en "Buscar por placa" para filtrar rápidamente
+        Datos sincronizados con Google Sheets · Las placas se formatean automáticamente como ABC-123
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
@@ -556,6 +568,7 @@
 
     function showLoading(show) { loadingToast.style.display = show ? "flex" : "none"; }
 
+    // Función para formatear placa (convierte ABC123 a ABC-123)
     function formatearPlaca(texto) {
         if (!texto) return "";
         let limpio = texto.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
@@ -563,11 +576,45 @@
         return limpio;
     }
 
+    // Función para normalizar placa para búsqueda (elimina guiones y espacios)
+    function normalizarPlaca(texto) {
+        if (!texto) return "";
+        return texto.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
+    }
+
+    // Formatear placa mientras se escribe en el campo de agregar vehículo
     nuevaPlaca.addEventListener("input", function(e) {
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
         if (raw.length > 3) this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
         else this.value = raw;
     });
+
+    // Formatear placa mientras se escribe en el campo de búsqueda (solo visual, la búsqueda usa normalizado)
+    buscarInput.addEventListener("input", function(e) {
+        // Detectar si estamos en modo búsqueda por placa y formatear visualmente
+        if (filtroActivo === "placa") {
+            let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
+            if (raw.length > 3 && raw.length <= 8) {
+                let cursorPos = this.selectionStart;
+                let formatted = raw.substring(0, 3) + "-" + raw.substring(3, 8);
+                if (this.value !== formatted) {
+                    this.value = formatted;
+                    this.setSelectionRange(cursorPos + 1, cursorPos + 1);
+                }
+            } else if (raw.length <= 3) {
+                if (this.value !== raw) this.value = raw;
+            }
+        }
+        aplicarBusqueda();
+    });
+
+    // Función para normalizar el término de búsqueda según el filtro
+    function normalizarTerminoBusqueda(termino) {
+        if (filtroActivo === "placa") {
+            return normalizarPlaca(termino);
+        }
+        return termino.toLowerCase();
+    }
 
     // Filtros rápidos
     filterChips.forEach(chip => {
@@ -575,15 +622,13 @@
             const filterType = chip.dataset.filter;
             filtroActivo = filterType;
             
-            // Actualizar UI de filtros
             filterChips.forEach(c => c.classList.remove('active'));
             chip.classList.add('active');
             
-            // Enfocar el input y mostrar placeholder específico
             buscarInput.focus();
             switch(filterType) {
                 case 'placa':
-                    buscarInput.placeholder = "🔍 Buscar por placa... ej: ABC-123";
+                    buscarInput.placeholder = "🔍 Buscar por placa... ej: ABC123 o ABC-123";
                     break;
                 case 'nombre':
                     buscarInput.placeholder = "🔍 Buscar por nombre del dueño...";
@@ -596,7 +641,6 @@
                     break;
             }
             
-            // Si hay texto, aplicar búsqueda
             if (buscarInput.value.trim()) {
                 aplicarBusqueda();
             }
@@ -893,14 +937,22 @@
     }
 
     function aplicarBusqueda() {
-        const termino = buscarInput.value.trim().toLowerCase();
+        let termino = buscarInput.value.trim();
+        
+        if (filtroActivo === "placa" && termino) {
+            termino = normalizarPlaca(termino);
+        } else if (termino) {
+            termino = termino.toLowerCase();
+        }
+        
         let filtrados = [...owners];
         
         if (termino) {
             filtrados = owners.filter(owner => {
                 switch(filtroActivo) {
                     case 'placa':
-                        return owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino));
+                        return owner.vehiculos?.some(v => normalizarPlaca(v.placa) === termino || 
+                                                           v.placa?.toLowerCase().includes(termino));
                     case 'nombre':
                         return owner.nombre?.toLowerCase().includes(termino);
                     case 'telefono':
@@ -912,7 +964,8 @@
                                owner.telefono?.toLowerCase().includes(termino) ||
                                owner.identificacion?.toLowerCase().includes(termino) ||
                                owner.correo?.toLowerCase().includes(termino) ||
-                               owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
+                               owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino) ||
+                                                          normalizarPlaca(v.placa).includes(termino)) ||
                                owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino));
                 }
             });
@@ -1003,7 +1056,6 @@
 
     guardarBtn.onclick = guardarOwner;
     cancelarBtn.onclick = limpiarFormulario;
-    buscarInput.oninput = () => aplicarBusqueda();
     refreshBtn.onclick = () => cargarDesdeSheets();
 
     cargarDesdeSheets();
