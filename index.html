@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>AutoRegistro PRO - Versión Optimizada</title>
+    <meta name="theme-color" content="#0f172a">
+    <title>AutoRegistro PRO - Google Sheets</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -62,7 +63,7 @@
             font-size: 0.8rem;
         }
 
-        .auth-status {
+        .sync-status {
             background: rgba(255,255,255,0.05);
             padding: 10px 16px;
             border-radius: 20px;
@@ -70,16 +71,20 @@
             text-align: center;
             font-size: 0.8rem;
             color: #94a3b8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .auth-status.error {
-            background: rgba(239,68,68,0.1);
-            color: #f87171;
-        }
-
-        .auth-status.success {
+        .sync-status.success {
             background: rgba(34,197,94,0.1);
             color: #4ade80;
+        }
+
+        .sync-status.error {
+            background: rgba(239,68,68,0.1);
+            color: #f87171;
         }
 
         .tabs {
@@ -398,6 +403,11 @@
             border-radius: 6px;
         }
 
+        .export-btn {
+            background: #10b981;
+            margin-top: 16px;
+        }
+
         #loadingToast {
             position: fixed;
             bottom: 20px;
@@ -423,32 +433,17 @@
             max-height: 60vh;
             overflow-y: auto;
         }
-
-        .quota-warning {
-            background: #fef3c7;
-            border-left: 4px solid #f59e0b;
-            padding: 12px 16px;
-            border-radius: 16px;
-            margin-bottom: 16px;
-            font-size: 0.8rem;
-            color: #92400e;
-        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1><i class="fas fa-users-viewfinder"></i> AutoRegistro PRO</h1>
+        <h1><i class="fas fa-table"></i> AutoRegistro PRO</h1>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
-    <div id="authStatus" class="auth-status">
-        <i class="fas fa-spinner fa-pulse"></i> Conectando...
-    </div>
-
-    <div id="quotaWarning" class="quota-warning" style="display: none;">
-        <i class="fas fa-exclamation-triangle"></i> <strong>Límite de operaciones alcanzado</strong><br>
-        La cuota gratuita de Firebase se ha excedido. Los datos se guardarán localmente hasta que se restablezca.
+    <div id="syncStatus" class="sync-status">
+        <i class="fas fa-spinner fa-pulse"></i> Conectando a Google Sheets...
     </div>
 
     <div class="tabs">
@@ -520,82 +515,40 @@
             <div id="listaContainer">
                 <div class="empty-result">
                     <i class="fas fa-info-circle"></i>
-                    <div>Cargando registros...</div>
-                    <div style="font-size: 0.7rem; margin-top: 8px;">Si hay problemas de conexión, espera un momento</div>
+                    <div>Cargando datos desde Google Sheets...</div>
                 </div>
             </div>
+            
+            <button id="exportarBtn" class="btn export-btn">
+                <i class="fas fa-download"></i> Exportar a Excel/CSV
+            </button>
         </div>
     </div>
 
     <footer>
-        <i class="fas fa-shield-alt"></i> Datos seguros en la nube
+        <i class="fas fa-table"></i> Datos sincronizados con Google Sheets
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
-<script type="importmap">
-    {
-        "imports": {
-            "firebase/app": "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js",
-            "firebase/firestore": "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js",
-            "firebase/auth": "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js"
-        }
-    }
-</script>
-
-<script type="module">
-    import { initializeApp } from "firebase/app";
-    import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "firebase/auth";
-
-    const firebaseConfig = {
-        apiKey: "AIzaSyBPZFMfCwuVrTZVvEGNnEfe1rJohQgVOzI",
-        authDomain: "admin-vehiculos-88011.firebaseapp.com",
-        projectId: "admin-vehiculos-88011",
-        storageBucket: "admin-vehiculos-88011.firebasestorage.app",
-        messagingSenderId: "548122701117",
-        appId: "1:548122701117:web:69bc9781a18bd0dedc6954"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+<script>
+    // ============================================
+    // ✅ URL DE GOOGLE SHEETS - YA CONFIGURADA
+    // ============================================
+    const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?output=csv";
+    
+    // ============================================
 
     let owners = [];
     let filtroActual = "";
-    let autenticado = false;
     let estudiantesTemp = [];
     let vehiculosTemp = [];
-    let conexionActiva = true;
-    let datosLocales = [];
-
-    // Cargar datos guardados localmente
-    function cargarDatosLocales() {
-        const guardado = localStorage.getItem("autoregistro_backup");
-        if (guardado) {
-            try {
-                datosLocales = JSON.parse(guardado);
-                owners = datosLocales;
-                console.log("📦 Datos cargados del almacenamiento local:", owners.length);
-                renderizarResultados(owners, "");
-                actualizarEstadisticas();
-            } catch(e) {
-                console.error("Error al cargar datos locales:", e);
-            }
-        }
-    }
-
-    function guardarDatosLocales() {
-        localStorage.setItem("autoregistro_backup", JSON.stringify(owners));
-        console.log("💾 Datos guardados localmente");
-    }
 
     // Elementos DOM
     const listaContainer = document.getElementById("listaContainer");
     const buscarInput = document.getElementById("buscarInput");
     const globalStatsSpan = document.getElementById("globalStats");
-    const authStatusDiv = document.getElementById("authStatus");
-    const quotaWarning = document.getElementById("quotaWarning");
+    const syncStatus = document.getElementById("syncStatus");
     const editId = document.getElementById("editId");
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
@@ -603,11 +556,16 @@
     const correo = document.getElementById("correo");
     const guardarBtn = document.getElementById("guardarBtn");
     const cancelarBtn = document.getElementById("cancelarBtn");
+    const exportarBtn = document.getElementById("exportarBtn");
     const loadingToast = document.getElementById("loadingToast");
     const listaEstudiantes = document.getElementById("listaEstudiantes");
     const listaVehiculos = document.getElementById("listaVehiculos");
     const agregarEstudianteBtn = document.getElementById("agregarEstudianteBtn");
     const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
+
+    function showLoading(show) {
+        loadingToast.style.display = show ? "flex" : "none";
+    }
 
     function formatearPlaca(texto) {
         if (!texto) return "";
@@ -616,6 +574,169 @@
             return limpio.substring(0, 3) + "-" + limpio.substring(3, 8);
         }
         return limpio;
+    }
+
+    function encodeCSV(str) {
+        if (!str) return "";
+        if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+            return '"' + str.replace(/"/g, '""') + '"';
+        }
+        return str;
+    }
+
+    function exportarACSV() {
+        if (owners.length === 0) {
+            mostrarMensaje("No hay datos para exportar", true);
+            return;
+        }
+        
+        let csvRows = [];
+        csvRows.push(["id", "nombre", "telefono", "identificacion", "correo", "estudiantes", "vehiculos", "fecha_actualizacion"]);
+        
+        owners.forEach(owner => {
+            const estudiantesStr = (owner.estudiantes || []).map(e => `${e.nombre}|${e.grado || ""}`).join(";");
+            const vehiculosStr = (owner.vehiculos || []).map(v => `${v.placa}|${v.color || ""}`).join(";");
+            csvRows.push([
+                owner.id,
+                encodeCSV(owner.nombre),
+                encodeCSV(owner.telefono || ""),
+                encodeCSV(owner.identificacion || ""),
+                encodeCSV(owner.correo || ""),
+                encodeCSV(estudiantesStr),
+                encodeCSV(vehiculosStr),
+                owner.actualizado || new Date().toISOString()
+            ]);
+        });
+        
+        const csvContent = csvRows.map(row => row.join(",")).join("\n");
+        const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.setAttribute("download", `autoregistro_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        mostrarMensaje("✅ Exportado correctamente. Puedes importar este archivo a Google Sheets (Archivo → Importar)");
+    }
+
+    function importarDesdeCSV(csvText) {
+        const lines = csvText.split("\n");
+        if (lines.length < 2) return [];
+        
+        const data = [];
+        
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            
+            const values = [];
+            let inQuote = false;
+            let currentValue = "";
+            
+            for (let j = 0; j < lines[i].length; j++) {
+                const char = lines[i][j];
+                if (char === '"') {
+                    inQuote = !inQuote;
+                } else if (char === "," && !inQuote) {
+                    values.push(currentValue);
+                    currentValue = "";
+                } else {
+                    currentValue += char;
+                }
+            }
+            values.push(currentValue);
+            
+            if (values.length >= 3) {
+                const estudiantesRaw = values[5] || "";
+                const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
+                    const [nombre, grado] = s.split("|");
+                    return { nombre: nombre || "", grado: grado || "" };
+                });
+                
+                const vehiculosRaw = values[6] || "";
+                const vehiculos = vehiculosRaw.split(";").filter(s => s.trim()).map(s => {
+                    const [placa, color] = s.split("|");
+                    return { placa: placa || "", color: color || "" };
+                });
+                
+                data.push({
+                    id: values[0] || Date.now().toString(),
+                    nombre: values[1] || "",
+                    telefono: values[2] || "",
+                    identificacion: values[3] || "",
+                    correo: values[4] || "",
+                    estudiantes: estudiantes,
+                    vehiculos: vehiculos,
+                    actualizado: values[7] || new Date().toISOString()
+                });
+            }
+        }
+        
+        return data;
+    }
+
+    async function cargarDesdeSheets() {
+        if (!CSV_URL || CSV_URL === "") {
+            syncStatus.className = "sync-status error";
+            syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error: No se ha configurado la URL de Google Sheets`;
+            cargarDatosLocales();
+            return;
+        }
+        
+        showLoading(true);
+        syncStatus.className = "sync-status sync";
+        syncStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Cargando datos desde Google Sheets...`;
+        
+        try {
+            const response = await fetch(CSV_URL);
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
+            const csvText = await response.text();
+            const datos = importarDesdeCSV(csvText);
+            
+            if (datos.length > 0) {
+                owners = datos;
+                guardarDatosLocales();
+                syncStatus.className = "sync-status success";
+                syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ✅ Sincronizado: ${owners.length} registros cargados`;
+                mostrarMensaje(`${owners.length} registros cargados desde Google Sheets`);
+            } else {
+                syncStatus.className = "sync-status error";
+                syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se encontraron datos. Verifica los encabezados de tu hoja.`;
+                cargarDatosLocales();
+            }
+        } catch (error) {
+            console.error("Error cargando desde Sheets:", error);
+            syncStatus.className = "sync-status error";
+            syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error al conectar. Usando datos locales.`;
+            cargarDatosLocales();
+        } finally {
+            showLoading(false);
+            actualizarEstadisticas();
+            aplicarBusqueda();
+        }
+    }
+
+    function cargarDatosLocales() {
+        const guardado = localStorage.getItem("autoregistro_sheets_backup");
+        if (guardado) {
+            try {
+                owners = JSON.parse(guardado);
+                console.log("📦 Datos locales cargados:", owners.length);
+            } catch(e) {
+                owners = [];
+            }
+        } else {
+            owners = [];
+        }
+        actualizarEstadisticas();
+        aplicarBusqueda();
+    }
+
+    function guardarDatosLocales() {
+        localStorage.setItem("autoregistro_sheets_backup", JSON.stringify(owners));
+        console.log("💾 Datos guardados localmente:", owners.length);
     }
 
     function mostrarMensaje(mensaje, esError = false) {
@@ -628,7 +749,7 @@
         `;
         toast.innerHTML = `<i class="fas ${esError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${mensaje}`;
         document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 3000);
+        setTimeout(() => toast.remove(), 4000);
     }
 
     function renderizarListaEstudiantes() {
@@ -641,8 +762,8 @@
             html += `<div class="list-item">
                         <div><strong>${escapeHtml(est.nombre)}</strong> ${est.grado ? `<span style="color:#8b5cf6;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
                         <div style="display:flex; gap:8px;">
-                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#3b82f6;"></i>
-                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#ef4444;"></i>
+                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#3b82f6; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#ef4444; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
@@ -651,7 +772,7 @@
         document.querySelectorAll('.edit-estudiante').forEach(icon => {
             icon.onclick = () => {
                 const idx = parseInt(icon.dataset.index);
-                const nuevoNombre = prompt("Nombre:", estudiantesTemp[idx].nombre);
+                const nuevoNombre = prompt("Nombre del estudiante:", estudiantesTemp[idx].nombre);
                 if (nuevoNombre?.trim()) {
                     estudiantesTemp[idx].nombre = nuevoNombre.trim();
                     estudiantesTemp[idx].grado = prompt("Grado:", estudiantesTemp[idx].grado || "") || "";
@@ -661,7 +782,7 @@
         });
         document.querySelectorAll('.delete-estudiante').forEach(icon => {
             icon.onclick = () => {
-                if (confirm("¿Eliminar?")) {
+                if (confirm("¿Eliminar este estudiante?")) {
                     estudiantesTemp.splice(parseInt(icon.dataset.index), 1);
                     renderizarListaEstudiantes();
                 }
@@ -679,8 +800,8 @@
             html += `<div class="list-item">
                         <div><strong>${escapeHtml(veh.placa)}</strong> ${veh.color ? `<span style="color:#64748b;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
                         <div style="display:flex; gap:8px;">
-                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#3b82f6;"></i>
-                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#ef4444;"></i>
+                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#3b82f6; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#ef4444; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
@@ -691,7 +812,12 @@
                 const idx = parseInt(icon.dataset.index);
                 const nuevaPlaca = prompt("Placa:", vehiculosTemp[idx].placa);
                 if (nuevaPlaca?.trim()) {
-                    vehiculosTemp[idx].placa = formatearPlaca(nuevaPlaca.trim());
+                    const nuevaPlacaForm = formatearPlaca(nuevaPlaca.trim());
+                    if (vehiculosTemp.some((v, i) => i !== idx && v.placa === nuevaPlacaForm)) {
+                        mostrarMensaje("Placa duplicada", true);
+                        return;
+                    }
+                    vehiculosTemp[idx].placa = nuevaPlacaForm;
                     vehiculosTemp[idx].color = prompt("Color:", vehiculosTemp[idx].color || "") || "";
                     renderizarListaVehiculos();
                 }
@@ -699,7 +825,7 @@
         });
         document.querySelectorAll('.delete-vehiculo').forEach(icon => {
             icon.onclick = () => {
-                if (confirm("¿Eliminar vehículo?")) {
+                if (confirm("¿Eliminar este vehículo?")) {
                     vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
                     renderizarListaVehiculos();
                 }
@@ -723,7 +849,7 @@
         if (placa?.trim()) {
             const placaForm = formatearPlaca(placa.trim());
             if (vehiculosTemp.some(v => v.placa === placaForm)) {
-                mostrarMensaje("Placa ya agregada", true);
+                mostrarMensaje("Esta placa ya está agregada", true);
                 return;
             }
             vehiculosTemp.push({ 
@@ -749,10 +875,78 @@
         renderizarListaVehiculos();
     }
 
-    function actualizarEstadisticas() {
-        const totalOwners = owners.length;
-        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0);
-        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> ${totalOwners} dueños | 🚗 ${totalVehiculos} vehículos`;
+    function guardarOwner() {
+        const nombreValue = nombre.value.trim();
+        if (!nombreValue) { mostrarMensaje("El nombre es obligatorio", true); return; }
+        if (vehiculosTemp.length === 0) { mostrarMensaje("Agregue al menos un vehículo", true); return; }
+        
+        const idActual = editId.value;
+        const nuevoOwner = {
+            id: idActual || Date.now().toString(),
+            nombre: nombreValue,
+            telefono: telefono.value.trim() || "",
+            identificacion: identificacion.value.trim() || "",
+            correo: correo.value.trim() || "",
+            estudiantes: estudiantesTemp,
+            vehiculos: vehiculosTemp,
+            actualizado: new Date().toISOString()
+        };
+        
+        if (idActual) {
+            const index = owners.findIndex(o => o.id === idActual);
+            if (index !== -1) {
+                owners[index] = nuevoOwner;
+                mostrarMensaje("Dueño actualizado correctamente");
+            }
+        } else {
+            owners.push(nuevoOwner);
+            mostrarMensaje("Dueño guardado correctamente");
+        }
+        
+        guardarDatosLocales();
+        actualizarEstadisticas();
+        limpiarFormulario();
+        aplicarBusqueda();
+        
+        mostrarMensaje("💡 Recuerda: Usa el botón 'Exportar' para guardar los cambios en Google Sheets", false);
+    }
+
+    function eliminarOwner(id, nombreOwner) {
+        if (confirm(`¿Eliminar a "${nombreOwner}"?`)) {
+            owners = owners.filter(o => o.id !== id);
+            guardarDatosLocales();
+            actualizarEstadisticas();
+            aplicarBusqueda();
+            mostrarMensaje("Dueño eliminado correctamente");
+        }
+    }
+
+    function editarOwner(owner) {
+        editId.value = owner.id;
+        nombre.value = owner.nombre || "";
+        telefono.value = owner.telefono || "";
+        identificacion.value = owner.identificacion || "";
+        correo.value = owner.correo || "";
+        estudiantesTemp = owner.estudiantes ? [...owner.estudiantes] : [];
+        vehiculosTemp = owner.vehiculos ? [...owner.vehiculos] : [];
+        renderizarListaEstudiantes();
+        renderizarListaVehiculos();
+        document.querySelector('.tab-btn[data-tab="registrar"]').click();
+    }
+
+    function aplicarBusqueda() {
+        const termino = buscarInput.value.trim().toLowerCase();
+        let filtrados = [...owners];
+        if (termino) {
+            filtrados = owners.filter(owner => 
+                owner.nombre?.toLowerCase().includes(termino) ||
+                owner.telefono?.toLowerCase().includes(termino) ||
+                owner.identificacion?.toLowerCase().includes(termino) ||
+                owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
+                owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
+            );
+        }
+        renderizarResultados(filtrados, termino);
     }
 
     function renderizarResultados(filtrados, termino) {
@@ -810,10 +1004,10 @@
                     ` : ''}
                 </div>
                 <div class="card-actions">
-                    <button class="action-button edit" onclick="window.editarOwnerLocal(${JSON.stringify(owner.id).replace(/"/g, '&quot;')}, ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
+                    <button class="action-button edit" onclick="window.editarOwnerDesdeGlobal('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
                         <i class="fas fa-edit"></i> Editar
                     </button>
-                    <button class="action-button delete" onclick="window.eliminarOwnerLocal('${owner.id}', '${escapeHtml(owner.nombre)}')">
+                    <button class="action-button delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')">
                         <i class="fas fa-trash"></i> Eliminar
                     </button>
                 </div>
@@ -822,153 +1016,24 @@
         listaContainer.innerHTML = html;
     }
 
+    window.editarOwnerDesdeGlobal = function(id, owner) {
+        editarOwner(owner);
+    };
+    
+    window.eliminarOwnerDesdeGlobal = function(id, nombre) {
+        eliminarOwner(id, nombre);
+    };
+
     function resaltarTexto(texto, busqueda) {
         if (!busqueda || !texto) return escapeHtml(texto);
         const regex = new RegExp(`(${busqueda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
         return escapeHtml(texto).replace(regex, '<span class="highlight">$1</span>');
     }
 
-    window.editarOwnerLocal = function(id, owner) {
-        editId.value = id;
-        nombre.value = owner.nombre || "";
-        telefono.value = owner.telefono || "";
-        identificacion.value = owner.identificacion || "";
-        correo.value = owner.correo || "";
-        estudiantesTemp = owner.estudiantes ? [...owner.estudiantes] : [];
-        vehiculosTemp = owner.vehiculos ? [...owner.vehiculos] : [];
-        renderizarListaEstudiantes();
-        renderizarListaVehiculos();
-        document.querySelector('.tab-btn[data-tab="registrar"]').click();
-    };
-
-    window.eliminarOwnerLocal = function(id, nombreOwner) {
-        if (confirm(`¿Eliminar a "${nombreOwner}"?`)) {
-            owners = owners.filter(o => o.id !== id);
-            guardarDatosLocales();
-            actualizarEstadisticas();
-            aplicarBusqueda();
-            mostrarMensaje("Dueño eliminado correctamente");
-        }
-    };
-
-    function guardarOwnerLocal() {
-        const nombreValue = nombre.value.trim();
-        if (!nombreValue) { mostrarMensaje("El nombre es obligatorio", true); return; }
-        if (vehiculosTemp.length === 0) { mostrarMensaje("Agregue al menos un vehículo", true); return; }
-        
-        const idActual = editId.value;
-        const nuevoOwner = {
-            id: idActual || Date.now().toString(),
-            nombre: nombreValue,
-            telefono: telefono.value.trim() || "",
-            identificacion: identificacion.value.trim() || "",
-            correo: correo.value.trim() || "",
-            estudiantes: estudiantesTemp,
-            vehiculos: vehiculosTemp,
-            actualizado: new Date().toISOString()
-        };
-        
-        if (idActual) {
-            const index = owners.findIndex(o => o.id === idActual);
-            if (index !== -1) {
-                owners[index] = nuevoOwner;
-                mostrarMensaje("Dueño actualizado correctamente");
-            }
-        } else {
-            owners.push(nuevoOwner);
-            mostrarMensaje("Dueño guardado correctamente");
-        }
-        
-        guardarDatosLocales();
-        actualizarEstadisticas();
-        limpiarFormulario();
-        aplicarBusqueda();
-        
-        // Intentar sincronizar con Firebase si está disponible
-        if (conexionActiva) {
-            sincronizarConFirebase();
-        }
-    }
-
-    async function sincronizarConFirebase() {
-        if (!autenticado) return;
-        try {
-            for (const owner of owners) {
-                const ownerData = {
-                    nombre: owner.nombre,
-                    telefono: owner.telefono,
-                    identificacion: owner.identificacion,
-                    correo: owner.correo,
-                    estudiantes: owner.estudiantes,
-                    vehiculos: owner.vehiculos,
-                    actualizado: owner.actualizado
-                };
-                
-                if (owner.id && owner.id.length > 10) {
-                    await updateDoc(doc(db, "vehiculos", owner.id), ownerData);
-                } else {
-                    const docRef = await addDoc(collection(db, "vehiculos"), ownerData);
-                    owner.id = docRef.id;
-                }
-            }
-            guardarDatosLocales();
-            console.log("✅ Sincronización completada");
-        } catch (error) {
-            console.error("Error de sincronización:", error);
-            if (error.code === 'resource-exhausted') {
-                conexionActiva = false;
-                quotaWarning.style.display = "block";
-                authStatusDiv.className = "auth-status error";
-                authStatusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Cuota excedida. Modo offline activado.`;
-            }
-        }
-    }
-
-    function aplicarBusqueda() {
-        const termino = buscarInput.value.trim().toLowerCase();
-        let filtrados = [...owners];
-        if (termino) {
-            filtrados = owners.filter(owner => 
-                owner.nombre?.toLowerCase().includes(termino) ||
-                owner.telefono?.toLowerCase().includes(termino) ||
-                owner.identificacion?.toLowerCase().includes(termino) ||
-                owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino)) ||
-                owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
-            );
-        }
-        renderizarResultados(filtrados, termino);
-    }
-
-    function init() {
-        cargarDatosLocales();
-        aplicarBusqueda();
-        
-        // Intentar conectar con Firebase
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                autenticado = true;
-                authStatusDiv.className = "auth-status success";
-                authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> Conectado · Modo online`;
-                sincronizarConFirebase();
-            } else {
-                signInAnonymously(auth)
-                    .then(() => {
-                        autenticado = true;
-                        authStatusDiv.className = "auth-status success";
-                        authStatusDiv.innerHTML = `<i class="fas fa-check-circle"></i> Conectado · Modo online`;
-                        sincronizarConFirebase();
-                    })
-                    .catch((error) => {
-                        if (error.code === 'auth/operation-not-allowed') {
-                            authStatusDiv.innerHTML = `<i class="fas fa-info-circle"></i> Modo offline activo - Firebase no configurado`;
-                        } else {
-                            authStatusDiv.innerHTML = `<i class="fas fa-exclamation-triangle"></i> ${error.message.substring(0, 80)}`;
-                        }
-                        conexionActiva = false;
-                        quotaWarning.style.display = "block";
-                    });
-            }
-        });
+    function actualizarEstadisticas() {
+        const totalOwners = owners.length;
+        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0);
+        globalStatsSpan.innerHTML = `<i class="fas fa-users"></i> ${totalOwners} dueños | 🚗 ${totalVehiculos} vehículos`;
     }
 
     function escapeHtml(str) {
@@ -976,6 +1041,7 @@
         return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
+    // Configurar pestañas
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
     tabBtns.forEach(btn => {
@@ -988,11 +1054,14 @@
         });
     });
 
-    guardarBtn.onclick = guardarOwnerLocal;
+    // Event listeners
+    guardarBtn.onclick = guardarOwner;
     cancelarBtn.onclick = limpiarFormulario;
     buscarInput.oninput = () => aplicarBusqueda();
+    exportarBtn.onclick = exportarACSV;
 
-    init();
+    // Inicializar
+    cargarDesdeSheets();
 </script>
 </body>
 </html>
