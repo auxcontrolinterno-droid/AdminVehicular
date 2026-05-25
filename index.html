@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="theme-color" content="#0f172a">
-    <title>AutoRegistro - Sincronizado con Google Sheets</title>
+    <meta name="theme-color" content="#f5f5f0">
+    <title>AutoRegistro - Gestión Vehicular</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -15,111 +15,124 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            background: #f5f5f0;
             min-height: 100vh;
-            padding: 20px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            padding: 24px 20px;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         .container {
-            max-width: 700px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
+        /* Header suave */
         .header {
-            background: rgba(255,255,255,0.03);
+            background: #ffffff;
             border-radius: 28px;
-            padding: 20px 24px;
-            margin-bottom: 20px;
+            padding: 24px 28px;
+            margin-bottom: 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
-            border: 1px solid rgba(255,255,255,0.1);
+            gap: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #e8e8e5;
         }
 
         .header h1 {
-            font-size: 1.4rem;
-            color: white;
+            font-size: 1.6rem;
+            color: #2c3e50;
             display: flex;
             align-items: center;
             gap: 12px;
+            font-weight: 600;
         }
 
         .header h1 i {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            padding: 10px;
-            border-radius: 16px;
-            color: white;
+            background: #e8e8e5;
+            padding: 12px;
+            border-radius: 20px;
+            color: #5a6e7c;
+            font-size: 1.2rem;
         }
 
         .stats {
-            background: rgba(59,130,246,0.2);
-            padding: 8px 16px;
+            background: #f0f0eb;
+            padding: 10px 20px;
             border-radius: 40px;
-            color: #60a5fa;
-            font-weight: 600;
-            font-size: 0.8rem;
+            color: #5a6e7c;
+            font-weight: 500;
+            font-size: 0.9rem;
         }
 
+        /* Estado de sincronización */
         .sync-status {
-            background: rgba(255,255,255,0.05);
-            padding: 10px 16px;
-            border-radius: 20px;
-            margin-bottom: 20px;
+            background: #ffffff;
+            padding: 14px 20px;
+            border-radius: 24px;
+            margin-bottom: 24px;
             text-align: center;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid #e8e8e5;
+            color: #5a6e7c;
         }
 
         .sync-status.success {
-            background: rgba(34,197,94,0.1);
-            color: #4ade80;
+            background: #f0f7f0;
+            color: #4a7c59;
+            border-color: #d4e4d4;
         }
 
         .sync-status.error {
-            background: rgba(239,68,68,0.1);
-            color: #f87171;
+            background: #fef5f5;
+            color: #c97a7a;
+            border-color: #f0dfdf;
         }
 
         .sync-status.loading {
-            background: rgba(59,130,246,0.1);
-            color: #60a5fa;
+            background: #f0f4f8;
+            color: #5a7c9e;
+            border-color: #dce4ec;
         }
 
+        /* Tabs */
         .tabs {
             display: flex;
             gap: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .tab-btn {
             flex: 1;
-            background: rgba(255,255,255,0.08);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.15);
-            padding: 14px;
-            border-radius: 20px;
+            background: #ffffff;
+            border: 1px solid #e8e8e5;
+            padding: 16px;
+            border-radius: 24px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
             cursor: pointer;
-            color: #94a3b8;
+            color: #8a9aa8;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: all 0.3s;
+            transition: all 0.2s;
+        }
+
+        .tab-btn i {
+            font-size: 1.1rem;
         }
 
         .tab-btn.active {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background: #2c3e50;
             color: white;
-            border-color: transparent;
+            border-color: #2c3e50;
         }
 
         .tab-panel {
@@ -128,342 +141,420 @@
 
         .tab-panel.active {
             display: block;
-            animation: fadeIn 0.4s ease;
+            animation: fadeIn 0.3s ease;
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+            from { opacity: 0; transform: translateY(8px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Tarjetas principales */
         .card {
-            background: rgba(255,255,255,0.98);
-            border-radius: 28px;
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            background: #ffffff;
+            border-radius: 32px;
+            padding: 28px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            border: 1px solid #e8e8e5;
         }
 
         .card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #1e293b;
-            border-left: 4px solid #3b82f6;
-            padding-left: 14px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: #2c3e50;
             display: flex;
             align-items: center;
             gap: 10px;
+            border-left: 4px solid #b0c4d4;
+            padding-left: 16px;
         }
 
+        /* Campos de formulario más grandes */
         .field-group {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         label {
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #7a8a98;
             display: block;
-            margin-bottom: 6px;
-            text-transform: uppercase;
+            margin-bottom: 8px;
         }
 
         input {
             width: 100%;
-            padding: 14px 16px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 16px;
-            font-size: 0.95rem;
-            background: #ffffff;
+            padding: 16px 18px;
+            border: 1.5px solid #e8e8e5;
+            border-radius: 20px;
+            font-size: 1rem;
+            background: #fafafa;
             transition: all 0.2s;
         }
 
         input:focus {
             outline: none;
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+            border-color: #b0c4d4;
+            background: white;
         }
 
+        /* Botones grandes */
         .btn {
-            padding: 14px 20px;
-            border-radius: 16px;
+            padding: 16px 22px;
+            border-radius: 24px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 1rem;
             border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
             width: 100%;
             transition: all 0.2s;
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+            background: #2c3e50;
             color: white;
         }
 
         .btn-primary:active {
             transform: scale(0.98);
+            background: #1e2e3c;
         }
 
         .btn-outline {
             background: transparent;
-            border: 1.5px solid #cbd5e1;
-            color: #64748b;
+            border: 1.5px solid #d0d8e0;
+            color: #7a8a98;
         }
 
         .button-group {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 14px;
+            margin-top: 24px;
         }
 
+        /* Buscador */
         .search-wrapper {
             position: relative;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .search-wrapper i {
             position: absolute;
-            left: 16px;
+            left: 18px;
             top: 50%;
             transform: translateY(-50%);
-            color: #94a3b8;
+            color: #a0b0bc;
+            font-size: 1rem;
         }
 
         .search-wrapper input {
-            padding-left: 45px;
-            background: #f8fafc;
-            border-radius: 20px;
+            padding-left: 50px;
+            background: #fafafa;
+            border-radius: 28px;
+            font-size: 1rem;
         }
 
+        /* Tarjetas de resultados - MÁS GRANDES */
         .result-card {
-            background: white;
-            border-radius: 20px;
-            margin-bottom: 16px;
+            background: #ffffff;
+            border-radius: 28px;
+            margin-bottom: 20px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #f1f5f9;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            border: 1px solid #e8e8e5;
+            transition: all 0.2s;
         }
 
         .card-header {
-            background: #f8fafc;
-            padding: 16px 20px;
-            border-bottom: 1px solid #eef2ff;
+            background: #fafaf8;
+            padding: 20px 24px;
+            border-bottom: 1px solid #f0f0ea;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
+        }
+
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .owner-avatar {
-            width: 45px;
-            height: 45px;
-            background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-            border-radius: 22px;
+            width: 60px;
+            height: 60px;
+            background: #e8e8e5;
+            border-radius: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-weight: 700;
-            font-size: 1.1rem;
+            color: #5a6e7c;
+            font-weight: 600;
+            font-size: 1.5rem;
         }
 
         .owner-title h3 {
-            font-size: 1rem;
-            font-weight: 700;
-            color: #0f172a;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .stats-badges {
+            display: flex;
+            gap: 12px;
         }
 
         .stat-badge {
-            background: #f1f5f9;
-            padding: 4px 10px;
-            border-radius: 30px;
-            font-size: 0.7rem;
+            background: #f0f0eb;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #5a6e7c;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
         }
 
         .card-body {
-            padding: 16px;
+            padding: 24px;
         }
 
+        /* Grid de información */
         .info-grid {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 16px;
+            margin-bottom: 20px;
         }
 
         .info-item {
-            background: #f8fafc;
-            border-radius: 14px;
-            padding: 10px 12px;
+            background: #fafaf8;
+            border-radius: 20px;
+            padding: 16px 18px;
         }
 
         .info-label {
-            font-size: 0.65rem;
-            color: #64748b;
-            margin-bottom: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9aacba;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .info-value {
-            font-size: 0.9rem;
+            font-size: 1.05rem;
             font-weight: 500;
-            color: #0f172a;
+            color: #2c3e50;
         }
 
+        /* Sección estudiantes/vehículos */
         .section-card {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 12px;
-            margin-top: 12px;
+            background: #fafaf8;
+            border-radius: 20px;
+            padding: 16px;
+            margin-top: 16px;
         }
 
         .section-title {
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #475569;
-            margin-bottom: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #9aacba;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .item-row {
             background: white;
-            border-radius: 12px;
-            padding: 10px;
-            margin-bottom: 8px;
-            border-left: 3px solid #3b82f6;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border-left: 3px solid #d0e0e8;
         }
 
         .item-placa {
             font-family: monospace;
-            font-weight: 700;
-            color: #3b82f6;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #5a7c9e;
+            background: #ecf3f8;
+            padding: 6px 14px;
+            border-radius: 30px;
         }
 
+        /* Botones de acción */
         .card-actions {
-            padding: 12px 16px;
-            background: #f8fafc;
-            border-top: 1px solid #eef2ff;
+            padding: 16px 24px;
+            background: #fafaf8;
+            border-top: 1px solid #f0f0ea;
             display: flex;
-            gap: 12px;
+            gap: 16px;
         }
 
         .action-button {
             flex: 1;
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-            font-weight: 600;
+            padding: 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
             border: none;
             transition: all 0.2s;
         }
 
         .action-button.edit {
-            background: #eff6ff;
-            color: #3b82f6;
+            background: #ecf3f8;
+            color: #5a7c9e;
         }
 
         .action-button.delete {
-            background: #fef2f2;
-            color: #ef4444;
+            background: #fef0f0;
+            color: #c97a7a;
         }
 
+        .action-button:active {
+            transform: scale(0.97);
+        }
+
+        /* Listas dinámicas */
         .dynamic-list {
-            background: #f8fafc;
-            border-radius: 18px;
-            padding: 12px;
-            margin: 10px 0;
+            background: #fafaf8;
+            border-radius: 20px;
+            padding: 16px;
+            margin: 12px 0;
         }
 
         .list-item {
             background: white;
-            border-radius: 14px;
-            padding: 12px;
-            margin-bottom: 10px;
+            border-radius: 18px;
+            padding: 14px;
+            margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-left: 3px solid #3b82f6;
+            border-left: 3px solid #d0e0e8;
         }
 
         .btn-agregar {
             background: transparent;
-            border: 1.5px dashed #3b82f6;
-            border-radius: 14px;
-            padding: 10px;
+            border: 1.5px dashed #c0d0dc;
+            border-radius: 20px;
+            padding: 12px;
             width: 100%;
             text-align: center;
-            color: #3b82f6;
-            font-weight: 600;
+            color: #8aa0b0;
+            font-weight: 500;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .empty-result {
             text-align: center;
-            padding: 40px 20px;
-            color: #94a3b8;
+            padding: 60px 20px;
+            color: #aabbc8;
+        }
+
+        .empty-result i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            opacity: 0.5;
         }
 
         .highlight {
-            background-color: #fef9c3;
-            padding: 2px 5px;
-            border-radius: 6px;
+            background: #f0ede0;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .refresh-btn {
+            background: #f0f0eb;
+            margin-top: 16px;
+            border: none;
         }
 
         #loadingToast {
             position: fixed;
-            bottom: 20px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            background: #1e293b;
+            background: #2c3e50;
             color: white;
-            padding: 12px 24px;
-            border-radius: 40px;
-            font-size: 0.8rem;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: 0.85rem;
             display: none;
             z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         footer {
             text-align: center;
-            font-size: 0.65rem;
-            color: rgba(255,255,255,0.6);
-            padding: 20px;
+            font-size: 0.7rem;
+            color: #aabbc8;
+            padding: 24px;
         }
 
         #listaContainer {
-            max-height: 55vh;
+            max-height: 60vh;
             overflow-y: auto;
-            padding-right: 4px;
+            padding-right: 6px;
         }
 
-        .refresh-btn {
-            background: rgba(59,130,246,0.2);
+        #listaContainer::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        #listaContainer::-webkit-scrollbar-track {
+            background: #e8e8e5;
+            border-radius: 10px;
+        }
+
+        #listaContainer::-webkit-scrollbar-thumb {
+            background: #c0d0dc;
+            border-radius: 10px;
+        }
+
+        .refresh-sync {
+            background: #f0f0eb;
             margin-top: 10px;
-            border: 1px solid rgba(59,130,246,0.3);
+            border: none;
         }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1><i class="fas fa-table"></i> AutoRegistro</h1>
+        <h1><i class="fas fa-car"></i> AutoRegistro</h1>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
@@ -473,7 +564,7 @@
 
     <div class="tabs">
         <button class="tab-btn" data-tab="registrar">
-            <i class="fas fa-user-plus"></i> Registrar
+            <i class="fas fa-plus-circle"></i> Registrar
         </button>
         <button class="tab-btn active" data-tab="buscar">
             <i class="fas fa-search"></i> Buscar
@@ -505,9 +596,9 @@
                 <input type="email" id="correo" placeholder="correo@ejemplo.com">
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px; margin: 15px 0 5px 0;">
-                <i class="fas fa-child" style="color: #3b82f6;"></i>
-                <span style="font-weight: 600; color: #475569;">Estudiantes</span>
+            <div style="display: flex; align-items: center; gap: 8px; margin: 20px 0 8px 0;">
+                <i class="fas fa-child" style="color: #8aa0b0;"></i>
+                <span style="font-weight: 500; color: #5a6e7c;">Estudiantes</span>
             </div>
             <div class="dynamic-list">
                 <div id="listaEstudiantes"></div>
@@ -516,9 +607,9 @@
                 </button>
             </div>
 
-            <div style="display: flex; align-items: center; gap: 8px; margin: 15px 0 5px 0;">
-                <i class="fas fa-car" style="color: #3b82f6;"></i>
-                <span style="font-weight: 600; color: #475569;">Vehículos</span>
+            <div style="display: flex; align-items: center; gap: 8px; margin: 20px 0 8px 0;">
+                <i class="fas fa-car" style="color: #8aa0b0;"></i>
+                <span style="font-weight: 500; color: #5a6e7c;">Vehículos</span>
             </div>
             <div class="dynamic-list">
                 <div id="listaVehiculos"></div>
@@ -546,25 +637,25 @@
             <div id="listaContainer">
                 <div class="empty-result">
                     <i class="fas fa-info-circle"></i>
-                    <div>Cargando datos desde Google Sheets...</div>
+                    <div>Cargando datos...</div>
                 </div>
             </div>
             
-            <button id="refreshBtn" class="btn refresh-btn">
+            <button id="refreshBtn" class="btn refresh-sync">
                 <i class="fas fa-sync-alt"></i> Sincronizar con Google Sheets
             </button>
         </div>
     </div>
 
     <footer>
-        <i class="fas fa-cloud-download-alt"></i> Datos sincronizados automáticamente desde Google Sheets
+        <i class="fas fa-cloud-download-alt"></i> Datos sincronizados desde Google Sheets
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
 <script>
     // ============================================
-    // ✅ URL DE GOOGLE SHEETS - YA CONFIGURADA
+    // URL DE GOOGLE SHEETS
     // ============================================
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     
@@ -610,9 +701,6 @@
     function parseCSV(csvText) {
         const lines = csvText.split(/\r?\n/);
         if (lines.length < 2) return [];
-        
-        // Obtener encabezados
-        const headers = lines[0].split(",").map(h => h.replace(/^"|"$/g, '').trim());
         
         const data = [];
         for (let i = 1; i < lines.length; i++) {
@@ -678,7 +766,7 @@
             if (datos.length > 0) {
                 owners = datos;
                 syncStatus.className = "sync-status success";
-                syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ✅ ${owners.length} registros cargados desde Google Sheets`;
+                syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ✅ ${owners.length} registros cargados`;
                 mostrarMensaje(`${owners.length} registros cargados correctamente`);
             } else {
                 syncStatus.className = "sync-status error";
@@ -686,7 +774,7 @@
                 owners = [];
             }
         } catch (error) {
-            console.error("Error cargando desde Sheets:", error);
+            console.error("Error:", error);
             syncStatus.className = "sync-status error";
             syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error al conectar: ${error.message}`;
             owners = [];
@@ -697,7 +785,7 @@
         }
     }
 
-    function guardarDatosLocales() {
+    function guardarBackupLocal() {
         localStorage.setItem("autoregistro_backup", JSON.stringify(owners));
     }
 
@@ -718,9 +806,9 @@
         const toast = document.createElement('div');
         toast.style.cssText = `
             position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
-            background: ${esError ? '#ef4444' : '#10b981'}; color: white;
-            padding: 12px 24px; border-radius: 40px; font-size: 0.85rem;
-            z-index: 1000; animation: slideUp 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: ${esError ? '#c97a7a' : '#4a7c59'}; color: white;
+            padding: 14px 28px; border-radius: 50px; font-size: 0.85rem;
+            z-index: 1000; animation: slideUp 0.3s ease; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         `;
         toast.innerHTML = `<i class="fas ${esError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${mensaje}`;
         document.body.appendChild(toast);
@@ -729,16 +817,16 @@
 
     function renderizarListaEstudiantes() {
         if (estudiantesTemp.length === 0) {
-            listaEstudiantes.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:15px;">Sin estudiantes</div>';
+            listaEstudiantes.innerHTML = '<div style="text-align:center; color:#aabbc8; padding:18px;">Sin estudiantes</div>';
             return;
         }
         let html = '';
         estudiantesTemp.forEach((est, index) => {
             html += `<div class="list-item">
-                        <div><strong>${escapeHtml(est.nombre)}</strong> ${est.grado ? `<span style="color:#8b5cf6; font-size:0.7rem;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
-                        <div style="display:flex; gap:8px;">
-                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#3b82f6; cursor:pointer;"></i>
-                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#ef4444; cursor:pointer;"></i>
+                        <div><strong>${escapeHtml(est.nombre)}</strong> ${est.grado ? `<span style="color:#8aa0b0; font-size:0.8rem; margin-left:8px;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
+                        <div style="display:flex; gap:10px;">
+                            <i class="fas fa-edit edit-estudiante" data-index="${index}" style="color:#8aa0b0; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-estudiante" data-index="${index}" style="color:#c97a7a; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
@@ -767,16 +855,16 @@
 
     function renderizarListaVehiculos() {
         if (vehiculosTemp.length === 0) {
-            listaVehiculos.innerHTML = '<div style="text-align:center; color:#94a3b8; padding:15px;">Sin vehículos</div>';
+            listaVehiculos.innerHTML = '<div style="text-align:center; color:#aabbc8; padding:18px;">Sin vehículos</div>';
             return;
         }
         let html = '';
         vehiculosTemp.forEach((veh, index) => {
             html += `<div class="list-item">
-                        <div><strong>${escapeHtml(veh.placa)}</strong> ${veh.color ? `<span style="color:#64748b; font-size:0.7rem;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
-                        <div style="display:flex; gap:8px;">
-                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#3b82f6; cursor:pointer;"></i>
-                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#ef4444; cursor:pointer;"></i>
+                        <div><strong>${escapeHtml(veh.placa)}</strong> ${veh.color ? `<span style="color:#8aa0b0; font-size:0.8rem; margin-left:8px;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
+                        <div style="display:flex; gap:10px;">
+                            <i class="fas fa-edit edit-vehiculo" data-index="${index}" style="color:#8aa0b0; cursor:pointer;"></i>
+                            <i class="fas fa-trash delete-vehiculo" data-index="${index}" style="color:#c97a7a; cursor:pointer;"></i>
                         </div>
                     </div>`;
         });
@@ -878,17 +966,17 @@
             mostrarMensaje("Dueño guardado correctamente");
         }
         
-        guardarDatosLocales();
+        guardarBackupLocal();
         limpiarFormulario();
         actualizarEstadisticas();
         aplicarBusqueda();
-        mostrarMensaje("💡 Recuerda exportar los cambios manualmente a Google Sheets", false);
+        mostrarMensaje("Recuerda: Los cambios son locales. Usa Sincronizar para recargar desde Sheets.", false);
     }
 
     function eliminarOwner(id, nombreOwner) {
         if (confirm(`¿Eliminar a "${nombreOwner}"?`)) {
             owners = owners.filter(o => o.id !== id);
-            guardarDatosLocales();
+            guardarBackupLocal();
             actualizarEstadisticas();
             aplicarBusqueda();
             mostrarMensaje("Dueño eliminado correctamente");
@@ -935,7 +1023,7 @@
             html += `
             <div class="result-card">
                 <div class="card-header">
-                    <div style="display:flex; align-items:center; gap:12px;">
+                    <div class="owner-info">
                         <div class="owner-avatar">${inicial}</div>
                         <div class="owner-title">
                             <h3>${resaltarTexto(owner.nombre, termino)}</h3>
@@ -949,9 +1037,9 @@
                 <div class="card-body">
                     ${(owner.telefono || owner.identificacion || owner.correo) ? `
                     <div class="info-grid">
-                        ${owner.telefono ? `<div class="info-item"><div class="info-label">📞 TELÉFONO</div><div class="info-value">${resaltarTexto(owner.telefono, termino)}</div></div>` : ''}
-                        ${owner.identificacion ? `<div class="info-item"><div class="info-label">🆔 IDENTIFICACIÓN</div><div class="info-value">${resaltarTexto(owner.identificacion, termino)}</div></div>` : ''}
-                        ${owner.correo ? `<div class="info-item"><div class="info-label">✉️ CORREO</div><div class="info-value">${escapeHtml(owner.correo)}</div></div>` : ''}
+                        ${owner.telefono ? `<div class="info-item"><div class="info-label"><i class="fas fa-phone"></i> TELÉFONO</div><div class="info-value">${resaltarTexto(owner.telefono, termino)}</div></div>` : ''}
+                        ${owner.identificacion ? `<div class="info-item"><div class="info-label"><i class="fas fa-id-card"></i> IDENTIFICACIÓN</div><div class="info-value">${resaltarTexto(owner.identificacion, termino)}</div></div>` : ''}
+                        ${owner.correo ? `<div class="info-item"><div class="info-label"><i class="fas fa-envelope"></i> CORREO</div><div class="info-value">${escapeHtml(owner.correo)}</div></div>` : ''}
                     </div>
                     ` : ''}
                     
@@ -960,7 +1048,7 @@
                         <div class="section-title"><i class="fas fa-child"></i> ESTUDIANTES</div>
                         ${owner.estudiantes.map(est => `
                             <div class="item-row">
-                                <div><strong>${resaltarTexto(est.nombre, termino)}</strong> ${est.grado ? `<span style="font-size:0.7rem; color:#8b5cf6;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
+                                <div><strong>${resaltarTexto(est.nombre, termino)}</strong> ${est.grado ? `<span style="font-size:0.8rem; color:#8aa0b0;">📚 ${escapeHtml(est.grado)}</span>` : ''}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -971,7 +1059,7 @@
                         <div class="section-title"><i class="fas fa-car"></i> VEHÍCULOS</div>
                         ${owner.vehiculos.map(veh => `
                             <div class="item-row">
-                                <div><span class="item-placa">${resaltarTexto(veh.placa, termino)}</span> ${veh.color ? `<span style="font-size:0.7rem; color:#64748b;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
+                                <div><span class="item-placa">${resaltarTexto(veh.placa, termino)}</span> ${veh.color ? `<span style="font-size:0.8rem; color:#8aa0b0;">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div>
                             </div>
                         `).join('')}
                     </div>
@@ -1015,7 +1103,7 @@
         return str.replace(/[&<>]/g, (m) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m]));
     }
 
-    // Configurar pestañas
+    // Pestañas
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
     tabBtns.forEach(btn => {
@@ -1028,7 +1116,7 @@
         });
     });
 
-    // Event listeners
+    // Eventos
     guardarBtn.onclick = guardarOwner;
     cancelarBtn.onclick = limpiarFormulario;
     buscarInput.oninput = () => aplicarBusqueda();
