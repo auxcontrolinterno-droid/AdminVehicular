@@ -705,7 +705,6 @@
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     
     let vehicles = [];
-    let filtroActual = "";
     let estudiantesTemp = [];
 
     // Elementos DOM
@@ -783,9 +782,13 @@
                     return { nombre: nombreEst || "", grado: grado || "" };
                 });
                 
+                // Usar la placa como ID único si no hay ID en el CSV
+                const placa = values[1] ? values[1].replace(/^"|"$/g, '') : "";
+                const idUnico = placa + "_" + Date.now();
+                
                 data.push({
-                    id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(),
-                    placa: values[1] ? values[1].replace(/^"|"$/g, '') : "",
+                    id: idUnico,
+                    placa: placa,
                     color: values[2] ? values[2].replace(/^"|"$/g, '') : "",
                     nombre: values[3] ? values[3].replace(/^"|"$/g, '') : "",
                     telefono: values[4] ? values[4].replace(/^"|"$/g, '') : "",
@@ -814,12 +817,15 @@
                 vehicles = datos;
                 syncStatus.className = "sync-status success";
                 syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${vehicles.length} vehículos cargados`;
+                console.log("Vehículos cargados:", vehicles.length);
+                console.log("IDs de vehículos:", vehicles.map(v => v.id));
             } else {
                 syncStatus.className = "sync-status error";
                 syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No hay datos`;
                 vehicles = [];
             }
         } catch (error) {
+            console.error("Error cargando:", error);
             syncStatus.className = "sync-status error";
             syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error: ${error.message}`;
             vehicles = [];
@@ -940,7 +946,7 @@
         }
         
         const nuevoVehiculo = {
-            id: idActual || Date.now().toString(),
+            id: idActual || (placaValue + "_" + Date.now()),
             placa: placaValue,
             color: colorInput.value.trim() || "",
             nombre: nombreInput.value.trim() || "",
@@ -976,8 +982,14 @@
         }
     }
 
-    function eliminarVehiculo(id, placaVehiculo) {
-        if (confirm(`¿Eliminar el vehículo con placa ${placaVehiculo}?`)) {
+    function eliminarVehiculo(id) {
+        const vehiculo = vehicles.find(v => v.id === id);
+        if (!vehiculo) {
+            mostrarMensaje("No se encontró el vehículo", true);
+            return;
+        }
+        
+        if (confirm(`¿Eliminar el vehículo con placa ${vehiculo.placa}?`)) {
             vehicles = vehicles.filter(v => v.id !== id);
             guardarBackupLocal();
             actualizarEstadisticas();
@@ -986,8 +998,13 @@
         }
     }
 
-    // Función de edición - CORREGIDA
-    function editarVehiculo(vehiculo) {
+    function editarVehiculo(id) {
+        const vehiculo = vehicles.find(v => v.id === id);
+        if (!vehiculo) {
+            mostrarMensaje("No se encontró el vehículo para editar", true);
+            return;
+        }
+        
         console.log("Editando vehículo:", vehiculo);
         editId.value = vehiculo.id;
         placaInput.value = vehiculo.placa;
@@ -998,6 +1015,7 @@
         correoInput.value = vehiculo.correo || "";
         estudiantesTemp = vehiculo.estudiantes ? [...vehiculo.estudiantes] : [];
         renderizarListaEstudiantes();
+        
         // Cambiar a la pestaña de registrar
         const registrarTab = document.querySelector('.tab-btn[data-tab="registrar"]');
         if (registrarTab) registrarTab.click();
@@ -1029,13 +1047,10 @@
         filtrados.forEach(vehiculo => {
             const tieneDueño = vehiculo.nombre || vehiculo.telefono || vehiculo.identificacion || vehiculo.correo;
             const tieneEstudiantes = vehiculo.estudiantes && vehiculo.estudiantes.length > 0;
-            
-            // Escapamos correctamente los datos para el onclick
-            const placaEscapada = escapeHtml(vehiculo.placa);
-            const idVehiculo = vehiculo.id;
+            const idEscapado = vehiculo.id.replace(/'/g, "\\'");
             
             html += `
-            <div class="result-card" data-id="${idVehiculo}">
+            <div class="result-card" data-id="${vehiculo.id}">
                 <div class="result-header">
                     <span class="vehicle-placa"><i class="fas fa-car"></i> ${resaltarTexto(vehiculo.placa, termino)}</span>
                     ${vehiculo.color ? `<span class="vehicle-color"><i class="fas fa-palette"></i> ${resaltarTexto(vehiculo.color, termino)}</span>` : ''}
@@ -1071,10 +1086,10 @@
             }
             
             html += `<div class="card-actions">
-                        <button class="action-btn edit" onclick="window.editarVehiculo('${idVehiculo}')">
+                        <button class="action-btn edit" onclick="window.editarVehiculo('${idEscapado}')">
                             <i class="fas fa-edit"></i> Editar
                         </button>
-                        <button class="action-btn delete" onclick="window.eliminarVehiculo('${idVehiculo}', '${placaEscapada}')">
+                        <button class="action-btn delete" onclick="window.eliminarVehiculo('${idEscapado}')">
                             <i class="fas fa-trash"></i> Eliminar
                         </button>
                     </div>
@@ -1085,16 +1100,11 @@
 
     // Funciones globales
     window.editarVehiculo = function(id) {
-        const vehiculo = vehicles.find(v => v.id === id);
-        if (vehiculo) {
-            editarVehiculo(vehiculo);
-        } else {
-            mostrarMensaje("No se encontró el vehículo", true);
-        }
+        editarVehiculo(id);
     };
     
-    window.eliminarVehiculo = function(id, placa) {
-        eliminarVehiculo(id, placa);
+    window.eliminarVehiculo = function(id) {
+        eliminarVehiculo(id);
     };
 
     function resaltarTexto(texto, busqueda) {
