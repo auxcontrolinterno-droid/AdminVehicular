@@ -130,7 +130,6 @@
         label .optional { font-weight: normal; color: #a8bbd0; }
         input { width: 100%; padding: 14px 0; border: none; border-bottom: 2px solid #e0e8f0; font-size: 1rem; background: transparent; transition: all 0.2s; color: #1a202c; }
         input:focus { outline: none; border-bottom-color: #1a5f7a; }
-        .plate-input { font-family: monospace; font-weight: 600; font-size: 1rem; letter-spacing: 1px; }
 
         /* Lista de vehículos en el dueño */
         .vehicles-list {
@@ -455,14 +454,19 @@
     </div>
 
     <footer>
-        Datos sincronizados con Google Sheets · Un dueño puede tener múltiples vehículos
+        Datos sincronizados con Google Sheets · Columnas: id, nombre, telefono, identificacion, correo, estudiantes, vehiculos, fecha
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
 <script>
+    // ============================================
+    // URL DE GOOGLE SHEETS
+    // ============================================
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     
+    // ============================================
+
     let owners = [];
     let filtroActual = "";
     let vehiculosTemp = [];
@@ -617,39 +621,72 @@
 
     agregarEstudianteBtn.onclick = agregarEstudiante;
 
+    // Parseo correcto según la estructura de tu Google Sheets:
+    // Columnas: id, nombre, telefono, identificacion, correo, estudiantes, vehiculos, fecha_actualizacion
     function parseCSV(csvText) {
         const lines = csvText.split(/\r?\n/);
         if (lines.length < 2) return [];
+        
         const data = [];
         for (let i = 1; i < lines.length; i++) {
             if (!lines[i].trim()) continue;
+            
             const values = [];
-            let inQuote = false, currentValue = "";
+            let inQuote = false;
+            let currentValue = "";
+            
             for (let j = 0; j < lines[i].length; j++) {
                 const char = lines[i][j];
-                if (char === '"') inQuote = !inQuote;
-                else if (char === "," && !inQuote) { values.push(currentValue); currentValue = ""; }
-                else currentValue += char;
+                if (char === '"') {
+                    inQuote = !inQuote;
+                } else if (char === "," && !inQuote) {
+                    values.push(currentValue);
+                    currentValue = "";
+                } else {
+                    currentValue += char;
+                }
             }
             values.push(currentValue);
             
+            // values[0] = id
+            // values[1] = nombre
+            // values[2] = telefono
+            // values[3] = identificacion
+            // values[4] = correo
+            // values[5] = estudiantes (formato: "nombre|grado;nombre2|grado2")
+            // values[6] = vehiculos (formato: "placa|color;placa2|color2")
+            // values[7] = fecha_actualizacion
+            
             if (values.length >= 2) {
-                // Formato CSV: id,placa,color,nombre,telefono,identificacion,correo,estudiantes
-                const estudiantesRaw = values[7] || "";
+                // Parsear estudiantes
+                const estudiantesRaw = values[5] || "";
                 const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
                     const [nombreEst, gradoEst] = s.split("|");
                     return { nombre: nombreEst || "", grado: gradoEst || "" };
                 });
-                const vehiculos = [{ placa: values[1] || "", color: values[2] || "" }];
+                
+                // Parsear vehículos
+                const vehiculosRaw = values[6] || "";
+                const vehiculos = vehiculosRaw.split(";").filter(s => s.trim()).map(s => {
+                    const [placaVehiculo, colorVehiculo] = s.split("|");
+                    return { placa: placaVehiculo || "", color: colorVehiculo || "" };
+                });
+                
+                // Si no hay vehículos parseados pero hay datos en valores antiguos, crear uno
+                let finalVehiculos = vehiculos;
+                if (finalVehiculos.length === 0 && values[1] && values[2]) {
+                    // Intento de compatibilidad con formato antiguo
+                }
+                
                 data.push({
                     id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(),
-                    nombre: values[3] ? values[3].replace(/^"|"$/g, '') : "",
-                    telefono: values[4] ? values[4].replace(/^"|"$/g, '') : "",
-                    identificacion: values[5] ? values[5].replace(/^"|"$/g, '') : "",
-                    correo: values[6] ? values[6].replace(/^"|"$/g, '') : "",
-                    vehiculos: vehiculos,
+                    nombre: values[1] ? values[1].replace(/^"|"$/g, '') : "",
+                    telefono: values[2] ? values[2].replace(/^"|"$/g, '') : "",
+                    identificacion: values[3] ? values[3].replace(/^"|"$/g, '') : "",
+                    correo: values[4] ? values[4].replace(/^"|"$/g, '') : "",
                     estudiantes: estudiantes,
-                    actualizado: new Date().toISOString()
+                    vehiculos: finalVehiculos,
+                    actualizado: values[7] ? values[7].replace(/^"|"$/g, '') : new Date().toISOString()
                 });
             }
         }
@@ -669,6 +706,7 @@
                 owners = datos;
                 syncStatus.className = "sync-status success";
                 syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${owners.length} dueños sincronizados`;
+                mostrarMensaje(`${owners.length} dueños cargados`);
             } else {
                 owners = [];
                 syncStatus.className = "sync-status error";
@@ -724,11 +762,6 @@
     }
 
     async function guardarOwner() {
-        const nombreValue = nombre.value.trim();
-        if (!nombreValue && vehiculosTemp.length === 0) {
-            mostrarMensaje("Agregue al menos un vehículo o un nombre", true);
-            return;
-        }
         if (vehiculosTemp.length === 0) {
             mostrarMensaje("Agregue al menos un vehículo", true);
             return;
@@ -736,7 +769,7 @@
         const idActual = editId.value;
         const nuevoOwner = {
             id: idActual || Date.now().toString(),
-            nombre: nombreValue,
+            nombre: nombre.value.trim() || "",
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
             correo: correo.value.trim() || "",
@@ -813,9 +846,9 @@
                     <span class="owner-badge"><i class="fas fa-car"></i> ${totalVehiculos} vehículo${totalVehiculos !== 1 ? 's' : ''}</span>
                 </div>`;
             
-            if (owner.telefono || owner.identificacion || owner.correo) {
+            if (owner.identificacion || owner.telefono || owner.correo) {
                 html += `<div class="owner-details">`;
-                if (owner.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ${resaltarTexto(owner.identificacion, termino)}</div>`;
+                if (owner.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ID: ${resaltarTexto(owner.identificacion, termino)}</div>`;
                 if (owner.telefono) html += `<div class="owner-detail"><i class="fas fa-phone"></i> ${resaltarTexto(owner.telefono, termino)}</div>`;
                 if (owner.correo) html += `<div class="owner-detail"><i class="fas fa-envelope"></i> ${escapeHtml(owner.correo)}</div>`;
                 html += `</div>`;
