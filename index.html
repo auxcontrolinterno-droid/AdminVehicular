@@ -207,7 +207,7 @@
         .btn-outline { background: transparent; border: 2px solid #e0e8f0; color: #5a6e7c; }
         .button-group { display: flex; gap: 12px; margin-top: 28px; }
 
-        /* ========== BÚSQUEDA MEJORADA ========== */
+        /* ========== BÚSQUEDA SIMPLIFICADA ========== */
         .search-section {
             margin-bottom: 28px;
         }
@@ -249,54 +249,58 @@
             border-bottom-color: #1a5f7a;
         }
 
-        /* Filtros rápidos */
-        .quick-filters {
+        /* Botones de filtro */
+        .filter-buttons {
             display: flex;
-            gap: 10px;
+            gap: 12px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid #e0e8f0;
         }
 
-        .filter-chip {
+        .filter-btn {
+            flex: 1;
             background: #e8edf2;
             border: none;
-            padding: 8px 18px;
+            padding: 12px 20px;
             border-radius: 40px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #5a6e7c;
+            font-size: 0.85rem;
+            font-weight: 600;
             cursor: pointer;
+            color: #5a6e7c;
             transition: all 0.2s;
             display: flex;
             align-items: center;
-            gap: 6px;
+            justify-content: center;
+            gap: 8px;
         }
 
-        .filter-chip i {
-            font-size: 0.75rem;
+        .filter-btn i {
+            font-size: 0.9rem;
         }
 
-        .filter-chip.active {
+        .filter-btn.active {
             background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
             color: white;
         }
 
-        .filter-chip:hover:not(.active) {
-            background: #d0dce8;
+        .filter-btn.reset {
+            background: transparent;
+            border: 2px solid #e0e8f0;
         }
 
-        .clear-filter {
-            background: none;
-            border: none;
+        .filter-btn.reset:hover {
+            background: #ffebee;
+            border-color: #c62828;
             color: #c62828;
-            cursor: pointer;
-            font-size: 0.7rem;
+        }
+
+        .format-hint {
+            font-size: 0.65rem;
+            color: #a8bbd0;
+            margin-top: 6px;
             display: flex;
             align-items: center;
-            gap: 4px;
-            margin-left: auto;
+            gap: 6px;
         }
 
         /* Resultados */
@@ -381,15 +385,6 @@
         .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
         .refresh-btn { background: transparent; border: 2px solid #e0e8f0; margin-top: 20px; width: 100%; }
 
-        .format-hint {
-            font-size: 0.65rem;
-            color: #a8bbd0;
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
         #loadingToast {
             position: fixed;
             bottom: 24px;
@@ -412,7 +407,7 @@
             .inline-form { flex-direction: column; }
             .inline-btn { width: fit-content; }
             .owner-header { flex-direction: column; }
-            .quick-filters { justify-content: center; }
+            .filter-buttons { flex-direction: column; }
         }
     </style>
 </head>
@@ -493,24 +488,27 @@
         <div class="card">
             <div class="card-title"><i class="fas fa-search"></i> Buscar Registros</div>
             
-            <div class="search-section">
-                <div class="search-label">🔎 BÚSQUEDA RÁPIDA</div>
-                <div class="search-wrapper">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="buscarInput" placeholder="Buscar por placa, nombre, teléfono o estudiante...">
-                </div>
-                <div class="format-hint">
-                    <i class="fas fa-magic"></i> Puedes escribir la placa como "ABC123" y se buscará automáticamente como "ABC-123"
-                </div>
+            <div class="filter-buttons">
+                <button id="btnGeneral" class="filter-btn active">
+                    <i class="fas fa-search"></i> Búsqueda General
+                </button>
+                <button id="btnPlaca" class="filter-btn">
+                    <i class="fas fa-car"></i> Búsqueda por Placa
+                </button>
+                <button id="btnReset" class="filter-btn reset">
+                    <i class="fas fa-times"></i> Limpiar
+                </button>
             </div>
 
-            <!-- Filtros rápidos -->
-            <div class="quick-filters">
-                <button class="filter-chip" data-filter="placa"><i class="fas fa-car"></i> Buscar por placa</button>
-                <button class="filter-chip" data-filter="nombre"><i class="fas fa-user"></i> Buscar por nombre</button>
-                <button class="filter-chip" data-filter="telefono"><i class="fas fa-phone"></i> Buscar por teléfono</button>
-                <button class="filter-chip" data-filter="estudiante"><i class="fas fa-child"></i> Buscar por estudiante</button>
-                <button id="clearFilters" class="clear-filter"><i class="fas fa-times-circle"></i> Limpiar</button>
+            <div class="search-section">
+                <div class="search-label">🔎 BUSCAR</div>
+                <div class="search-wrapper">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="buscarInput" placeholder="Escribe para buscar...">
+                </div>
+                <div class="format-hint" id="formatHint" style="display: none;">
+                    <i class="fas fa-magic"></i> Puedes escribir la placa como "ABC123" y se buscará automáticamente como "ABC-123"
+                </div>
             </div>
 
             <div id="listaContainer">
@@ -536,8 +534,7 @@
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     
     let owners = [];
-    let filtroActual = "";
-    let filtroActivo = "todos";
+    let modoPlaca = false;
     let vehiculosTemp = [];
     let estudiantesTemp = [];
 
@@ -563,12 +560,13 @@
     const nuevaPlaca = document.getElementById("nuevaPlaca");
     const nuevoColor = document.getElementById("nuevoColor");
     const agregarVehiculoBtn = document.getElementById("agregarVehiculoBtn");
-    const clearFilters = document.getElementById("clearFilters");
-    const filterChips = document.querySelectorAll('.filter-chip');
+    const btnGeneral = document.getElementById("btnGeneral");
+    const btnPlaca = document.getElementById("btnPlaca");
+    const btnReset = document.getElementById("btnReset");
+    const formatHint = document.getElementById("formatHint");
 
     function showLoading(show) { loadingToast.style.display = show ? "flex" : "none"; }
 
-    // Función para formatear placa (convierte ABC123 a ABC-123)
     function formatearPlaca(texto) {
         if (!texto) return "";
         let limpio = texto.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
@@ -576,31 +574,25 @@
         return limpio;
     }
 
-    // Función para normalizar placa para búsqueda (elimina guiones y espacios)
     function normalizarPlaca(texto) {
         if (!texto) return "";
         return texto.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
     }
 
-    // Formatear placa mientras se escribe en el campo de agregar vehículo
+    // Formatear placa mientras se escribe en el campo de agregar
     nuevaPlaca.addEventListener("input", function(e) {
         let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
         if (raw.length > 3) this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
         else this.value = raw;
     });
 
-    // Formatear placa mientras se escribe en el campo de búsqueda (solo visual, la búsqueda usa normalizado)
+    // Formatear placa en búsqueda si está en modo placa
     buscarInput.addEventListener("input", function(e) {
-        // Detectar si estamos en modo búsqueda por placa y formatear visualmente
-        if (filtroActivo === "placa") {
+        if (modoPlaca) {
             let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
             if (raw.length > 3 && raw.length <= 8) {
-                let cursorPos = this.selectionStart;
                 let formatted = raw.substring(0, 3) + "-" + raw.substring(3, 8);
-                if (this.value !== formatted) {
-                    this.value = formatted;
-                    this.setSelectionRange(cursorPos + 1, cursorPos + 1);
-                }
+                if (this.value !== formatted) this.value = formatted;
             } else if (raw.length <= 3) {
                 if (this.value !== raw) this.value = raw;
             }
@@ -608,50 +600,26 @@
         aplicarBusqueda();
     });
 
-    // Función para normalizar el término de búsqueda según el filtro
-    function normalizarTerminoBusqueda(termino) {
-        if (filtroActivo === "placa") {
-            return normalizarPlaca(termino);
-        }
-        return termino.toLowerCase();
-    }
-
-    // Filtros rápidos
-    filterChips.forEach(chip => {
-        chip.addEventListener('click', () => {
-            const filterType = chip.dataset.filter;
-            filtroActivo = filterType;
-            
-            filterChips.forEach(c => c.classList.remove('active'));
-            chip.classList.add('active');
-            
-            buscarInput.focus();
-            switch(filterType) {
-                case 'placa':
-                    buscarInput.placeholder = "🔍 Buscar por placa... ej: ABC123 o ABC-123";
-                    break;
-                case 'nombre':
-                    buscarInput.placeholder = "🔍 Buscar por nombre del dueño...";
-                    break;
-                case 'telefono':
-                    buscarInput.placeholder = "🔍 Buscar por teléfono...";
-                    break;
-                case 'estudiante':
-                    buscarInput.placeholder = "🔍 Buscar por nombre del estudiante...";
-                    break;
-            }
-            
-            if (buscarInput.value.trim()) {
-                aplicarBusqueda();
-            }
-        });
+    btnGeneral.addEventListener('click', () => {
+        modoPlaca = false;
+        btnGeneral.classList.add('active');
+        btnPlaca.classList.remove('active');
+        formatHint.style.display = 'none';
+        buscarInput.placeholder = "Buscar por nombre, teléfono, estudiante o placa...";
+        aplicarBusqueda();
     });
 
-    clearFilters.addEventListener('click', () => {
-        filtroActivo = "todos";
+    btnPlaca.addEventListener('click', () => {
+        modoPlaca = true;
+        btnPlaca.classList.add('active');
+        btnGeneral.classList.remove('active');
+        formatHint.style.display = 'flex';
+        buscarInput.placeholder = "Ej: ABC123 o ABC-123";
+        aplicarBusqueda();
+    });
+
+    btnReset.addEventListener('click', () => {
         buscarInput.value = "";
-        buscarInput.placeholder = "Buscar por placa, nombre, teléfono o estudiante...";
-        filterChips.forEach(c => c.classList.remove('active'));
         aplicarBusqueda();
     });
 
@@ -939,7 +907,7 @@
     function aplicarBusqueda() {
         let termino = buscarInput.value.trim();
         
-        if (filtroActivo === "placa" && termino) {
+        if (modoPlaca && termino) {
             termino = normalizarPlaca(termino);
         } else if (termino) {
             termino = termino.toLowerCase();
@@ -948,27 +916,21 @@
         let filtrados = [...owners];
         
         if (termino) {
-            filtrados = owners.filter(owner => {
-                switch(filtroActivo) {
-                    case 'placa':
-                        return owner.vehiculos?.some(v => normalizarPlaca(v.placa) === termino || 
-                                                           v.placa?.toLowerCase().includes(termino));
-                    case 'nombre':
-                        return owner.nombre?.toLowerCase().includes(termino);
-                    case 'telefono':
-                        return owner.telefono?.toLowerCase().includes(termino);
-                    case 'estudiante':
-                        return owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino));
-                    default:
-                        return owner.nombre?.toLowerCase().includes(termino) ||
-                               owner.telefono?.toLowerCase().includes(termino) ||
-                               owner.identificacion?.toLowerCase().includes(termino) ||
-                               owner.correo?.toLowerCase().includes(termino) ||
-                               owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino) ||
-                                                          normalizarPlaca(v.placa).includes(termino)) ||
-                               owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino));
-                }
-            });
+            if (modoPlaca) {
+                filtrados = owners.filter(owner => 
+                    owner.vehiculos?.some(v => normalizarPlaca(v.placa).includes(termino))
+                );
+            } else {
+                filtrados = owners.filter(owner => 
+                    owner.nombre?.toLowerCase().includes(termino) ||
+                    owner.telefono?.toLowerCase().includes(termino) ||
+                    owner.identificacion?.toLowerCase().includes(termino) ||
+                    owner.correo?.toLowerCase().includes(termino) ||
+                    owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino) ||
+                                               normalizarPlaca(v.placa).includes(termino)) ||
+                    owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
+                );
+            }
         }
         renderizarResultados(filtrados, termino);
     }
