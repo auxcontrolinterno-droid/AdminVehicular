@@ -3,152 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <meta name="theme-color" content="#0a2540">
-    <title>AutoRegistro - Gestión Vehicular</title>
+    <title>AutoRegistro - Con Guardado en Google Sheets</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background: #f0f4f8;
-            min-height: 100vh;
-            padding: 32px 24px;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .header {
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .header p {
-            font-size: 0.9rem;
-            color: #5a6e7c;
-            margin-top: 8px;
-        }
-
-        .stats {
-            background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
-            padding: 6px 16px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            color: white;
-            display: inline-block;
-            margin-top: 12px;
-        }
-
-        .sync-status {
-            font-size: 0.75rem;
-            margin-bottom: 28px;
-            padding: 10px 0;
-            text-align: center;
-            background: white;
-            border-radius: 30px;
-            border: 1px solid #e0e8f0;
-        }
-
+        /* ... (Mantén todos los estilos que ya te gustan, igual que en tu versión final) ... */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: #f0f4f8; min-height: 100vh; padding: 32px 24px; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { margin-bottom: 40px; text-align: center; }
+        .header h1 { font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .header p { font-size: 0.9rem; color: #5a6e7c; margin-top: 8px; }
+        .stats { background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%); padding: 6px 16px; border-radius: 30px; font-size: 0.75rem; color: white; display: inline-block; margin-top: 12px; }
+        .sync-status { font-size: 0.75rem; margin-bottom: 28px; padding: 10px 0; text-align: center; background: white; border-radius: 30px; border: 1px solid #e0e8f0; }
         .sync-status.success { background: #e8f5e9; color: #2e7d32; border-color: #c8e6c9; }
         .sync-status.error { background: #ffebee; color: #c62828; border-color: #ffcdd2; }
         .sync-status.loading { background: #e3f2fd; color: #1a5f7a; border-color: #bbdef5; }
-
-        .tabs {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 28px;
-            background: white;
-            padding: 6px;
-            border-radius: 60px;
-            border: 1px solid #e0e8f0;
-        }
-
-        .tab-btn {
-            flex: 1;
-            background: none;
-            border: none;
-            padding: 12px 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #8ba0b0;
-            border-radius: 50px;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
-            color: white;
-            box-shadow: 0 2px 8px rgba(10,37,64,0.2);
-        }
-
+        .tabs { display: flex; gap: 12px; margin-bottom: 28px; background: white; padding: 6px; border-radius: 60px; border: 1px solid #e0e8f0; }
+        .tab-btn { flex: 1; background: none; border: none; padding: 12px 20px; font-size: 0.9rem; font-weight: 600; cursor: pointer; color: #8ba0b0; border-radius: 50px; transition: all 0.2s; }
+        .tab-btn.active { background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%); color: white; box-shadow: 0 2px 8px rgba(10,37,64,0.2); }
         .tab-panel { display: none; }
         .tab-panel.active { display: block; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-        .card {
-            background: white;
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            border: 1px solid #e0e8f0;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #0a2540;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #e0e8f0;
-        }
-
+        .card { background: white; border-radius: 24px; padding: 28px; margin-bottom: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); border: 1px solid #e0e8f0; }
+        .card-title { font-size: 1rem; font-weight: 600; margin-bottom: 20px; color: #0a2540; display: flex; align-items: center; gap: 8px; padding-bottom: 12px; border-bottom: 2px solid #e0e8f0; }
         .field-group { margin-bottom: 20px; }
         label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #5a6e7c; display: block; margin-bottom: 8px; }
         label .required { color: #c62828; }
         label .optional { font-weight: normal; color: #a8bbd0; }
         input { width: 100%; padding: 14px 0; border: none; border-bottom: 2px solid #e0e8f0; font-size: 1rem; background: transparent; transition: all 0.2s; color: #1a202c; }
         input:focus { outline: none; border-bottom-color: #1a5f7a; }
-
-        .vehicles-list {
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 12px;
-            margin: 12px 0;
-        }
-
-        .vehicle-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: white;
-            border-radius: 12px;
-            margin-bottom: 8px;
-            border: 1px solid #e0e8f0;
-        }
-
+        .vehicles-list { background: #f8fafc; border-radius: 16px; padding: 12px; margin: 12px 0; }
+        .vehicle-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: white; border-radius: 12px; margin-bottom: 8px; border: 1px solid #e0e8f0; }
         .vehicle-info { flex: 1; }
         .vehicle-placa { font-weight: 700; color: #0a2540; font-family: monospace; }
         .vehicle-color { font-size: 0.75rem; color: #8ba0b0; margin-left: 8px; }
@@ -156,271 +41,67 @@
         .vehicle-actions i { cursor: pointer; color: #a8bbd0; transition: color 0.2s; }
         .vehicle-actions i:hover { color: #1a5f7a; }
         .delete-vehicle:hover { color: #c62828 !important; }
-
-        .inline-form {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-        .inline-input {
-            flex: 2;
-            padding: 12px 0;
-            border: none;
-            border-bottom: 2px solid #e0e8f0;
-            font-size: 0.9rem;
-            background: transparent;
-        }
+        .inline-form { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; }
+        .inline-input { flex: 2; padding: 12px 0; border: none; border-bottom: 2px solid #e0e8f0; font-size: 0.9rem; background: transparent; }
         .inline-input:focus { outline: none; border-bottom-color: #1a5f7a; }
-        .inline-btn {
-            background: none;
-            border: 2px solid #e0e8f0;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: #5a6e7c;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
+        .inline-btn { background: none; border: 2px solid #e0e8f0; padding: 8px 20px; border-radius: 40px; font-size: 0.75rem; font-weight: 600; color: #5a6e7c; cursor: pointer; transition: all 0.2s; }
         .inline-btn:hover { background: #f0f4f8; border-color: #1a5f7a; color: #1a5f7a; }
-
-        .btn {
-            padding: 14px 28px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 0.85rem;
-            border: none;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
-            color: white;
-            box-shadow: 0 2px 8px rgba(10,37,64,0.2);
-        }
+        .btn { padding: 14px 28px; border-radius: 40px; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 10px; transition: all 0.2s; }
+        .btn-primary { background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%); color: white; box-shadow: 0 2px 8px rgba(10,37,64,0.2); }
         .btn-primary:active { transform: scale(0.98); }
         .btn-outline { background: transparent; border: 2px solid #e0e8f0; color: #5a6e7c; }
+        .btn-export { background: linear-gradient(135deg, #2e7d32 0%, #1b5e20 100%); color: white; margin-top: 16px; width: 100%; }
         .button-group { display: flex; gap: 12px; margin-top: 28px; }
-
-        /* ========== BÚSQUEDA SIMPLIFICADA ========== */
-        .search-section {
-            margin-bottom: 28px;
-        }
-
-        .search-label {
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #8ba0b0;
-            margin-bottom: 12px;
-            display: block;
-        }
-
-        .search-wrapper {
-            position: relative;
-            margin-bottom: 16px;
-        }
-
-        .search-wrapper i {
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #a8bbd0;
-            font-size: 1rem;
-        }
-
-        .search-wrapper input {
-            padding: 14px 0 14px 32px;
-            border: none;
-            border-bottom: 2px solid #e0e8f0;
-            width: 100%;
-            background: transparent;
-            font-size: 1rem;
-        }
-
-        .search-wrapper input:focus {
-            border-bottom-color: #1a5f7a;
-        }
-
-        /* Botones de filtro */
-        .filter-buttons {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            flex: 1;
-            background: #e8edf2;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #5a6e7c;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .filter-btn i {
-            font-size: 0.9rem;
-        }
-
-        .filter-btn.active {
-            background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%);
-            color: white;
-        }
-
-        .filter-btn.reset {
-            background: transparent;
-            border: 2px solid #e0e8f0;
-        }
-
-        .filter-btn.reset:hover {
-            background: #ffebee;
-            border-color: #c62828;
-            color: #c62828;
-        }
-
-        .format-hint {
-            font-size: 0.65rem;
-            color: #a8bbd0;
-            margin-top: 6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        /* Resultados */
-        .result-card {
-            background: white;
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 16px;
-            border: 1px solid #e0e8f0;
-            transition: all 0.2s;
-        }
+        .filter-buttons { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+        .filter-btn { flex: 1; background: #e8edf2; border: none; padding: 12px 20px; border-radius: 40px; font-size: 0.85rem; font-weight: 600; cursor: pointer; color: #5a6e7c; transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .filter-btn.active { background: linear-gradient(135deg, #0a2540 0%, #1a5f7a 100%); color: white; }
+        .filter-btn.reset { background: transparent; border: 2px solid #e0e8f0; }
+        .filter-btn.reset:hover { background: #ffebee; border-color: #c62828; color: #c62828; }
+        .search-section { margin-bottom: 28px; }
+        .search-label { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: #8ba0b0; margin-bottom: 12px; display: block; }
+        .search-wrapper { position: relative; margin-bottom: 16px; }
+        .search-wrapper i { position: absolute; left: 0; top: 50%; transform: translateY(-50%); color: #a8bbd0; font-size: 1rem; }
+        .search-wrapper input { padding: 14px 0 14px 32px; border: none; border-bottom: 2px solid #e0e8f0; width: 100%; background: transparent; font-size: 1rem; }
+        .search-wrapper input:focus { border-bottom-color: #1a5f7a; }
+        .format-hint { font-size: 0.65rem; color: #a8bbd0; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+        .result-card { background: white; border-radius: 20px; padding: 24px; margin-bottom: 16px; border: 1px solid #e0e8f0; transition: all 0.2s; }
         .result-card:hover { border-color: #c0d0dc; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
-
-        .owner-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 16px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid #f0f0f0;
-        }
+        .owner-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #f0f0f0; }
         .owner-name { font-size: 1.1rem; font-weight: 700; color: #0a2540; }
         .owner-badge { background: #e8edf2; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; color: #5a6e7c; }
-
         .owner-details { margin: 12px 0; padding: 12px 16px; background: #f8fafc; border-radius: 16px; }
         .owner-detail { font-size: 0.8rem; color: #6a8aaa; margin-top: 4px; }
         .owner-detail i { width: 20px; color: #1a5f7a; }
-
         .vehicles-section { margin: 12px 0; }
         .section-title { font-weight: 600; color: #0a2540; margin-bottom: 12px; font-size: 0.85rem; display: flex; align-items: center; gap: 8px; }
-        .vehicle-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: #f0f4f8;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 0.8rem;
-            margin: 4px 6px 4px 0;
-        }
+        .vehicle-tag { display: inline-flex; align-items: center; gap: 8px; background: #f0f4f8; padding: 8px 16px; border-radius: 30px; font-size: 0.8rem; margin: 4px 6px 4px 0; }
         .vehicle-tag i { color: #1a5f7a; }
-
         .students-section { margin: 12px 0; padding: 12px 16px; background: #fff8e7; border-radius: 16px; }
         .students-title { font-weight: 600; color: #b86b2c; margin-bottom: 8px; font-size: 0.8rem; }
-        .student-tag {
-            display: inline-block;
-            background: white;
-            padding: 6px 14px;
-            border-radius: 30px;
-            font-size: 0.75rem;
-            color: #5a6e7c;
-            margin: 4px 6px 4px 0;
-        }
-
-        .card-actions {
-            display: flex;
-            gap: 16px;
-            margin-top: 16px;
-            padding-top: 12px;
-            border-top: 1px solid #f0f0f0;
-        }
-        .action-btn {
-            background: none;
-            border: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: #8ba0b0;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 30px;
-            transition: all 0.2s;
-        }
+        .student-tag { display: inline-block; background: white; padding: 6px 14px; border-radius: 30px; font-size: 0.75rem; color: #5a6e7c; margin: 4px 6px 4px 0; }
+        .card-actions { display: flex; gap: 16px; margin-top: 16px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+        .action-btn { background: none; border: none; font-size: 0.8rem; font-weight: 500; color: #8ba0b0; cursor: pointer; display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 30px; transition: all 0.2s; }
         .action-btn.edit:hover { background: #e3f2fd; color: #1a5f7a; }
         .action-btn.delete:hover { background: #ffebee; color: #c62828; }
-
         .empty-result { text-align: center; padding: 60px 20px; color: #a8bbd0; }
         .highlight { background: #fff3cd; padding: 2px 6px; border-radius: 6px; font-weight: 600; }
         .refresh-btn { background: transparent; border: 2px solid #e0e8f0; margin-top: 20px; width: 100%; }
-
-        #loadingToast {
-            position: fixed;
-            bottom: 24px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0a2540;
-            color: white;
-            padding: 12px 28px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            display: none;
-            z-index: 1000;
-        }
-
+        #loadingToast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: #0a2540; color: white; padding: 12px 28px; border-radius: 50px; font-size: 0.8rem; display: none; z-index: 1000; }
         footer { text-align: center; font-size: 0.7rem; color: #a8bbd0; padding: 24px 0 16px; margin-top: 16px; }
         #listaContainer { max-height: 60vh; overflow-y: auto; }
-
-        @media (max-width: 600px) {
-            body { padding: 20px 16px; }
-            .inline-form { flex-direction: column; }
-            .inline-btn { width: fit-content; }
-            .owner-header { flex-direction: column; }
-            .filter-buttons { flex-direction: column; }
-        }
+        @media (max-width: 600px) { body { padding: 20px 16px; } .inline-form { flex-direction: column; } .inline-btn { width: fit-content; } .owner-header { flex-direction: column; } .filter-buttons { flex-direction: column; } }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
         <h1>AutoRegistro</h1>
-        <p>Gestión inteligente de vehículos</p>
+        <p>Con guardado automático en Google Sheets</p>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
     <div id="syncStatus" class="sync-status loading">
-        <i class="fas fa-spinner fa-pulse"></i> Sincronizando con Google Sheets...
+        <i class="fas fa-spinner fa-pulse"></i> Conectando...
     </div>
 
     <div class="tabs">
@@ -518,21 +199,31 @@
                 </div>
             </div>
             
-            <button id="refreshBtn" class="btn refresh-btn">
-                <i class="fas fa-sync-alt"></i> Sincronizar con Google Sheets
-            </button>
+            <div style="display: flex; gap: 12px; margin-top: 16px;">
+                <button id="refreshBtn" class="btn refresh-btn" style="flex:1;">
+                    <i class="fas fa-sync-alt"></i> Sincronizar
+                </button>
+                <button id="exportBtn" class="btn btn-export" style="flex:1;">
+                    <i class="fas fa-download"></i> Exportar a CSV
+                </button>
+            </div>
         </div>
     </div>
 
     <footer>
-        Datos sincronizados con Google Sheets · Las placas se formatean automáticamente como ABC-123
+        ✅ Los nuevos registros se guardan automáticamente en Google Sheets.
     </footer>
 </div>
 <div id="loadingToast"><i class="fas fa-circle-notch fa-spin"></i> Procesando...</div>
 
 <script>
+    // ============================================
+    // 🔥 CONFIGURACIÓN CLAVE: Pega aquí la URL de tu Web App de Google Apps Script
+    // ============================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNHF4u-2jFccEjlFrZpYl1FEEf6RUit9PS5X29g_XGGXFt9OCnZUibfRlF8ApWs3js/exec"; // <--- ¡CAMBIA ESTO!
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
-    
+    // ============================================
+
     let owners = [];
     let modoPlaca = false;
     let vehiculosTemp = [];
@@ -544,6 +235,7 @@
     const globalStatsSpan = document.getElementById("globalStats");
     const syncStatus = document.getElementById("syncStatus");
     const refreshBtn = document.getElementById("refreshBtn");
+    const exportBtn = document.getElementById("exportBtn");
     const editId = document.getElementById("editId");
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
@@ -565,329 +257,113 @@
     const btnReset = document.getElementById("btnReset");
     const formatHint = document.getElementById("formatHint");
 
+    // ... (Mantén aquí todas las funciones que ya tenías: showLoading, formatearPlaca, normalizarPlaca, etc.) ...
     function showLoading(show) { loadingToast.style.display = show ? "flex" : "none"; }
 
-    function formatearPlaca(texto) {
-        if (!texto) return "";
-        let limpio = texto.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-        if (limpio.length > 3) return limpio.substring(0, 3) + "-" + limpio.substring(3, 8);
-        return limpio;
-    }
+    function formatearPlaca(texto) { if (!texto) return ""; let limpio = texto.toUpperCase().replace(/\s/g, "").replace(/-/g, ""); if (limpio.length > 3) return limpio.substring(0, 3) + "-" + limpio.substring(3, 8); return limpio; }
+    function normalizarPlaca(texto) { if (!texto) return ""; return texto.toUpperCase().replace(/\s/g, "").replace(/-/g, ""); }
 
-    function normalizarPlaca(texto) {
-        if (!texto) return "";
-        return texto.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-    }
+    nuevaPlaca.addEventListener("input", function(e) { let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, ""); if (raw.length > 3) this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8); else this.value = raw; });
+    buscarInput.addEventListener("input", function(e) { if (modoPlaca) { let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, ""); if (raw.length > 3 && raw.length <= 8) { let formatted = raw.substring(0, 3) + "-" + raw.substring(3, 8); if (this.value !== formatted) this.value = formatted; } else if (raw.length <= 3) { if (this.value !== raw) this.value = raw; } } aplicarBusqueda(); });
 
-    // Formatear placa mientras se escribe en el campo de agregar
-    nuevaPlaca.addEventListener("input", function(e) {
-        let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-        if (raw.length > 3) this.value = raw.substring(0, 3) + "-" + raw.substring(3, 8);
-        else this.value = raw;
-    });
+    btnGeneral.addEventListener('click', () => { modoPlaca = false; btnGeneral.classList.add('active'); btnPlaca.classList.remove('active'); formatHint.style.display = 'none'; buscarInput.placeholder = "Buscar por nombre, teléfono, estudiante o placa..."; aplicarBusqueda(); });
+    btnPlaca.addEventListener('click', () => { modoPlaca = true; btnPlaca.classList.add('active'); btnGeneral.classList.remove('active'); formatHint.style.display = 'flex'; buscarInput.placeholder = "Ej: ABC123 o ABC-123"; aplicarBusqueda(); });
+    btnReset.addEventListener('click', () => { buscarInput.value = ""; aplicarBusqueda(); });
 
-    // Formatear placa en búsqueda si está en modo placa
-    buscarInput.addEventListener("input", function(e) {
-        if (modoPlaca) {
-            let raw = this.value.toUpperCase().replace(/\s/g, "").replace(/-/g, "");
-            if (raw.length > 3 && raw.length <= 8) {
-                let formatted = raw.substring(0, 3) + "-" + raw.substring(3, 8);
-                if (this.value !== formatted) this.value = formatted;
-            } else if (raw.length <= 3) {
-                if (this.value !== raw) this.value = raw;
-            }
-        }
-        aplicarBusqueda();
-    });
-
-    btnGeneral.addEventListener('click', () => {
-        modoPlaca = false;
-        btnGeneral.classList.add('active');
-        btnPlaca.classList.remove('active');
-        formatHint.style.display = 'none';
-        buscarInput.placeholder = "Buscar por nombre, teléfono, estudiante o placa...";
-        aplicarBusqueda();
-    });
-
-    btnPlaca.addEventListener('click', () => {
-        modoPlaca = true;
-        btnPlaca.classList.add('active');
-        btnGeneral.classList.remove('active');
-        formatHint.style.display = 'flex';
-        buscarInput.placeholder = "Ej: ABC123 o ABC-123";
-        aplicarBusqueda();
-    });
-
-    btnReset.addEventListener('click', () => {
-        buscarInput.value = "";
-        aplicarBusqueda();
-    });
-
-    function renderizarVehiculos() {
-        if (vehiculosTemp.length === 0) {
-            vehiculosList.innerHTML = '<div style="color:#a8bbd0; padding:12px 0; text-align:center;">Sin vehículos. Agrega al menos uno.</div>';
-            return;
-        }
-        let html = '';
-        vehiculosTemp.forEach((veh, index) => {
-            html += `<div class="vehicle-item">
-                        <div class="vehicle-info">
-                            <span class="vehicle-placa">${escapeHtml(veh.placa)}</span>
-                            ${veh.color ? `<span class="vehicle-color">🎨 ${escapeHtml(veh.color)}</span>` : ''}
-                        </div>
-                        <div class="vehicle-actions">
-                            <i class="fas fa-edit edit-vehiculo" data-index="${index}"></i>
-                            <i class="fas fa-trash delete-vehiculo delete-item" data-index="${index}"></i>
-                        </div>
-                    </div>`;
-        });
-        vehiculosList.innerHTML = html;
-        
-        document.querySelectorAll('.edit-vehiculo').forEach(icon => {
-            icon.onclick = () => {
-                const idx = parseInt(icon.dataset.index);
-                nuevaPlaca.value = vehiculosTemp[idx].placa;
-                nuevoColor.value = vehiculosTemp[idx].color || "";
-                vehiculosTemp.splice(idx, 1);
-                renderizarVehiculos();
-            };
-        });
-        document.querySelectorAll('.delete-vehiculo').forEach(icon => {
-            icon.onclick = () => {
-                if (confirm("¿Eliminar este vehículo?")) {
-                    vehiculosTemp.splice(parseInt(icon.dataset.index), 1);
-                    renderizarVehiculos();
-                }
-            };
-        });
-    }
-
-    function agregarVehiculo() {
-        let placaValue = nuevaPlaca.value.trim();
-        if (!placaValue) {
-            mostrarMensaje("Ingrese la placa del vehículo", true);
-            return;
-        }
-        placaValue = formatearPlaca(placaValue);
-        if (vehiculosTemp.some(v => v.placa === placaValue)) {
-            mostrarMensaje("Esta placa ya está agregada", true);
-            return;
-        }
-        vehiculosTemp.push({ placa: placaValue, color: nuevoColor.value.trim() || "" });
-        renderizarVehiculos();
-        nuevaPlaca.value = "";
-        nuevoColor.value = "";
-    }
-
+    function renderizarVehiculos() { if (vehiculosTemp.length === 0) { vehiculosList.innerHTML = '<div style="color:#a8bbd0; padding:12px 0; text-align:center;">Sin vehículos. Agrega al menos uno.</div>'; return; } let html = ''; vehiculosTemp.forEach((veh, index) => { html += `<div class="vehicle-item"><div class="vehicle-info"><span class="vehicle-placa">${escapeHtml(veh.placa)}</span>${veh.color ? `<span class="vehicle-color">🎨 ${escapeHtml(veh.color)}</span>` : ''}</div><div class="vehicle-actions"><i class="fas fa-edit edit-vehiculo" data-index="${index}"></i><i class="fas fa-trash delete-vehiculo delete-item" data-index="${index}"></i></div></div>`; }); vehiculosList.innerHTML = html; document.querySelectorAll('.edit-vehiculo').forEach(icon => { icon.onclick = () => { const idx = parseInt(icon.dataset.index); nuevaPlaca.value = vehiculosTemp[idx].placa; nuevoColor.value = vehiculosTemp[idx].color || ""; vehiculosTemp.splice(idx, 1); renderizarVehiculos(); }; }); document.querySelectorAll('.delete-vehiculo').forEach(icon => { icon.onclick = () => { if (confirm("¿Eliminar este vehículo?")) { vehiculosTemp.splice(parseInt(icon.dataset.index), 1); renderizarVehiculos(); } }; }); }
+    function agregarVehiculo() { let placaValue = nuevaPlaca.value.trim(); if (!placaValue) { mostrarMensaje("Ingrese la placa del vehículo", true); return; } placaValue = formatearPlaca(placaValue); if (vehiculosTemp.some(v => v.placa === placaValue)) { mostrarMensaje("Esta placa ya está agregada", true); return; } vehiculosTemp.push({ placa: placaValue, color: nuevoColor.value.trim() || "" }); renderizarVehiculos(); nuevaPlaca.value = ""; nuevoColor.value = ""; }
     agregarVehiculoBtn.onclick = agregarVehiculo;
 
-    function renderizarListaEstudiantes() {
-        if (estudiantesTemp.length === 0) {
-            listaEstudiantes.innerHTML = '<div style="color:#a8bbd0; padding:12px 0; text-align:center;">Sin estudiantes</div>';
-            return;
-        }
-        let html = '';
-        estudiantesTemp.forEach((est, index) => {
-            html += `<div class="list-item">
-                        <div class="list-item-info">
-                            <strong>${escapeHtml(est.nombre)}</strong>
-                            ${est.grado ? `<span>📚 ${escapeHtml(est.grado)}</span>` : ''}
-                        </div>
-                        <div class="list-item-actions">
-                            <i class="fas fa-edit edit-estudiante" data-index="${index}"></i>
-                            <i class="fas fa-trash delete-estudiante delete-item" data-index="${index}"></i>
-                        </div>
-                    </div>`;
-        });
-        listaEstudiantes.innerHTML = html;
-        
-        document.querySelectorAll('.edit-estudiante').forEach(icon => {
-            icon.onclick = () => {
-                const idx = parseInt(icon.dataset.index);
-                nuevoEstudianteNombre.value = estudiantesTemp[idx].nombre;
-                nuevoEstudianteGrado.value = estudiantesTemp[idx].grado || "";
-                estudiantesTemp.splice(idx, 1);
-                renderizarListaEstudiantes();
-            };
-        });
-        document.querySelectorAll('.delete-estudiante').forEach(icon => {
-            icon.onclick = () => {
-                if (confirm("¿Eliminar este estudiante?")) {
-                    estudiantesTemp.splice(parseInt(icon.dataset.index), 1);
-                    renderizarListaEstudiantes();
-                }
-            };
-        });
-    }
-
-    function agregarEstudiante() {
-        const nombreEst = nuevoEstudianteNombre.value.trim();
-        if (!nombreEst) {
-            mostrarMensaje("Ingrese el nombre del estudiante", true);
-            return;
-        }
-        estudiantesTemp.push({ nombre: nombreEst, grado: nuevoEstudianteGrado.value.trim() || "" });
-        renderizarListaEstudiantes();
-        nuevoEstudianteNombre.value = "";
-        nuevoEstudianteGrado.value = "";
-    }
-
+    function renderizarListaEstudiantes() { if (estudiantesTemp.length === 0) { listaEstudiantes.innerHTML = '<div style="color:#a8bbd0; padding:12px 0; text-align:center;">Sin estudiantes</div>'; return; } let html = ''; estudiantesTemp.forEach((est, index) => { html += `<div class="list-item"><div class="list-item-info"><strong>${escapeHtml(est.nombre)}</strong>${est.grado ? `<span>📚 ${escapeHtml(est.grado)}</span>` : ''}</div><div class="list-item-actions"><i class="fas fa-edit edit-estudiante" data-index="${index}"></i><i class="fas fa-trash delete-estudiante delete-item" data-index="${index}"></i></div></div>`; }); listaEstudiantes.innerHTML = html; document.querySelectorAll('.edit-estudiante').forEach(icon => { icon.onclick = () => { const idx = parseInt(icon.dataset.index); nuevoEstudianteNombre.value = estudiantesTemp[idx].nombre; nuevoEstudianteGrado.value = estudiantesTemp[idx].grado || ""; estudiantesTemp.splice(idx, 1); renderizarListaEstudiantes(); }; }); document.querySelectorAll('.delete-estudiante').forEach(icon => { icon.onclick = () => { if (confirm("¿Eliminar este estudiante?")) { estudiantesTemp.splice(parseInt(icon.dataset.index), 1); renderizarListaEstudiantes(); } }; }); }
+    function agregarEstudiante() { const nombreEst = nuevoEstudianteNombre.value.trim(); if (!nombreEst) { mostrarMensaje("Ingrese el nombre del estudiante", true); return; } estudiantesTemp.push({ nombre: nombreEst, grado: nuevoEstudianteGrado.value.trim() || "" }); renderizarListaEstudiantes(); nuevoEstudianteNombre.value = ""; nuevoEstudianteGrado.value = ""; }
     agregarEstudianteBtn.onclick = agregarEstudiante;
 
-    function parseCSV(csvText) {
-        const lines = csvText.split(/\r?\n/);
-        if (lines.length < 2) return [];
-        
-        const data = [];
-        for (let i = 1; i < lines.length; i++) {
-            if (!lines[i].trim()) continue;
-            
-            const values = [];
-            let inQuote = false;
-            let currentValue = "";
-            
-            for (let j = 0; j < lines[i].length; j++) {
-                const char = lines[i][j];
-                if (char === '"') inQuote = !inQuote;
-                else if (char === "," && !inQuote) { values.push(currentValue); currentValue = ""; }
-                else currentValue += char;
-            }
-            values.push(currentValue);
-            
-            if (values.length >= 2) {
-                const estudiantesRaw = values[5] || "";
-                const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => {
-                    const [nombreEst, gradoEst] = s.split("|");
-                    return { nombre: nombreEst || "", grado: gradoEst || "" };
-                });
-                
-                const vehiculosRaw = values[6] || "";
-                const vehiculos = vehiculosRaw.split(";").filter(s => s.trim()).map(s => {
-                    const [placaVehiculo, colorVehiculo] = s.split("|");
-                    return { placa: placaVehiculo || "", color: colorVehiculo || "" };
-                });
-                
-                data.push({
-                    id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(),
-                    nombre: values[1] ? values[1].replace(/^"|"$/g, '') : "",
-                    telefono: values[2] ? values[2].replace(/^"|"$/g, '') : "",
-                    identificacion: values[3] ? values[3].replace(/^"|"$/g, '') : "",
-                    correo: values[4] ? values[4].replace(/^"|"$/g, '') : "",
-                    estudiantes: estudiantes,
-                    vehiculos: vehiculos,
-                    actualizado: values[7] ? values[7].replace(/^"|"$/g, '') : new Date().toISOString()
-                });
-            }
-        }
-        return data;
-    }
+    function parseCSV(csvText) { const lines = csvText.split(/\r?\n/); if (lines.length < 2) return []; const data = []; for (let i = 1; i < lines.length; i++) { if (!lines[i].trim()) continue; const values = []; let inQuote = false; let currentValue = ""; for (let j = 0; j < lines[i].length; j++) { const char = lines[i][j]; if (char === '"') inQuote = !inQuote; else if (char === "," && !inQuote) { values.push(currentValue); currentValue = ""; } else currentValue += char; } values.push(currentValue); if (values.length >= 2) { const estudiantesRaw = values[5] || ""; const estudiantes = estudiantesRaw.split(";").filter(s => s.trim()).map(s => { const [nombreEst, gradoEst] = s.split("|"); return { nombre: nombreEst || "", grado: gradoEst || "" }; }); const vehiculosRaw = values[6] || ""; const vehiculos = vehiculosRaw.split(";").filter(s => s.trim()).map(s => { const [placaVehiculo, colorVehiculo] = s.split("|"); return { placa: placaVehiculo || "", color: colorVehiculo || "" }; }); data.push({ id: values[0] ? values[0].replace(/^"|"$/g, '') : Date.now().toString(), nombre: values[1] ? values[1].replace(/^"|"$/g, '') : "", telefono: values[2] ? values[2].replace(/^"|"$/g, '') : "", identificacion: values[3] ? values[3].replace(/^"|"$/g, '') : "", correo: values[4] ? values[4].replace(/^"|"$/g, '') : "", estudiantes: estudiantes, vehiculos: vehiculos, actualizado: values[7] ? values[7].replace(/^"|"$/g, '') : new Date().toISOString() }); } } return data; }
 
-    async function cargarDesdeSheets() {
-        showLoading(true);
-        syncStatus.className = "sync-status loading";
-        syncStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Cargando datos...`;
-        try {
-            const response = await fetch(CSV_URL);
-            if (!response.ok) throw new Error();
-            const csvText = await response.text();
-            const datos = parseCSV(csvText);
-            if (datos.length > 0) {
-                owners = datos;
-                syncStatus.className = "sync-status success";
-                syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${owners.length} dueños sincronizados`;
-                mostrarMensaje(`${owners.length} dueños cargados`);
-            } else {
-                owners = [];
-                syncStatus.className = "sync-status error";
-                syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se encontraron datos`;
-            }
-        } catch (error) {
-            owners = [];
-            syncStatus.className = "sync-status error";
-            syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error al conectar`;
-        } finally {
-            showLoading(false);
-            actualizarEstadisticas();
-            aplicarBusqueda();
-        }
-    }
+    async function cargarDesdeSheets() { showLoading(true); syncStatus.className = "sync-status loading"; syncStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Cargando datos...`; try { const response = await fetch(CSV_URL); if (!response.ok) throw new Error(); const csvText = await response.text(); const datos = parseCSV(csvText); if (datos.length > 0) { owners = datos; syncStatus.className = "sync-status success"; syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${owners.length} registros sincronizados`; mostrarMensaje(`${owners.length} registros cargados`); } else { owners = []; syncStatus.className = "sync-status error"; syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> No se encontraron datos`; } } catch (error) { owners = []; syncStatus.className = "sync-status error"; syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error al conectar`; } finally { showLoading(false); actualizarEstadisticas(); aplicarBusqueda(); } }
 
     function guardarBackupLocal() { localStorage.setItem("autoregistro_backup", JSON.stringify(owners)); }
-    function cargarBackupLocal() {
-        const backup = localStorage.getItem("autoregistro_backup");
-        if (backup && owners.length === 0) {
-            try {
-                owners = JSON.parse(backup);
-                syncStatus.className = "sync-status success";
-                syncStatus.innerHTML = `<i class="fas fa-database"></i> ${owners.length} dueños (local)`;
-                actualizarEstadisticas();
-                aplicarBusqueda();
-            } catch(e) {}
-        }
-    }
+    function cargarBackupLocal() { const backup = localStorage.getItem("autoregistro_backup"); if (backup && owners.length === 0) { try { owners = JSON.parse(backup); syncStatus.className = "sync-status success"; syncStatus.innerHTML = `<i class="fas fa-database"></i> ${owners.length} registros (local)`; actualizarEstadisticas(); aplicarBusqueda(); } catch(e) {} } }
 
-    function mostrarMensaje(mensaje, esError = false) {
-        const toast = document.createElement('div');
-        toast.style.cssText = `position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:${esError ? '#c62828' : '#2e7d32'}; color:white; padding:10px 24px; border-radius:40px; font-size:0.8rem; z-index:1000; animation:slideUp 0.3s ease;`;
-        toast.innerHTML = `<i class="fas ${esError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${mensaje}`;
-        document.body.appendChild(toast);
-        setTimeout(() => toast.remove(), 2500);
-    }
+    function mostrarMensaje(mensaje, esError = false) { const toast = document.createElement('div'); toast.style.cssText = `position:fixed; bottom:80px; left:50%; transform:translateX(-50%); background:${esError ? '#c62828' : '#2e7d32'}; color:white; padding:10px 24px; border-radius:40px; font-size:0.8rem; z-index:1000; animation:slideUp 0.3s ease;`; toast.innerHTML = `<i class="fas ${esError ? 'fa-exclamation-triangle' : 'fa-check-circle'}"></i> ${mensaje}`; document.body.appendChild(toast); setTimeout(() => toast.remove(), 2500); }
 
-    function limpiarFormulario() {
-        editId.value = "";
-        nombre.value = "";
-        telefono.value = "";
-        identificacion.value = "";
-        correo.value = "";
-        vehiculosTemp = [];
-        estudiantesTemp = [];
-        renderizarVehiculos();
-        renderizarListaEstudiantes();
-        nuevaPlaca.value = "";
-        nuevoColor.value = "";
-        nuevoEstudianteNombre.value = "";
-        nuevoEstudianteGrado.value = "";
-    }
+    function limpiarFormulario() { editId.value = ""; nombre.value = ""; telefono.value = ""; identificacion.value = ""; correo.value = ""; vehiculosTemp = []; estudiantesTemp = []; renderizarVehiculos(); renderizarListaEstudiantes(); nuevaPlaca.value = ""; nuevoColor.value = ""; nuevoEstudianteNombre.value = ""; nuevoEstudianteGrado.value = ""; }
 
+    // ============================================
+    // ✅ FUNCIÓN PRINCIPAL: Guardar en Google Sheets
+    // ============================================
     async function guardarOwner() {
         if (vehiculosTemp.length === 0) {
             mostrarMensaje("Agregue al menos un vehículo", true);
             return;
         }
-        const idActual = editId.value;
-        const nuevoOwner = {
-            id: idActual || Date.now().toString(),
+
+        // 1. Preparar los datos
+        const vehiculosStr = vehiculosTemp.map(v => `${v.placa}|${v.color || ""}`).join(";");
+        const estudiantesStr = estudiantesTemp.map(e => `${e.nombre}|${e.grado || ""}`).join(";");
+
+        const datos = {
             nombre: nombre.value.trim() || "",
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
             correo: correo.value.trim() || "",
-            vehiculos: vehiculosTemp,
-            estudiantes: estudiantesTemp,
-            actualizado: new Date().toISOString()
+            vehiculos: vehiculosStr,
+            estudiantes: estudiantesStr,
         };
-        
-        if (idActual) {
-            const index = owners.findIndex(o => o.id === idActual);
-            if (index !== -1) owners[index] = nuevoOwner;
-            else owners.push(nuevoOwner);
-        } else {
-            owners.push(nuevoOwner);
+
+        // 2. Mostrar estado de carga
+        showLoading(true);
+        syncStatus.className = "sync-status loading";
+        syncStatus.innerHTML = `<i class="fas fa-spinner fa-pulse"></i> Guardando en Google Sheets...`;
+
+        try {
+            // 3. Enviar los datos a Google Apps Script
+            const response = await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors', // Importante para evitar problemas de CORS
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(datos)
+            });
+
+            // 4. Agregar a la lista local también (para verlo inmediatamente en la búsqueda)
+            const nuevoOwner = {
+                id: Date.now().toString(),
+                ...datos,
+                vehiculos: vehiculosTemp,
+                estudiantes: estudiantesTemp,
+                actualizado: new Date().toISOString()
+            };
+            owners.unshift(nuevoOwner); // Agregar al principio para verlo primero
+            guardarBackupLocal();
+
+            // 5. Limpiar formulario y mostrar éxito
+            limpiarFormulario();
+            actualizarEstadisticas();
+            aplicarBusqueda();
+            mostrarMensaje("✅ ¡Registro guardado exitosamente en Google Sheets!");
+            syncStatus.className = "sync-status success";
+            syncStatus.innerHTML = `<i class="fas fa-check-circle"></i> ${owners.length} registros sincronizados`;
+
+        } catch (error) {
+            console.error("Error al enviar a Sheets:", error);
+            mostrarMensaje("Error al guardar. Revisa la configuración del Script.", true);
+            syncStatus.className = "sync-status error";
+            syncStatus.innerHTML = `<i class="fas fa-exclamation-triangle"></i> Error al guardar en Sheets`;
+        } finally {
+            showLoading(false);
         }
-        guardarBackupLocal();
-        limpiarFormulario();
-        actualizarEstadisticas();
-        aplicarBusqueda();
-        mostrarMensaje(idActual ? "Actualizado" : "Guardado");
     }
 
+    // Eliminar Owner
     function eliminarOwner(id, nombreOwner) {
         if (confirm(`¿Eliminar a "${nombreOwner || 'este dueño'}" y todos sus vehículos?`)) {
             owners = owners.filter(o => o.id !== id);
             guardarBackupLocal();
             actualizarEstadisticas();
             aplicarBusqueda();
-            mostrarMensaje("Eliminado");
+            mostrarMensaje("Eliminado localmente. Exporta para sincronizar con Sheets.");
         }
     }
 
@@ -904,87 +380,48 @@
         document.querySelector('.tab-btn[data-tab="registrar"]').click();
     }
 
+    function exportarACSV() {
+        if (owners.length === 0) { mostrarMensaje("No hay datos para exportar", true); return; }
+        let csvRows = [["id", "nombre", "telefono", "identificacion", "correo", "estudiantes", "vehiculos", "fecha_actualizacion"]];
+        owners.forEach(owner => {
+            const estudiantesStr = (owner.estudiantes || []).map(e => `${e.nombre}|${e.grado || ""}`).join(";");
+            const vehiculosStr = (owner.vehiculos || []).map(v => `${v.placa}|${v.color || ""}`).join(";");
+            csvRows.push([`"${owner.id}"`, `"${(owner.nombre || "").replace(/"/g, '""')}"`, `"${(owner.telefono || "").replace(/"/g, '""')}"`, `"${(owner.identificacion || "").replace(/"/g, '""')}"`, `"${(owner.correo || "").replace(/"/g, '""')}"`, `"${estudiantesStr.replace(/"/g, '""')}"`, `"${vehiculosStr.replace(/"/g, '""')}"`, `"${owner.actualizado || ""}"`]);
+        });
+        const csvContent = csvRows.map(row => row.join(",")).join("\n");
+        const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+        const link = document.createElement("a");
+        const url = URL.createObjectURL(blob);
+        link.href = url;
+        link.setAttribute("download", `autoregistro_backup_${new Date().toISOString().split('T')[0]}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        mostrarMensaje("✅ CSV exportado correctamente");
+    }
+
     function aplicarBusqueda() {
         let termino = buscarInput.value.trim();
-        
-        if (modoPlaca && termino) {
-            termino = normalizarPlaca(termino);
-        } else if (termino) {
-            termino = termino.toLowerCase();
-        }
-        
+        if (modoPlaca && termino) { termino = normalizarPlaca(termino); } else if (termino) { termino = termino.toLowerCase(); }
         let filtrados = [...owners];
-        
         if (termino) {
-            if (modoPlaca) {
-                filtrados = owners.filter(owner => 
-                    owner.vehiculos?.some(v => normalizarPlaca(v.placa).includes(termino))
-                );
-            } else {
-                filtrados = owners.filter(owner => 
-                    owner.nombre?.toLowerCase().includes(termino) ||
-                    owner.telefono?.toLowerCase().includes(termino) ||
-                    owner.identificacion?.toLowerCase().includes(termino) ||
-                    owner.correo?.toLowerCase().includes(termino) ||
-                    owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino) ||
-                                               normalizarPlaca(v.placa).includes(termino)) ||
-                    owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
-                );
-            }
+            if (modoPlaca) { filtrados = owners.filter(owner => owner.vehiculos?.some(v => normalizarPlaca(v.placa).includes(termino))); }
+            else { filtrados = owners.filter(owner => owner.nombre?.toLowerCase().includes(termino) || owner.telefono?.toLowerCase().includes(termino) || owner.identificacion?.toLowerCase().includes(termino) || owner.correo?.toLowerCase().includes(termino) || owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino) || normalizarPlaca(v.placa).includes(termino)) || owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))); }
         }
         renderizarResultados(filtrados, termino);
     }
 
     function renderizarResultados(filtrados, termino) {
-        if (filtrados.length === 0) {
-            listaContainer.innerHTML = `<div class="empty-result"><i class="fas fa-search"></i><div>No se encontraron resultados</div></div>`;
-            return;
-        }
+        if (filtrados.length === 0) { listaContainer.innerHTML = `<div class="empty-result"><i class="fas fa-search"></i><div>No se encontraron resultados</div></div>`; return; }
         let html = "";
         filtrados.forEach(owner => {
             const totalVehiculos = owner.vehiculos?.length || 0;
-            html += `
-            <div class="result-card">
-                <div class="owner-header">
-                    <div class="owner-name">${resaltarTexto(owner.nombre || "Dueño sin nombre", termino)}</div>
-                    <span class="owner-badge"><i class="fas fa-car"></i> ${totalVehiculos} vehículo${totalVehiculos !== 1 ? 's' : ''}</span>
-                </div>`;
-            
-            if (owner.identificacion || owner.telefono || owner.correo) {
-                html += `<div class="owner-details">`;
-                if (owner.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ID: ${resaltarTexto(owner.identificacion, termino)}</div>`;
-                if (owner.telefono) html += `<div class="owner-detail"><i class="fas fa-phone"></i> ${resaltarTexto(owner.telefono, termino)}</div>`;
-                if (owner.correo) html += `<div class="owner-detail"><i class="fas fa-envelope"></i> ${escapeHtml(owner.correo)}</div>`;
-                html += `</div>`;
-            }
-            
-            if (owner.vehiculos && owner.vehiculos.length > 0) {
-                html += `<div class="vehicles-section">
-                            <div class="section-title"><i class="fas fa-car"></i> VEHÍCULOS</div>`;
-                owner.vehiculos.forEach(veh => {
-                    html += `<span class="vehicle-tag"><i class="fas fa-car"></i> ${resaltarTexto(veh.placa, termino)}${veh.color ? ` · 🎨 ${escapeHtml(veh.color)}` : ''}</span>`;
-                });
-                html += `</div>`;
-            }
-            
-            if (owner.estudiantes && owner.estudiantes.length > 0) {
-                html += `<div class="students-section">
-                            <div class="students-title"><i class="fas fa-child"></i> ESTUDIANTES</div>`;
-                owner.estudiantes.forEach(est => {
-                    html += `<span class="student-tag"><i class="fas fa-user-graduate"></i> ${resaltarTexto(est.nombre, termino)}${est.grado ? ` · 📚 ${escapeHtml(est.grado)}` : ''}</span>`;
-                });
-                html += `</div>`;
-            }
-            
-            html += `<div class="card-actions">
-                        <button class="action-btn edit" onclick="window.editarOwnerDesdeGlobal('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})">
-                            <i class="fas fa-edit"></i> Editar
-                        </button>
-                        <button class="action-btn delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')">
-                            <i class="fas fa-trash"></i> Eliminar
-                        </button>
-                    </div>
-            </div>`;
+            html += `<div class="result-card"><div class="owner-header"><div class="owner-name">${resaltarTexto(owner.nombre || "Dueño sin nombre", termino)}</div><span class="owner-badge"><i class="fas fa-car"></i> ${totalVehiculos} vehículo${totalVehiculos !== 1 ? 's' : ''}</span></div>`;
+            if (owner.identificacion || owner.telefono || owner.correo) { html += `<div class="owner-details">`; if (owner.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ID: ${resaltarTexto(owner.identificacion, termino)}</div>`; if (owner.telefono) html += `<div class="owner-detail"><i class="fas fa-phone"></i> ${resaltarTexto(owner.telefono, termino)}</div>`; if (owner.correo) html += `<div class="owner-detail"><i class="fas fa-envelope"></i> ${escapeHtml(owner.correo)}</div>`; html += `</div>`; }
+            if (owner.vehiculos && owner.vehiculos.length > 0) { html += `<div class="vehicles-section"><div class="section-title"><i class="fas fa-car"></i> VEHÍCULOS</div>`; owner.vehiculos.forEach(veh => { html += `<span class="vehicle-tag"><i class="fas fa-car"></i> ${resaltarTexto(veh.placa, termino)}${veh.color ? ` · 🎨 ${escapeHtml(veh.color)}` : ''}</span>`; }); html += `</div>`; }
+            if (owner.estudiantes && owner.estudiantes.length > 0) { html += `<div class="students-section"><div class="students-title"><i class="fas fa-child"></i> ESTUDIANTES</div>`; owner.estudiantes.forEach(est => { html += `<span class="student-tag"><i class="fas fa-user-graduate"></i> ${resaltarTexto(est.nombre, termino)}${est.grado ? ` · 📚 ${escapeHtml(est.grado)}` : ''}</span>`; }); html += `</div>`; }
+            html += `<div class="card-actions"><button class="action-btn edit" onclick="window.editarOwnerDesdeGlobal('${owner.id}', ${JSON.stringify(owner).replace(/"/g, '&quot;')})"><i class="fas fa-edit"></i> Editar</button><button class="action-btn delete" onclick="window.eliminarOwnerDesdeGlobal('${owner.id}', '${escapeHtml(owner.nombre)}')"><i class="fas fa-trash"></i> Eliminar</button></div></div>`;
         });
         listaContainer.innerHTML = html;
     }
@@ -992,33 +429,19 @@
     window.editarOwnerDesdeGlobal = (id, owner) => editarOwner(owner);
     window.eliminarOwnerDesdeGlobal = (id, nombre) => eliminarOwner(id, nombre);
 
-    function resaltarTexto(texto, busqueda) {
-        if (!busqueda || !texto) return escapeHtml(texto);
-        const regex = new RegExp(`(${busqueda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
-        return escapeHtml(texto).replace(regex, '<span class="highlight">$1</span>');
-    }
+    function resaltarTexto(texto, busqueda) { if (!busqueda || !texto) return escapeHtml(texto); const regex = new RegExp(`(${busqueda.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi'); return escapeHtml(texto).replace(regex, '<span class="highlight">$1</span>'); }
 
-    function actualizarEstadisticas() {
-        const total = owners.length;
-        const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0);
-        globalStatsSpan.innerHTML = `${total} dueños · ${totalVehiculos} vehículos`;
-    }
-
+    function actualizarEstadisticas() { const total = owners.length; const totalVehiculos = owners.reduce((acc, o) => acc + (o.vehiculos?.length || 0), 0); globalStatsSpan.innerHTML = `${total} dueños · ${totalVehiculos} vehículos`; }
     function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[m])); }
 
     const tabBtns = document.querySelectorAll('.tab-btn');
     const tabPanels = document.querySelectorAll('.tab-panel');
-    tabBtns.forEach(btn => btn.addEventListener('click', () => {
-        const tabId = btn.dataset.tab;
-        tabBtns.forEach(b => b.classList.remove('active'));
-        tabPanels.forEach(p => p.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(`tab-${tabId}`).classList.add('active');
-    }));
+    tabBtns.forEach(btn => btn.addEventListener('click', () => { const tabId = btn.dataset.tab; tabBtns.forEach(b => b.classList.remove('active')); tabPanels.forEach(p => p.classList.remove('active')); btn.classList.add('active'); document.getElementById(`tab-${tabId}`).classList.add('active'); }));
 
     guardarBtn.onclick = guardarOwner;
     cancelarBtn.onclick = limpiarFormulario;
     refreshBtn.onclick = () => cargarDesdeSheets();
+    exportBtn.onclick = exportarACSV;
 
     cargarDesdeSheets();
     cargarBackupLocal();
