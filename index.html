@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes, viewport-fit=cover">
-    <title>AutoRegistro - Guardado Directo en Google Sheets</title>
+    <title>AutoRegistro - Gestión Vehicular</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -127,8 +127,9 @@
         label { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: #5a6e7c; display: block; margin-bottom: 8px; }
         label .required { color: #c62828; }
         label .optional { font-weight: normal; color: #a8bbd0; }
-        input { width: 100%; padding: 14px 0; border: none; border-bottom: 2px solid #e0e8f0; font-size: 1rem; background: transparent; transition: all 0.2s; color: #1a202c; }
-        input:focus { outline: none; border-bottom-color: #1a5f7a; }
+        input, textarea { width: 100%; padding: 14px 0; border: none; border-bottom: 2px solid #e0e8f0; font-size: 1rem; background: transparent; transition: all 0.2s; color: #1a202c; font-family: inherit; }
+        textarea { min-height: 80px; resize: vertical; padding: 12px 0; }
+        input:focus, textarea:focus { outline: none; border-bottom-color: #1a5f7a; }
 
         .vehicles-list {
             background: #f8fafc;
@@ -296,7 +297,7 @@
 <div class="container">
     <div class="header">
         <h1>AutoRegistro</h1>
-        <p>Con guardado automático en Google Sheets</p>
+        <p>Gestión inteligente de vehículos</p>
         <div class="stats" id="globalStats">Cargando...</div>
     </div>
 
@@ -330,9 +331,10 @@
                 <input type="text" id="identificacion" placeholder="Cédula / DNI">
             </div>
 
+            <!-- NOTA - Reemplazo del campo correo -->
             <div class="field-group">
-                <label>Correo electrónico <span class="optional">(opcional)</span></label>
-                <input type="email" id="correo" placeholder="correo@ejemplo.com">
+                <label>Nota / Observación <span class="optional">(opcional)</span></label>
+                <textarea id="nota" rows="3" placeholder="Información adicional, observaciones, autorizaciones, etc..."></textarea>
             </div>
 
             <div class="card-title" style="margin-top: 24px;"><i class="fas fa-car"></i> Vehículos <span class="required">*</span></div>
@@ -420,7 +422,7 @@
     // ============================================
     // 🔥 CONFIGURACIÓN - ¡PEGA TU URL DEL SCRIPT AQUÍ!
     // ============================================
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzNHF4u-2jFccEjlFrZpYl1FEEf6RUit9PS5X29g_XGGXFt9OCnZUibfRlF8ApWs3js/exec";
+    const SCRIPT_URL = "https://script.google.com/macros/s/TU_SCRIPT_ID/exec";
     const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQXXEvohQRS2kQXv4VbfI6Rjwr4D7xahuOJikzsr0BTlpDYHlTcDtRe2FU1KAcSMWnXKohHLnFjRXmC/pub?gid=0&single=true&output=csv";
     // ============================================
 
@@ -440,7 +442,7 @@
     const nombre = document.getElementById("nombre");
     const telefono = document.getElementById("telefono");
     const identificacion = document.getElementById("identificacion");
-    const correo = document.getElementById("correo");
+    const nota = document.getElementById("nota");
     const guardarBtn = document.getElementById("guardarBtn");
     const cancelarBtn = document.getElementById("cancelarBtn");
     const loadingToast = document.getElementById("loadingToast");
@@ -664,7 +666,7 @@
                     nombre: values[1] ? values[1].replace(/^"|"$/g, '') : "",
                     telefono: values[2] ? values[2].replace(/^"|"$/g, '') : "",
                     identificacion: values[3] ? values[3].replace(/^"|"$/g, '') : "",
-                    correo: values[4] ? values[4].replace(/^"|"$/g, '') : "",
+                    nota: values[4] ? values[4].replace(/^"|"$/g, '') : "", // Ahora es NOTA, no correo
                     estudiantes: estudiantes,
                     vehiculos: vehiculos,
                     actualizado: values[7] ? values[7].replace(/^"|"$/g, '') : new Date().toISOString()
@@ -732,7 +734,7 @@
         nombre.value = "";
         telefono.value = "";
         identificacion.value = "";
-        correo.value = "";
+        nota.value = "";
         vehiculosTemp = [];
         estudiantesTemp = [];
         renderizarVehiculos();
@@ -754,7 +756,7 @@
             nombre: nombre.value.trim() || "",
             telefono: telefono.value.trim() || "",
             identificacion: identificacion.value.trim() || "",
-            correo: correo.value.trim() || "",
+            nota: nota.value.trim() || "",
             vehiculos: vehiculosTemp,
             estudiantes: estudiantesTemp
         };
@@ -777,7 +779,7 @@
                 nombre: datos.nombre,
                 telefono: datos.telefono,
                 identificacion: datos.identificacion,
-                correo: datos.correo,
+                nota: datos.nota,
                 vehiculos: vehiculosTemp,
                 estudiantes: estudiantesTemp,
                 actualizado: new Date().toISOString()
@@ -824,7 +826,7 @@
         nombre.value = owner.nombre || "";
         telefono.value = owner.telefono || "";
         identificacion.value = owner.identificacion || "";
-        correo.value = owner.correo || "";
+        nota.value = owner.nota || "";
         vehiculosTemp = owner.vehiculos ? [...owner.vehiculos] : [];
         estudiantesTemp = owner.estudiantes ? [...owner.estudiantes] : [];
         renderizarVehiculos();
@@ -834,11 +836,11 @@
 
     function exportarACSV() {
         if (owners.length === 0) { mostrarMensaje("No hay datos para exportar", true); return; }
-        let csvRows = [["id", "nombre", "telefono", "identificacion", "correo", "estudiantes", "vehiculos", "fecha_actualizacion"]];
+        let csvRows = [["id", "nombre", "telefono", "identificacion", "nota", "estudiantes", "vehiculos", "fecha_actualizacion"]];
         owners.forEach(owner => {
             const estudiantesStr = (owner.estudiantes || []).map(e => `${e.nombre}|${e.grado || ""}`).join(";");
             const vehiculosStr = (owner.vehiculos || []).map(v => `${v.placa}|${v.color || ""}`).join(";");
-            csvRows.push([`"${owner.id}"`, `"${(owner.nombre || "").replace(/"/g, '""')}"`, `"${(owner.telefono || "").replace(/"/g, '""')}"`, `"${(owner.identificacion || "").replace(/"/g, '""')}"`, `"${(owner.correo || "").replace(/"/g, '""')}"`, `"${estudiantesStr.replace(/"/g, '""')}"`, `"${vehiculosStr.replace(/"/g, '""')}"`, `"${owner.actualizado || ""}"`]);
+            csvRows.push([`"${owner.id}"`, `"${(owner.nombre || "").replace(/"/g, '""')}"`, `"${(owner.telefono || "").replace(/"/g, '""')}"`, `"${(owner.identificacion || "").replace(/"/g, '""')}"`, `"${(owner.nota || "").replace(/"/g, '""')}"`, `"${estudiantesStr.replace(/"/g, '""')}"`, `"${vehiculosStr.replace(/"/g, '""')}"`, `"${owner.actualizado || ""}"`]);
         });
         const csvContent = csvRows.map(row => row.join(",")).join("\n");
         const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
@@ -867,7 +869,7 @@
                     owner.nombre?.toLowerCase().includes(termino) ||
                     owner.telefono?.toLowerCase().includes(termino) ||
                     owner.identificacion?.toLowerCase().includes(termino) ||
-                    owner.correo?.toLowerCase().includes(termino) ||
+                    owner.nota?.toLowerCase().includes(termino) ||
                     owner.vehiculos?.some(v => v.placa?.toLowerCase().includes(termino) || normalizarPlaca(v.placa).includes(termino)) ||
                     owner.estudiantes?.some(e => e.nombre?.toLowerCase().includes(termino))
                 );
@@ -891,11 +893,11 @@
                     <span class="owner-badge"><i class="fas fa-car"></i> ${totalVehiculos} vehículo${totalVehiculos !== 1 ? 's' : ''}</span>
                 </div>`;
             
-            if (owner.identificacion || owner.telefono || owner.correo) {
+            if (owner.identificacion || owner.telefono || owner.nota) {
                 html += `<div class="owner-details">`;
                 if (owner.identificacion) html += `<div class="owner-detail"><i class="fas fa-id-card"></i> ID: ${resaltarTexto(owner.identificacion, termino)}</div>`;
                 if (owner.telefono) html += `<div class="owner-detail"><i class="fas fa-phone"></i> ${resaltarTexto(owner.telefono, termino)}</div>`;
-                if (owner.correo) html += `<div class="owner-detail"><i class="fas fa-envelope"></i> ${escapeHtml(owner.correo)}</div>`;
+                if (owner.nota) html += `<div class="owner-detail"><i class="fas fa-pencil-alt"></i> Nota: ${resaltarTexto(owner.nota, termino)}</div>`;
                 html += `</div>`;
             }
             
